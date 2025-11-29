@@ -1,4 +1,14 @@
-<!-- NG-ZORRO -->
-<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" alt="logo" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
-</a>
+<!-- Will be true when authenticated (future implementation) -->
+@if (true) {
+  <nz-layout class="h-dvh">
+    <nz-sider><app-sider /></nz-sider>
+    <nz-layout>
+      <nz-header><app-header /></nz-header>
+      <nz-content class="p-4 h-full">
+        <router-outlet />
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+} @else {
+  <router-outlet />
+}
