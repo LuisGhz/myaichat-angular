@@ -16,6 +16,7 @@ import { withNgxsFormPlugin } from '@ngxs/form-plugin';
 import { withNgxsRouterPlugin } from '@ngxs/router-plugin';
 import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 import { provideStore } from '@ngxs/store';
+import { AuthStore } from '@st/auth/auth.store';
 
 registerLocaleData(en);
 
@@ -28,13 +29,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     provideStore(
-      [],
+      [AuthStore],
       withNgxsReduxDevtoolsPlugin(),
       withNgxsFormPlugin(),
       withNgxsRouterPlugin(),
       withNgxsStoragePlugin({
-        keys: [],
-      })
+        keys: ['auth'],
+      }),
     ),
   ],
 };
