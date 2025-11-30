@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full bg-[#171717] text-gray-200">
+<div class="flex flex-col h-full bg-dark-1 text-gray-200">
   <!-- Top section: Logo + New Chat -->
   <div class="p-2 flex items-center justify-between">
     @if (!layoutService.sidebarCollapsed()) {
@@ -54,9 +54,7 @@
           >
             @if (!layoutService.sidebarCollapsed()) {
               <span class="truncate text-sm flex-1">{{ chat.title }}</span>
-              <div
-                class="opacity-0 group-hover:opacity-100 transition-opacity"
-              >
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   nz-button
                   nzType="text"
@@ -83,11 +81,7 @@
                       <span nz-icon nzType="inbox" class="mr-2"></span>
                       Archive
                     </li>
-                    <li
-                      nz-menu-item
-                      class="text-red-400! hover:bg-[#404040]!"
-                      nzDanger
-                    >
+                    <li nz-menu-item class="text-red-400! hover:bg-[#404040]!" nzDanger>
                       <span nz-icon nzType="delete" class="mr-2"></span>
                       Delete
                     </li>
@@ -95,12 +89,7 @@
                 </nz-dropdown-menu>
               </div>
             } @else {
-              <span
-                nz-icon
-                nzType="message"
-                nzTheme="outline"
-                class="text-gray-400"
-              ></span>
+              <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
             }
           </div>
         }
@@ -110,16 +99,10 @@
 
   <!-- User section -->
   <div class="p-2 border-t border-[#2f2f2f]">
-    <div
-      class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f]"
-    >
-      <nz-avatar
-        nzSize="small"
-        nzText="U"
-        class="bg-teal-600! text-white!"
-      ></nz-avatar>
+    <div class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f]">
+      <nz-avatar nzSize="small" nzText="U" class="bg-teal-600! text-white!"></nz-avatar>
       @if (!layoutService.sidebarCollapsed()) {
-        <span class="text-sm truncate flex-1">User Name</span>
+        <span class="text-sm truncate flex-1">{{ userEmail() }}</span>
       }
     </div>
   </div>

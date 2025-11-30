@@ -7,6 +7,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { LayoutService } from '../../services/layout.service';
 import { ChatGroupModel } from '../../../features/chat/models';
+import { select } from '@ngxs/store';
+import { AuthStore } from '@st/auth/auth.store';
 
 @Component({
   selector: 'app-sider',
@@ -22,8 +24,8 @@ import { ChatGroupModel } from '../../../features/chat/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Sider {
+  userEmail = select(AuthStore.email);
   protected readonly layoutService = inject(LayoutService);
-
   protected readonly chatGroups = signal<ChatGroupModel[]>([
     {
       label: 'Today',
