@@ -4,3 +4,17 @@
   --color-dark-1: #171717;
   --color-dark-2: #212121;
 }
+
+@layer utilities {
+  .app-bg-dark-1 {
+    @apply bg-gray-200 dark:bg-dark-1;
+  }
+
+  .app-bg-dark-2 {
+    @apply bg-gray-300 dark:bg-dark-2;
+  }
+
+  .app-text {
+    @apply text-dark-1 dark:text-gray-100;
+  }
+}

@@ -17,6 +17,11 @@ import { withNgxsRouterPlugin } from '@ngxs/router-plugin';
 import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 import { provideStore } from '@ngxs/store';
 import { AuthStore } from '@st/auth/auth.store';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+import { IconDefinition } from '@ant-design/icons-angular';
+import { GithubOutline } from '@ant-design/icons-angular/icons';
+
+const icons: IconDefinition[] = [GithubOutline];
 
 registerLocaleData(en);
 
@@ -25,6 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    provideNzIcons(icons),
     provideNzI18n(en_US),
     provideAnimationsAsync(),
     provideHttpClient(),
