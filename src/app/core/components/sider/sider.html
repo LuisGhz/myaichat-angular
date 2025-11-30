@@ -1,1 +1,126 @@
-<p>sider works!</p>
+<div class="flex flex-col h-full bg-[#171717] text-gray-200">
+  <!-- Top section: Logo + New Chat -->
+  <div class="p-2 flex items-center justify-between">
+    @if (!layoutService.sidebarCollapsed()) {
+      <button
+        nz-button
+        nzType="text"
+        class="text-gray-200! hover:bg-[#2f2f2f]!"
+        (click)="layoutService.toggleSidebar()"
+      >
+        <span nz-icon nzType="menu-fold" nzTheme="outline"></span>
+      </button>
+    }
+    <button
+      nz-button
+      nzType="text"
+      nz-tooltip
+      nzTooltipTitle="New chat"
+      class="text-gray-200! hover:bg-[#2f2f2f]!"
+      (click)="onNewChat()"
+    >
+      <span nz-icon nzType="edit" nzTheme="outline"></span>
+    </button>
+  </div>
+
+  <!-- Search -->
+  @if (!layoutService.sidebarCollapsed()) {
+    <div class="px-2 pb-2">
+      <button
+        nz-button
+        nzType="text"
+        class="w-full! text-left! text-gray-400! justify-start! hover:bg-[#2f2f2f]!"
+      >
+        <span nz-icon nzType="search" nzTheme="outline" class="mr-2"></span>
+        Search chats
+      </button>
+    </div>
+  }
+
+  <!-- Chat history -->
+  <div class="flex-1 overflow-y-auto px-1">
+    @for (group of chatGroups(); track group.label) {
+      <div class="mb-2">
+        @if (!layoutService.sidebarCollapsed()) {
+          <div class="px-2 py-1 text-xs text-gray-500 font-medium">
+            {{ group.label }}
+          </div>
+        }
+        @for (chat of group.chats; track chat.id) {
+          <div
+            class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f]"
+            [class.bg-[#2f2f2f]]="layoutService.selectedChatId() === chat.id"
+            (click)="onSelectChat(chat.id)"
+          >
+            @if (!layoutService.sidebarCollapsed()) {
+              <span class="truncate text-sm flex-1">{{ chat.title }}</span>
+              <div
+                class="opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <button
+                  nz-button
+                  nzType="text"
+                  nzSize="small"
+                  nz-dropdown
+                  [nzDropdownMenu]="chatMenu"
+                  nzTrigger="click"
+                  class="text-gray-400! hover:text-gray-200!"
+                  (click)="$event.stopPropagation()"
+                >
+                  <span nz-icon nzType="more" nzTheme="outline"></span>
+                </button>
+                <nz-dropdown-menu #chatMenu>
+                  <ul nz-menu class="bg-[#2f2f2f]!">
+                    <li nz-menu-item class="text-gray-200! hover:bg-[#404040]!">
+                      <span nz-icon nzType="share-alt" class="mr-2"></span>
+                      Share
+                    </li>
+                    <li nz-menu-item class="text-gray-200! hover:bg-[#404040]!">
+                      <span nz-icon nzType="edit" class="mr-2"></span>
+                      Rename
+                    </li>
+                    <li nz-menu-item class="text-gray-200! hover:bg-[#404040]!">
+                      <span nz-icon nzType="inbox" class="mr-2"></span>
+                      Archive
+                    </li>
+                    <li
+                      nz-menu-item
+                      class="text-red-400! hover:bg-[#404040]!"
+                      nzDanger
+                    >
+                      <span nz-icon nzType="delete" class="mr-2"></span>
+                      Delete
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+              </div>
+            } @else {
+              <span
+                nz-icon
+                nzType="message"
+                nzTheme="outline"
+                class="text-gray-400"
+              ></span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- User section -->
+  <div class="p-2 border-t border-[#2f2f2f]">
+    <div
+      class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f]"
+    >
+      <nz-avatar
+        nzSize="small"
+        nzText="U"
+        class="bg-teal-600! text-white!"
+      ></nz-avatar>
+      @if (!layoutService.sidebarCollapsed()) {
+        <span class="text-sm truncate flex-1">User Name</span>
+      }
+    </div>
+  </div>
+</div>
