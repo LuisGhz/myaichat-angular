@@ -19,9 +19,43 @@ import { provideStore } from '@ngxs/store';
 import { AuthStore } from '@st/auth/auth.store';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
-import { GithubOutline } from '@ant-design/icons-angular/icons';
+import {
+  GithubOutline,
+  PlusOutline,
+  EditOutline,
+  DeleteOutline,
+  AudioOutline,
+  SendOutline,
+  CloseOutline,
+  MenuUnfoldOutline,
+  MenuFoldOutline,
+  ShareAltOutline,
+  UserAddOutline,
+  MoreOutline,
+  SearchOutline,
+  InboxOutline,
+  MessageOutline,
+  FileTextOutline,
+} from '@ant-design/icons-angular/icons';
 
-const icons: IconDefinition[] = [GithubOutline];
+const icons: IconDefinition[] = [
+  GithubOutline,
+  PlusOutline,
+  EditOutline,
+  DeleteOutline,
+  AudioOutline,
+  SendOutline,
+  CloseOutline,
+  MenuUnfoldOutline,
+  MenuFoldOutline,
+  ShareAltOutline,
+  UserAddOutline,
+  MoreOutline,
+  SearchOutline,
+  InboxOutline,
+  MessageOutline,
+  FileTextOutline,
+];
 
 registerLocaleData(en);
 

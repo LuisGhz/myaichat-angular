@@ -99,6 +99,18 @@
 
   <!-- User section -->
   <div class="p-2 border-t border-[#2f2f2f]">
+    <!-- Navigation items -->
+    <div class="mb-2">
+      <div
+        class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f] text-gray-300"
+        (click)="onNavigateToPrompts()"
+      >
+        <span nz-icon nzType="file-text" nzTheme="outline"></span>
+        @if (!layoutService.sidebarCollapsed()) {
+          <span class="text-sm">Prompts</span>
+        }
+      </div>
+    </div>
     <div class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-[#2f2f2f]">
       <nz-avatar nzSize="small" nzText="U" class="bg-teal-600! text-white!"></nz-avatar>
       @if (!layoutService.sidebarCollapsed()) {

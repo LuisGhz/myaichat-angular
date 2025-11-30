@@ -7,6 +7,11 @@ export const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
   {
+    path: 'prompts',
+    canActivate: [authGuard],
+    loadChildren: () => import('./features/prompts/prompts.routes').then((m) => m.PROMPTS_ROUTES),
+  },
+  {
     path: '',
     canActivate: [authGuard],
     loadChildren: () => import('./features/chat/chat.routes').then((m) => m.CHAT_ROUTES),

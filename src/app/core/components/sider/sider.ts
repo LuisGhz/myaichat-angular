@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -24,6 +25,7 @@ import { AuthStore } from '@st/auth/auth.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Sider {
+  readonly #router = inject(Router);
   userEmail = select(AuthStore.email);
   protected readonly layoutService = inject(LayoutService);
   protected readonly chatGroups = signal<ChatGroupModel[]>([
@@ -65,5 +67,9 @@ export class Sider {
 
   onSelectChat(chatId: string): void {
     this.layoutService.selectChat(chatId);
+  }
+
+  onNavigateToPrompts(): void {
+    this.#router.navigate(['/prompts']);
   }
 }
