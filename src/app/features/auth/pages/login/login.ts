@@ -12,12 +12,11 @@ import { environment } from 'src/environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
-  private route = inject(ActivatedRoute);
-
+  #route = inject(ActivatedRoute);
   errorMessage = signal<string | null>(null);
 
   constructor() {
-    this.route.queryParams.subscribe((params) => {
+    this.#route.queryParams.subscribe((params) => {
       if (params['errorMessage']) {
         this.errorMessage.set(params['errorMessage']);
       }

@@ -1,4 +1,4 @@
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthStoreModel } from './models';
 import { AuthActions } from './auth.actions';
 
@@ -16,5 +16,10 @@ export class AuthStore {
       isAuthenticated: true,
       token: action.payload.token,
     });
+  }
+
+  @Selector()
+  static isAuthenticated(state: AuthStoreModel): boolean {
+    return state.isAuthenticated;
   }
 }
