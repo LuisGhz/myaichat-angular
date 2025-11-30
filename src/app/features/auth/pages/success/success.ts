@@ -19,11 +19,13 @@ export class SuccessPage {
     effect(() => {
       this.route.queryParams.subscribe((params) => {
         const accessToken = params['accessToken'];
+        console.log('Access Token:', accessToken);
         if (accessToken) {
-          this.store.dispatch(new AuthActions.Login({ token: accessToken }));
-          setTimeout(() => {
-            this.router.navigate(['/']);
-          }, 500);
+          this.store.dispatch(new AuthActions.Login({ token: accessToken })).subscribe(() => {
+            setTimeout(() => {
+              this.router.navigate(['/']);
+            }, 500);
+          });
         } else {
           this.router.navigate(['/auth/login']);
         }
