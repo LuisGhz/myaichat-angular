@@ -1,0 +1,29 @@
+<div class="flex h-screen items-center justify-center bg-linear-to-br from-slate-900 to-slate-800">
+  <div class="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+    <h1 class="mb-2 text-center text-3xl font-bold text-slate-800">Bienvenido</h1>
+    <p class="mb-8 text-center text-slate-600">Inicia sesión con GitHub para continuar</p>
+
+    @if (errorMessage()) {
+      <div class="mb-6">
+        <nz-alert
+          nzType="error"
+          [nzMessage]="errorMessage()"
+          nzCloseable
+          (nzOnClose)="clearError()"
+        ></nz-alert>
+      </div>
+    }
+
+    <button
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      nzBlock
+      (click)="loginWithGithub()"
+      class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700"
+    >
+      <i nz-icon nzType="github" nzTheme="fill" nzSize="lg"></i>
+      Iniciar sesión con GitHub
+    </button>
+  </div>
+</div>
