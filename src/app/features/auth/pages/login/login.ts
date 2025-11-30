@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
@@ -11,20 +11,19 @@ import { environment } from 'src/environments/environment';
   imports: [NzButtonModule, NzAlertModule, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   #route = inject(ActivatedRoute);
   errorMessage = signal<string | null>(null);
 
-  constructor() {
+  ngOnInit() {
     this.#route.queryParams.subscribe((params) => {
-      if (params['errorMessage']) {
-        this.errorMessage.set(params['errorMessage']);
-      }
+      if (params['errorMessage']) this.errorMessage.set(params['errorMessage']);
     });
   }
 
   loginWithGithub(): void {
     const loginUrl = `${environment.apiUrl}/auth/login`;
+    console.log('Redirecting to:', loginUrl);
     window.location.href = loginUrl;
   }
 

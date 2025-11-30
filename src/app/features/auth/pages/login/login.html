@@ -6,14 +6,7 @@
     <p class="mb-8 text-center text-slate-600">Inicia sesión con GitHub para continuar</p>
 
     @if (errorMessage()) {
-      <div class="mb-6">
-        <nz-alert
-          nzType="error"
-          [nzMessage]="errorMessage()"
-          nzCloseable
-          (nzOnClose)="clearError()"
-        ></nz-alert>
-      </div>
+      <p class="text-red-600! font-semibold! text-center">{{ errorMessage() }}</p>
     }
 
     <button
