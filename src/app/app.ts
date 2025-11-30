@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { Sider } from './core/components/sider/sider';
 import { Header } from './core/components/header/header';
@@ -13,12 +13,7 @@ import { AuthStore } from '@st/auth/auth.store';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App implements OnInit {
+export class App {
   protected readonly layoutService = inject(LayoutService);
-  #router = inject(Router);
   isAuthenticated = select(AuthStore.isAuthenticated);
-
-  ngOnInit(): void {
-    if (!this.isAuthenticated()) this.#router.navigate(['/auth/login']);
-  }
 }
