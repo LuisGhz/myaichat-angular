@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full">
   <!-- Header -->
-  <div class="flex items-center justify-between p-4 border-b border-[#2f2f2f]">
+  <div class="flex items-center justify-between p-4 border-b border-dark-input">
     <h2 class="text-lg font-medium text-gray-200">
       {{ isEditMode() ? 'Edit Prompt' : 'New Prompt' }}
     </h2>
@@ -25,7 +25,7 @@
           nz-input
           formControlName="name"
           placeholder="Enter prompt name"
-          class="bg-[#2f2f2f]! border-[#404040]! text-gray-200! placeholder:text-gray-500!"
+          class="bg-dark-input! border-dark-border! text-gray-200! placeholder:text-gray-500!"
         />
       </nz-form-control>
     </nz-form-item>
@@ -39,7 +39,7 @@
           formControlName="content"
           placeholder="Enter prompt content"
           [nzAutosize]="{ minRows: 3, maxRows: 6 }"
-          class="bg-[#2f2f2f]! border-[#404040]! text-gray-200! placeholder:text-gray-500!"
+          class="bg-dark-input! border-dark-border! text-gray-200! placeholder:text-gray-500!"
         ></textarea>
       </nz-form-control>
     </nz-form-item>
@@ -62,7 +62,7 @@
       </div>
 
       @if (messages.length === 0) {
-        <div class="text-center text-gray-500 py-4 border border-dashed border-[#404040] rounded-lg">
+        <div class="text-center text-gray-500 py-4 border border-dashed border-dark-border rounded-lg">
           No messages yet. Click "Add Message" to create one.
         </div>
       } @else {
@@ -70,12 +70,12 @@
           @for (message of messages.controls; track $index; let i = $index) {
             <div
               [formGroupName]="i"
-              class="p-3 bg-[#2a2a2a] rounded-lg border border-[#404040]"
+              class="p-3 bg-dark-elevated rounded-lg border border-dark-border"
             >
               <div class="flex items-center justify-between mb-2">
                 <nz-select
                   formControlName="role"
-                  class="w-32! [&_.ant-select-selector]:bg-[#2f2f2f]! [&_.ant-select-selector]:border-[#505050]! [&_.ant-select-selection-item]:text-gray-200!"
+                  class="w-32! [&_.ant-select-selector]:bg-dark-input! [&_.ant-select-selector]:border-dark-border-light! [&_.ant-select-selection-item]:text-gray-200!"
                   nzSize="small"
                 >
                   <nz-option nzValue="user" nzLabel="User"></nz-option>
@@ -97,7 +97,7 @@
                 formControlName="content"
                 placeholder="Enter message content"
                 [nzAutosize]="{ minRows: 2, maxRows: 4 }"
-                class="bg-[#353535]! border-[#505050]! text-gray-200! placeholder:text-gray-500!"
+                class="bg-dark-muted! border-dark-border-light! text-gray-200! placeholder:text-gray-500!"
               ></textarea>
             </div>
           }
@@ -107,12 +107,12 @@
   </form>
 
   <!-- Footer -->
-  <div class="flex items-center justify-end gap-2 p-4 border-t border-[#2f2f2f]">
+  <div class="flex items-center justify-end gap-2 p-4 border-t border-dark-input">
     <button
       nz-button
       nzType="default"
       type="button"
-      class="bg-transparent! text-gray-300! border-[#404040]! hover:border-gray-400!"
+      class="bg-transparent! text-gray-300! border-dark-border! hover:border-gray-400!"
       (click)="onCancel()"
     >
       Cancel

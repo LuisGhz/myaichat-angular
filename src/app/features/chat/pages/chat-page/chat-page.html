@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full bg-[#212121]">
+<div class="flex flex-col h-full bg-dark-surface">
   <!-- Main content area -->
   <div class="flex-1 flex flex-col items-center justify-center px-4">
     @if (!layoutService.selectedChatId()) {
@@ -7,9 +7,7 @@
     } @else {
       <!-- Chat messages placeholder -->
       <div class="w-full max-w-3xl text-gray-300">
-        <p class="text-center text-gray-500">
-          Messages will appear here...
-        </p>
+        <p class="text-center text-gray-500">Messages will appear here...</p>
       </div>
     }
   </div>
@@ -17,14 +15,12 @@
   <!-- Input area -->
   <div class="p-4 pb-6">
     <div class="max-w-3xl mx-auto">
-      <div
-        class="flex items-end gap-2 bg-[#2f2f2f] rounded-2xl p-3 border border-[#404040]"
-      >
+      <div class="flex items-end gap-2 bg-dark-input rounded-2xl p-3 border border-dark-border">
         <button
           nz-button
           nzType="text"
           nzShape="circle"
-          class="text-gray-400! hover:text-gray-200! hover:bg-[#404040]! shrink-0"
+          class="text-gray-400! hover:text-gray-200! hover:bg-dark-border! shrink-0"
         >
           <span nz-icon nzType="plus" nzTheme="outline"></span>
         </button>
@@ -43,7 +39,7 @@
             nz-button
             nzType="text"
             nzShape="circle"
-            class="text-gray-400! hover:text-gray-200! hover:bg-[#404040]!"
+            class="text-gray-400! hover:text-gray-200! hover:bg-dark-border!"
           >
             <span nz-icon nzType="audio" nzTheme="outline"></span>
           </button>
@@ -51,7 +47,7 @@
             nz-button
             nzType="text"
             nzShape="circle"
-            class="text-gray-400! hover:text-gray-200! hover:bg-[#404040]!"
+            class="text-gray-400! hover:text-gray-200! hover:bg-dark-border!"
             [disabled]="!messageText.trim()"
             (click)="onSend()"
           >

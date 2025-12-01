@@ -1,11 +1,11 @@
-<div class="flex items-center justify-between h-full px-4 bg-[#212121]">
+<div class="flex items-center justify-between h-full px-4 bg-dark-surface">
   <!-- Left: Toggle + Model selector -->
   <div class="flex items-center gap-2">
     @if (layoutService.sidebarCollapsed()) {
       <button
         nz-button
         nzType="text"
-        class="text-gray-200! hover:bg-[#2f2f2f]!"
+        class="text-gray-200! hover:bg-dark-input!"
         (click)="layoutService.toggleSidebar()"
       >
         <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
@@ -15,7 +15,7 @@
         nzType="text"
         nz-tooltip
         nzTooltipTitle="New chat"
-        class="text-gray-200! hover:bg-[#2f2f2f]!"
+        class="text-gray-200! hover:bg-dark-input!"
         (click)="onNewChat()"
       >
         <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -39,7 +39,7 @@
       <button
         nz-button
         nzType="text"
-        class="text-gray-300! hover:bg-[#2f2f2f]!"
+        class="text-gray-300! hover:bg-dark-input!"
       >
         <span nz-icon nzType="share-alt" nzTheme="outline" class="mr-1"></span>
         Share
@@ -47,7 +47,7 @@
       <button
         nz-button
         nzType="text"
-        class="text-gray-300! hover:bg-[#2f2f2f]!"
+        class="text-gray-300! hover:bg-dark-input!"
       >
         <span nz-icon nzType="user-add" nzTheme="outline" class="mr-1"></span>
         Add people
@@ -56,7 +56,7 @@
     <button
       nz-button
       nzType="text"
-      class="text-gray-400! hover:bg-[#2f2f2f]!"
+      class="text-gray-400! hover:bg-dark-input!"
     >
       <span nz-icon nzType="more" nzTheme="outline"></span>
     </button>

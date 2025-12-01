@@ -8,10 +8,10 @@ import { LayoutService } from '../../../../core/services/layout.service';
 @Component({
   selector: 'app-chat-view',
   imports: [FormsModule, NzButtonModule, NzIconModule, NzInputModule],
-  templateUrl: './chat-view.html',
+  templateUrl: './chat-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatView {
+export class ChatPage {
   protected readonly layoutService = inject(LayoutService);
   protected messageText = '';
 

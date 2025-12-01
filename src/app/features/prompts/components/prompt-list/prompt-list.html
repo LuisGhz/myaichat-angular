@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full">
   <!-- Header -->
-  <div class="flex items-center justify-between p-4 border-b border-[#2f2f2f]">
+  <div class="flex items-center justify-between p-4 border-b border-dark-input">
     <h2 class="text-lg font-medium text-gray-200">Prompts</h2>
     <button
       nz-button
@@ -25,8 +25,8 @@
     } @else {
       @for (prompt of prompts(); track prompt.id) {
         <div
-          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-[#2f2f2f] mb-1 transition-colors"
-          [class.bg-[#2f2f2f]]="selectedPromptId() === prompt.id"
+          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-dark-input mb-1 transition-colors"
+          [class.bg-dark-input]="selectedPromptId() === prompt.id"
           (click)="onSelectPrompt(prompt.id)"
         >
           <div class="flex-1 min-w-0">
@@ -42,7 +42,7 @@
               nz-button
               nzType="text"
               nzSize="small"
-              class="text-gray-400! hover:text-gray-200! hover:bg-[#404040]!"
+              class="text-gray-400! hover:text-gray-200! hover:bg-dark-border!"
               (click)="onEdit(prompt.id, $event)"
             >
               <span nz-icon nzType="edit"></span>
@@ -51,7 +51,7 @@
               nz-button
               nzType="text"
               nzSize="small"
-              class="text-red-400! hover:text-red-300! hover:bg-[#404040]!"
+              class="text-red-400! hover:text-red-300! hover:bg-dark-border!"
               (click)="onDelete(prompt.id, $event)"
             >
               <span nz-icon nzType="delete"></span>
