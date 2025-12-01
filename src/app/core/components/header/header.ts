@@ -9,26 +9,14 @@ import { AiModelModel } from '../../../features/chat/models';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    FormsModule,
-    NzButtonModule,
-    NzIconModule,
-    NzSelectModule,
-    NzToolTipModule,
-  ],
+  imports: [FormsModule, NzButtonModule, NzIconModule, NzSelectModule, NzToolTipModule],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   protected readonly layoutService = inject(LayoutService);
 
-  protected readonly models = signal<AiModelModel[]>([
-    { id: 'gpt-4', name: 'ChatGPT' },
-    { id: 'gpt-4o', name: 'GPT-4o' },
-    { id: 'gpt-4o-mini', name: 'GPT-4o mini' },
-    { id: 'o1', name: 'o1' },
-    { id: 'o1-mini', name: 'o1-mini' },
-  ]);
+  protected readonly models = signal<AiModelModel[]>([]);
 
   protected selectedModel = 'gpt-4';
 

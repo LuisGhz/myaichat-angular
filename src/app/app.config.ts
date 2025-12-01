@@ -10,7 +10,7 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { withNgxsFormPlugin } from '@ngxs/form-plugin';
 import { withNgxsRouterPlugin } from '@ngxs/router-plugin';
@@ -37,6 +37,7 @@ import {
   MessageOutline,
   FileTextOutline,
 } from '@ant-design/icons-angular/icons';
+import { authInterceptor } from '@core/interceptors';
 
 const icons: IconDefinition[] = [
   GithubOutline,
@@ -61,6 +62,7 @@ registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),

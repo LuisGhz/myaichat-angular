@@ -21,6 +21,26 @@ export class AuthStore {
     });
   }
 
+  @Action(AuthActions.UploadToken)
+  uploadToken(ctx: StateContext<AuthStoreModel>, action: AuthActions.UploadToken) {
+    ctx.patchState({
+      token: action.payload.token,
+    });
+  }
+
+  @Action(AuthActions.LogoutFromRequest)
+  logoutFromRequest(ctx: StateContext<AuthStoreModel>) {
+    ctx.setState({
+      isAuthenticated: false,
+      token: null,
+    });
+  }
+
+  @Selector()
+  static token(state: AuthStoreModel): string | null {
+    return state.token;
+  }
+
   @Selector()
   static isAuthenticated(state: AuthStoreModel): boolean {
     return state.isAuthenticated;

@@ -1,16 +1,30 @@
-<div class="flex flex-col h-full bg-dark-surface justify-center">
-  <!-- Main content area -->
-  <div class="flex flex-col items-center justify-center px-4">
+<main class="flex flex-col h-full bg-dark-surface justify-center">
+  <section class="flex flex-col items-center justify-center px-4">
     @if (!layoutService.selectedChatId()) {
-      <!-- Welcome state -->
       <h1 class="text-2xl app-text mb-8">What can I help with?</h1>
+      <section class="flex flex-col gap-2">
+        <nz-select class="w-40!">
+          @for (prompt of prompts(); track $index) {
+            <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
+          }
+        </nz-select>
+        <nz-select class="w-60!">
+          @for (group of groupedModels().entries(); track group[0]) {
+            <nz-option-group [nzLabel]="group[0]">
+              @for (model of group[1]; track model.id) {
+                <nz-option [nzValue]="model.id" [nzLabel]="model.name"></nz-option>
+              }
+            </nz-option-group>
+          }
+        </nz-select>
+      </section>
     } @else {
       <!-- Chat messages placeholder -->
       <div class="w-full max-w-3xl text-gray-300">
         <p class="text-center text-gray-500">Messages will appear here...</p>
       </div>
     }
-  </div>
+  </section>
   <!-- Input area -->
   <app-input-message />
-</div>
+</main>

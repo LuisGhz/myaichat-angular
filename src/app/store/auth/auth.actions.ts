@@ -7,4 +7,13 @@ export namespace AuthActions {
     constructor(public payload: { token: string }) {}
   }
 
+  export class UploadToken {
+    static readonly type = `${type} Upload Token`;
+    constructor(public payload: { token: string }) {}
+  }
+
+  export class LogoutFromRequest {
+    static readonly type = `${type} Logout From Request`;
+  }
+
 }

@@ -12,14 +12,29 @@
 
 @layer utilities {
   .app-bg-base {
-    @apply bg-gray-200 dark:bg-dark-base;
+    @apply bg-gray-200! dark:bg-dark-base!;
   }
 
   .app-bg-surface {
-    @apply bg-gray-300 dark:bg-dark-surface;
+    @apply bg-gray-300! dark:bg-dark-surface!;
   }
 
   .app-text {
-    @apply text-dark-base dark:text-gray-100;
+    @apply text-dark-base! dark:text-gray-100!;
+  }
+
+  .trans-c-200 {
+    @apply transition-colors duration-200;
   }
 }
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
