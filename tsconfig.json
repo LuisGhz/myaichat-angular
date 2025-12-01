@@ -16,14 +16,15 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/core/*"],
-      "@env/*": ["src/environments/*"],
-      "@sh/*": ["src/app/shared/*"],
-      "@cmn/*": ["src/app/common/*"],
-      "@st/*": ["src/app/store/*"],
-      "@auth/*": ["src/app/features/auth/*"],
-      "@usr/*": ["src/app/features/user/*"],
-      "@prompts/*": ["src/app/features/prompts/*"]
+      "@core/*": ["./src/app/core/*"],
+      "@env/*": ["./src/environments/*"],
+      "@sh/*": ["./src/app/shared/*"],
+      "@cmn/*": ["./src/app/common/*"],
+      "@st/*": ["./src/app/store/*"],
+      "@auth/*": ["./src/app/features/auth/*"],
+      "@chat/*": ["./src/app/features/chat/*"],
+      "@usr/*": ["./src/app/features/user/*"],
+      "@prompts/*": ["./src/app/features/prompts/*"]
     }
 
   },
