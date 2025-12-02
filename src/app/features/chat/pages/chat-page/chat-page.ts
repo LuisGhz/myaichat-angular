@@ -5,16 +5,20 @@ import { InputMessage } from '@chat/components/input/input-message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AiModelsApi } from '@chat/services/ai-models-api';
 import { AiModelModel } from '@chat/models';
+import { select } from '@ngxs/store';
+import { ChatStore } from '@st/chat/chat.store';
+import { Messages } from '@chat/components/messages/messages';
 
 @Component({
   selector: 'app-chat-view',
-  imports: [FormsModule, NzSelectModule, InputMessage],
+  imports: [FormsModule, NzSelectModule, InputMessage, Messages],
   templateUrl: './chat-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatPage {
   protected readonly layoutService = inject(LayoutService);
   #aiModelsApi = inject(AiModelsApi);
+  messages = select(ChatStore.getMessages);
   prompts = signal<
     {
       id: string;

@@ -1,0 +1,28 @@
+<section class="h-full w-full flex flex-col">
+  @for (message of messages(); track $index) {
+    <article
+      class="app-text w-6/12 max-w-xl min-w-xs rounded py-1 mb-12 px-1.5 relative"
+      [class.self-end]="message.role === 'user'"
+      [class.app-bg-base]="message.role === 'user'"
+      [class.self-start]="message.role !== 'user'"
+      [class.w-full]="message.role !== 'user'"
+    >
+      <markdown [data]="message.content"></markdown>
+      <button
+        class="absolute top-10 app-text cursor-pointer hover:bg-gray-400! dark:hover:bg-dark-base! rounded-full p-1 w-8 h-8 flex items-center justify-center trans-c-200"
+        [class.right-1]="message.role === 'user'"
+        [class.left-1]="message.role !== 'user'"
+        type="button"
+        title="Copy message"
+        aria-label="Copy message"
+        (click)="onCopyClick(message.content, $index)"
+      >
+        @if (!isCopied($index)) {
+          <nz-icon class="text-lg" nzType="copy" nzTheme="outline" />
+        } @else {
+          <nz-icon class="text-lg" nzType="check" nzTheme="outline" />
+        }
+      </button>
+    </article>
+  }
+</section>

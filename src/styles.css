@@ -37,4 +37,8 @@
   scrollbar-width: none; /* Firefox */
 }
 
+p {
+  margin: 0;
+}
+
 

@@ -37,7 +37,9 @@ import {
   MessageOutline,
   FileTextOutline,
 } from '@ant-design/icons-angular/icons';
+import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor } from '@core/interceptors';
+import { ChatStore } from '@st/chat/chat.store';
 
 const icons: IconDefinition[] = [
   GithubOutline,
@@ -71,7 +73,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     provideStore(
-      [AuthStore],
+      [AuthStore, ChatStore],
       withNgxsReduxDevtoolsPlugin(),
       withNgxsFormPlugin(),
       withNgxsRouterPlugin(),
@@ -79,5 +81,6 @@ export const appConfig: ApplicationConfig = {
         keys: ['auth'],
       }),
     ),
+    provideMarkdown(),
   ],
 };
