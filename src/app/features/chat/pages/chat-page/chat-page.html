@@ -3,7 +3,7 @@
     @if (!layoutService.selectedChatId()) {
       <h1 class="text-2xl app-text mb-8">What can I help with?</h1>
       <section class="flex flex-col gap-2">
-        <nz-select class="w-40!">
+        <nz-select class="w-60!">
           @for (prompt of prompts(); track $index) {
             <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
           }
