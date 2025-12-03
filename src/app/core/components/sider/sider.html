@@ -26,74 +26,98 @@
   <!-- Search -->
   @if (!layoutService.sidebarCollapsed()) {
     <div class="px-2 pb-2">
-      <button
-        nz-button
-        nzType="text"
-        class="w-full! text-left! text-gray-400! justify-start! hover:bg-dark-input!"
-      >
-        <span nz-icon nzType="search" nzTheme="outline" class="mr-2"></span>
-        Search chats
-      </button>
+      <nz-input-wrapper class="bg-dark-input! rounded-lg!">
+        <nz-icon nzInputPrefix nzType="search" class="app-text" />
+        <input
+          type="text"
+          nz-input
+          placeholder="Buscar chats"
+          [(ngModel)]="searchQuery"
+          class="bg-transparent! text-gray-200! placeholder-gray-500!"
+        />
+      </nz-input-wrapper>
     </div>
   }
 
   <!-- Chat history -->
   <div class="flex-1 overflow-y-auto px-1">
-    @for (group of chatGroups(); track group.label) {
-      <div class="mb-2">
-        @if (!layoutService.sidebarCollapsed()) {
-          <div class="px-2 py-1 text-xs text-gray-500 font-medium">
-            {{ group.label }}
-          </div>
-        }
-        @for (chat of group.chats; track chat.id) {
-          <div
-            class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input"
-            [class.bg-dark-input]="layoutService.selectedChatId() === chat.id"
-            (click)="onSelectChat(chat.id)"
-          >
-            @if (!layoutService.sidebarCollapsed()) {
+    @if (chatsResource.isLoading()) {
+      <!-- Loading skeleton -->
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div class="flex items-center px-2 py-2">
+          @if (!layoutService.sidebarCollapsed()) {
+            <nz-skeleton
+              [nzActive]="true"
+              [nzParagraph]="{ rows: 1, width: '100%' }"
+              [nzTitle]="false"
+            ></nz-skeleton>
+          } @else {
+            <nz-skeleton-element
+              nzType="avatar"
+              [nzActive]="true"
+              nzSize="small"
+              nzShape="circle"
+            ></nz-skeleton-element>
+          }
+        </div>
+      }
+    } @else {
+      @for (chat of filteredChats(); track chat.id) {
+        <div
+          class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-400 dark:hover:bg-dark-input app-text trans-c-200"
+          [class.bg-dark-input]="layoutService.selectedChatId() === chat.id"
+          (click)="onSelectChat(chat.id)"
+        >
+          @if (!layoutService.sidebarCollapsed()) {
+            @if (chat.title) {
               <span class="truncate text-sm flex-1">{{ chat.title }}</span>
-              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  nz-button
-                  nzType="text"
-                  nzSize="small"
-                  nz-dropdown
-                  [nzDropdownMenu]="chatMenu"
-                  nzTrigger="click"
-                  class="text-gray-400! hover:text-gray-200!"
-                  (click)="$event.stopPropagation()"
-                >
-                  <span nz-icon nzType="more" nzTheme="outline"></span>
-                </button>
-                <nz-dropdown-menu #chatMenu>
-                  <ul nz-menu class="bg-dark-input!">
-                    <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                      <span nz-icon nzType="share-alt" class="mr-2"></span>
-                      Share
-                    </li>
-                    <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                      <span nz-icon nzType="edit" class="mr-2"></span>
-                      Rename
-                    </li>
-                    <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                      <span nz-icon nzType="inbox" class="mr-2"></span>
-                      Archive
-                    </li>
-                    <li nz-menu-item class="text-red-400! hover:bg-dark-border!" nzDanger>
-                      <span nz-icon nzType="delete" class="mr-2"></span>
-                      Delete
-                    </li>
-                  </ul>
-                </nz-dropdown-menu>
-              </div>
             } @else {
-              <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
+              <nz-skeleton
+                class="flex-1"
+                [nzActive]="true"
+                [nzParagraph]="{ rows: 1, width: '80%' }"
+                [nzTitle]="false"
+              ></nz-skeleton>
             }
-          </div>
-        }
-      </div>
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                nz-button
+                nzType="text"
+                nzSize="small"
+                nz-dropdown
+                [nzDropdownMenu]="chatMenu"
+                nzTrigger="click"
+                class="text-gray-400! hover:text-gray-200!"
+                (click)="$event.stopPropagation()"
+              >
+                <span nz-icon nzType="more" nzTheme="outline"></span>
+              </button>
+              <nz-dropdown-menu #chatMenu>
+                <ul nz-menu class="bg-dark-input!">
+                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+                    <span nz-icon nzType="share-alt" class="mr-2"></span>
+                    Share
+                  </li>
+                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+                    <span nz-icon nzType="edit" class="mr-2"></span>
+                    Rename
+                  </li>
+                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+                    <span nz-icon nzType="inbox" class="mr-2"></span>
+                    Archive
+                  </li>
+                  <li nz-menu-item class="text-red-400! hover:bg-dark-border!" nzDanger>
+                    <span nz-icon nzType="delete" class="mr-2"></span>
+                    Delete
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </div>
+          } @else {
+            <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
+          }
+        </div>
+      }
     }
   </div>
 

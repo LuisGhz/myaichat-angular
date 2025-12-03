@@ -1,3 +1,9 @@
+export interface UserChatsModel {
+  id: string;
+  title?: string;
+  createdAt: Date;
+}
+
 export interface MessageModel {
   id: string;
   role: 'user' | 'assistant' | 'system';

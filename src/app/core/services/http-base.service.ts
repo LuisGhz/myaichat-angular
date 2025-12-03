@@ -29,39 +29,39 @@ export class HttpService {
   #http = inject(HttpClient);
   #apiUrl = environment.apiUrl;
 
-  get<T>(path: string, options?: HttpClientOptions) {
+  protected get<T>(path: string, options?: HttpClientOptions) {
     return this.#http.get<T>(`${this.#apiUrl}${path}`, options);
   }
 
-  getP<T>(path: string, options?: HttpClientOptions) {
+  protected getP<T>(path: string, options?: HttpClientOptions) {
     return firstValueFrom(this.#http.get<T>(`${this.#apiUrl}${path}`, options));
   }
 
-  post<T>(path: string, body: any, options?: HttpClientOptions) {
+  protected post<T>(path: string, body: any, options?: HttpClientOptions) {
     return this.#http.post<T>(`${this.#apiUrl}${path}`, body, options);
   }
 
-  postP<T, B>(path: string, body: B, options?: HttpClientOptions) {
+  protected postP<T, B>(path: string, body: B, options?: HttpClientOptions) {
     return firstValueFrom(this.#http.post<T>(`${this.#apiUrl}${path}`, body, options));
   }
 
-  put<T, B>(path: string, body: B, options?: HttpClientOptions) {
+  protected put<T, B>(path: string, body: B, options?: HttpClientOptions) {
     return this.#http.put<T>(`${this.#apiUrl}${path}`, body, options);
   }
 
-  putP<T, B>(path: string, body: B, options?: HttpClientOptions) {
+  protected putP<T, B>(path: string, body: B, options?: HttpClientOptions) {
     return firstValueFrom(this.#http.put<T>(`${this.#apiUrl}${path}`, body, options));
   }
 
-  delete<T>(path: string, options?: HttpClientOptions) {
+  protected delete<T>(path: string, options?: HttpClientOptions) {
     return this.#http.delete<T>(`${this.#apiUrl}${path}`, options);
   }
 
-  deleteP<T>(path: string, options?: HttpClientOptions) {
+  protected deleteP<T>(path: string, options?: HttpClientOptions) {
     return firstValueFrom(this.#http.delete<T>(`${this.#apiUrl}${path}`, options));
   }
 
-  ssePost<R, B>(path: string, body: B, options?: HttpClientOptions): Observable<R> {
+  protected ssePost<R, B>(path: string, body: B, options?: HttpClientOptions): Observable<R> {
     return new Observable((observer) => {
       this.#http
         .post(`${this.#apiUrl}${path}`, body, {

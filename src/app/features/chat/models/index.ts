@@ -8,5 +8,6 @@ export type {
   StreamErrorEvent,
   StreamEventType,
   SendMessageReqModel,
+  UserChatsModel,
 } from './chat.model';
 export type { AiModelModel } from './ai-model.model';
