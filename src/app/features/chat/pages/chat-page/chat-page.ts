@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  resource,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LayoutService } from '@core/services/layout.service';
 import { InputMessage } from '@chat/components/input/input-message';
@@ -8,6 +16,8 @@ import { AiModelModel } from '@chat/models';
 import { select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
 import { Messages } from '@chat/components/messages/messages';
+import { ChatApi } from '@chat/services/chat-api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat-view',
@@ -15,8 +25,10 @@ import { Messages } from '@chat/components/messages/messages';
   templateUrl: './chat-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatPage {
+export class ChatPage implements OnInit {
   protected readonly layoutService = inject(LayoutService);
+  #activatedRoute = inject(ActivatedRoute);
+  #chatApi = inject(ChatApi);
   #aiModelsApi = inject(AiModelsApi);
   messages = select(ChatStore.getMessages);
   prompts = signal<
@@ -39,6 +51,13 @@ export class ChatPage {
     loader: () => this.#aiModelsApi.getAiModels(),
     defaultValue: [],
   });
+
+  ngOnInit(): void {
+    this.#activatedRoute.params.subscribe((params) => {
+      const chatId = params['id'];
+      if (chatId) this.#chatApi.loadMessages(chatId);
+    });
+  }
 
   groupedModels = computed(() => {
     const modelList = this.models.value();

@@ -1,6 +1,9 @@
 <div class="flex flex-col h-full text-gray-200">
   <!-- Top section: Logo + New Chat -->
-  <div class="p-2 flex items-center justify-between">
+  <div
+    class="p-2 flex items-center justify-between"
+    [class.flex-col]="layoutService.sidebarCollapsed()"
+  >
     @if (!layoutService.sidebarCollapsed()) {
       <button
         nz-button
@@ -9,6 +12,16 @@
         (click)="layoutService.toggleSidebar()"
       >
         <span nz-icon nzType="menu-fold" nzTheme="outline"></span>
+      </button>
+    }
+    @if (layoutService.sidebarCollapsed()) {
+      <button
+        nz-button
+        nzType="text"
+        class="text-gray-200! hover:bg-dark-input!"
+        (click)="layoutService.toggleSidebar()"
+      >
+        <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
       </button>
     }
     <button
@@ -65,6 +78,8 @@
       @for (chat of filteredChats(); track chat.id) {
         <div
           class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-400 dark:hover:bg-dark-input app-text trans-c-200"
+          [routerLink]="['/chat', chat.id]"
+          [class.hidden]="layoutService.sidebarCollapsed()"
           [class.bg-dark-input]="layoutService.selectedChatId() === chat.id"
           (click)="onSelectChat(chat.id)"
         >

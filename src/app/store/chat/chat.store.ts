@@ -7,19 +7,7 @@ import { ChatActions } from './chat.actions';
 @State<ChatStoreModel>({
   name: 'chat',
   defaults: {
-    messages: [
-      {
-        role: 'user',
-        content: 'Hello! How can I use this AI chat application?',
-        inputTokens: 80,
-      },
-      {
-        role: 'assistant',
-        content:
-          'Hi there! To use this AI chat application, simply type your message in the input box and hit send. The AI will respond to your queries based on the context of the conversation.',
-        outputTokens: 95,
-      },
-    ],
+    messages: [],
     model: '',
     maxTokens: 2048,
     temperature: 0.7,
@@ -69,6 +57,14 @@ export class ChatStore {
     ctx.setState({
       ...state,
       messages,
+    });
+  }
+
+  @Action(ChatActions.LoadMessages)
+  loadMessages(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.LoadMessages) {
+    ctx.setState({
+      ...ctx.getState(),
+      messages: payload,
     });
   }
 

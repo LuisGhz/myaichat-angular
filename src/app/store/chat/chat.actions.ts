@@ -1,8 +1,15 @@
+import { Message } from "./models/message.model";
+
 export namespace ChatActions {
   const preffix = '[Chat]';
 
   export class ResetChat {
     static readonly type = `${preffix} Reset Chat`;
+  }
+
+  export class LoadMessages {
+    static readonly type = `${preffix} Load Messages`;
+    constructor(public payload: Message[]) {}
   }
 
   export class AddUserMessage {

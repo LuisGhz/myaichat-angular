@@ -7,7 +7,7 @@ export const CHAT_ROUTES: Routes = [
     component: ChatPage,
   },
   {
-    path: 'c/:id',
+    path: 'chat/:id',
     component: ChatPage,
   }
 ];
