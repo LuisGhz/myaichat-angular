@@ -1,2 +1,12 @@
-export type { MessageModel, ChatModel, ChatGroupModel } from './chat.model';
+export type {
+  MessageModel,
+  ChatModel,
+  ChatGroupModel,
+  ChatStreamEvent,
+  StreamDeltaEvent,
+  StreamDoneEvent,
+  StreamErrorEvent,
+  StreamEventType,
+  SendMessageReqModel,
+} from './chat.model';
 export type { AiModelModel } from './ai-model.model';

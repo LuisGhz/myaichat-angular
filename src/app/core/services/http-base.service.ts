@@ -1,7 +1,8 @@
 import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 type HttpClientOptions = {
   headers?: HttpHeaders | Record<string, string | string[]>;
@@ -23,8 +24,7 @@ type HttpClientOptions = {
 
 @Injectable({
   providedIn: 'root',
-}
-)
+})
 export class HttpService {
   #http = inject(HttpClient);
   #apiUrl = environment.apiUrl;
@@ -59,5 +59,30 @@ export class HttpService {
 
   deleteP<T>(path: string, options?: HttpClientOptions) {
     return firstValueFrom(this.#http.delete<T>(`${this.#apiUrl}${path}`, options));
+  }
+
+  ssePost<R, B>(path: string, body: B, options?: HttpClientOptions): Observable<R> {
+    return new Observable((observer) => {
+      this.#http
+        .post(`${this.#apiUrl}${path}`, body, {
+          ...options,
+          responseType: 'text',
+        })
+        .subscribe({
+          next: (response: string) => {
+            const lines = response.split('\n').filter((line) => line.trim());
+            lines.forEach((line) => {
+              try {
+                const event = JSON.parse(line);
+                observer.next(event as R);
+              } catch (error) {
+                console.error('Failed to parse SSE event:', error, 'Line:', line);
+              }
+            });
+          },
+          error: (error) => observer.error(error),
+          complete: () => observer.complete(),
+        });
+    });
   }
 }
