@@ -1,19 +1,18 @@
 @if (isAuthenticated()) {
   <nz-layout class="h-dvh">
     <nz-sider
-      nzTheme="dark"
       [nzCollapsed]="layoutService.sidebarCollapsed()"
       [nzCollapsedWidth]="60"
       [nzWidth]="260"
-      class="bg-dark-base"
+      class="app-bg-base"
     >
       <app-sider />
     </nz-sider>
     <nz-layout>
-      <nz-header class="h-12! p-0! bg-dark-surface">
+      <nz-header class="h-12! p-0! app-bg-surface">
         <app-header />
       </nz-header>
-      <nz-content class="overflow-hidden">
+      <nz-content class="overflow-hidden app-bg-surface">
         <router-outlet />
       </nz-content>
     </nz-layout>
