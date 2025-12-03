@@ -2,24 +2,24 @@
   <!-- Top section: Logo + New Chat -->
   <div
     class="p-2 flex items-center justify-between"
-    [class.flex-col]="layoutService.sidebarCollapsed()"
+    [class.flex-col]="sidebarCollapsed()"
   >
-    @if (!layoutService.sidebarCollapsed()) {
+    @if (!sidebarCollapsed()) {
       <button
         nz-button
         nzType="text"
         class="text-gray-200! hover:bg-dark-input!"
-        (click)="layoutService.toggleSidebar()"
+        (click)="onToggleSidebar()"
       >
         <span nz-icon nzType="menu-fold" nzTheme="outline"></span>
       </button>
     }
-    @if (layoutService.sidebarCollapsed()) {
+    @if (sidebarCollapsed()) {
       <button
         nz-button
         nzType="text"
         class="text-gray-200! hover:bg-dark-input!"
-        (click)="layoutService.toggleSidebar()"
+        (click)="onToggleSidebar()"
       >
         <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
       </button>
@@ -37,7 +37,7 @@
   </div>
 
   <!-- Search -->
-  @if (!layoutService.sidebarCollapsed()) {
+  @if (!sidebarCollapsed()) {
     <div class="px-2 pb-2">
       <nz-input-wrapper class="bg-dark-input! rounded-lg!">
         <nz-icon nzInputPrefix nzType="search" class="app-text" />
@@ -58,7 +58,7 @@
       <!-- Loading skeleton -->
       @for (i of [1, 2, 3, 4, 5]; track i) {
         <div class="flex items-center px-2 py-2">
-          @if (!layoutService.sidebarCollapsed()) {
+          @if (!sidebarCollapsed()) {
             <nz-skeleton
               [nzActive]="true"
               [nzParagraph]="{ rows: 1, width: '100%' }"
@@ -79,11 +79,11 @@
         <div
           class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-400 dark:hover:bg-dark-input app-text trans-c-200"
           [routerLink]="['/chat', chat.id]"
-          [class.hidden]="layoutService.sidebarCollapsed()"
-          [class.bg-dark-input]="layoutService.selectedChatId() === chat.id"
+          [class.hidden]="sidebarCollapsed()"
+          [class.bg-dark-input]="selectedChatId() === chat.id"
           (click)="onSelectChat(chat.id)"
         >
-          @if (!layoutService.sidebarCollapsed()) {
+          @if (!sidebarCollapsed()) {
             @if (chat.title) {
               <span class="truncate text-sm flex-1">{{ chat.title }}</span>
             } @else {
@@ -145,14 +145,14 @@
         (click)="onNavigateToPrompts()"
       >
         <span nz-icon nzType="file-text" nzTheme="outline"></span>
-        @if (!layoutService.sidebarCollapsed()) {
+        @if (!sidebarCollapsed()) {
           <span class="text-sm">Prompts</span>
         }
       </div>
     </div>
     <div class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-dark-input">
       <nz-avatar nzSize="small" nzText="U" class="bg-teal-600! text-white!"></nz-avatar>
-      @if (!layoutService.sidebarCollapsed()) {
+      @if (!sidebarCollapsed()) {
         <span class="text-sm truncate flex-1">{{ userEmail() }}</span>
       }
     </div>

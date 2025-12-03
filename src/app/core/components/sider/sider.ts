@@ -16,9 +16,10 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { LayoutService } from '../../services/layout.service';
-import { select } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { AuthStore } from '@st/auth/auth.store';
+import { AppStore } from '@st/app/app.store';
+import { AppActions } from '@st/app/app.actions';
 import { ChatApi } from '@chat/services/chat-api';
 
 @Component({
@@ -42,8 +43,11 @@ import { ChatApi } from '@chat/services/chat-api';
 export class Sider {
   readonly #router = inject(Router);
   readonly #chatApi = inject(ChatApi);
-  userEmail = select(AuthStore.email);
-  protected readonly layoutService = inject(LayoutService);
+  protected readonly userEmail = select(AuthStore.email);
+  protected readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
+  protected readonly selectedChatId = select(AppStore.selectedChatId);
+  readonly #toggleSidebar = dispatch(AppActions.ToggleSidebar);
+  readonly #selectChat = dispatch(AppActions.SelectChat);
   protected readonly searchQuery = signal('');
   protected readonly chatsResource = resource({
     loader: () => this.#chatApi.getChats(),
@@ -56,11 +60,15 @@ export class Sider {
   });
 
   onNewChat(): void {
-    this.layoutService.selectChat(null);
+    this.#selectChat(null);
   }
 
   onSelectChat(chatId: string): void {
-    this.layoutService.selectChat(chatId);
+    this.#selectChat(chatId);
+  }
+
+  onToggleSidebar(): void {
+    this.#toggleSidebar();
   }
 
   onNavigateToPrompts(): void {

@@ -1,7 +1,7 @@
 @if (isAuthenticated()) {
   <nz-layout class="h-dvh">
     <nz-sider
-      [nzCollapsed]="layoutService.sidebarCollapsed()"
+      [nzCollapsed]="sidebarCollapsed()"
       [nzCollapsedWidth]="60"
       [nzWidth]="260"
       class="app-bg-base"

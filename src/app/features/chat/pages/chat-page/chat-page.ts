@@ -8,7 +8,6 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LayoutService } from '@core/services/layout.service';
 import { InputMessage } from '@chat/components/input/input-message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AiModelsApi } from '@chat/services/ai-models-api';
@@ -26,7 +25,6 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatPage implements OnInit {
-  protected readonly layoutService = inject(LayoutService);
   #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
   #aiModelsApi = inject(AiModelsApi);
