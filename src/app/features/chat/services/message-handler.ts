@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { ChatApi } from './chat-api';
 import { ChatActions } from '@st/chat/chat.actions';
 import { dispatch, select } from '@ngxs/store';
@@ -9,6 +10,7 @@ import { ChatStore } from '@st/chat/chat.store';
 })
 export class MessagesHandler {
   #chatApi = inject(ChatApi);
+  #location = inject(Location);
   #messages = select(ChatStore.getMessages);
   #addUserMessage = dispatch(ChatActions.AddUserMessage);
   #addAssistantMessage = dispatch(ChatActions.AddAssistantMessage);
@@ -24,8 +26,15 @@ export class MessagesHandler {
           inputTokens: r.data.inputTokens,
           outputTokens: r.data.outputTokens,
         });
+        this.#updateUrlIfNewChat(r.data.chatId);
       }
     });
+  }
+
+  #updateUrlIfNewChat(chatId: string): void {
+    if (!this.#location.path().includes(chatId)) {
+      this.#location.replaceState(`/chat/${chatId}`);
+    }
   }
 
   #addAssistantMsg(message: string): void {

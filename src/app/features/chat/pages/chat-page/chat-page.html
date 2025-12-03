@@ -4,25 +4,27 @@
     [class.flex-1]="messages().length > 0"
   >
     @if (messages().length === 0) {
-      <h1 class="text-2xl app-text mb-8">What can I help with?</h1>
-      <section class="flex flex-col gap-2">
-        <nz-select class="w-60!">
-          @for (prompt of prompts(); track $index) {
-            <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
-          }
-        </nz-select>
-        <nz-select class="w-60!">
-          @for (group of groupedModels().entries(); track group[0]) {
-            <nz-option-group [nzLabel]="group[0]">
-              @for (model of group[1]; track model.id) {
-                <nz-option [nzValue]="model.id" [nzLabel]="model.name"></nz-option>
-              }
-            </nz-option-group>
-          }
-        </nz-select>
-      </section>
+      <div [animate.leave]="shouldAnimateTransition() ? 'welcome-leave' : ''">
+        <h1 class="text-2xl app-text mb-8 text-center">What can I help with?</h1>
+        <section class="flex flex-col gap-2">
+          <nz-select class="w-60!">
+            @for (prompt of prompts(); track $index) {
+              <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
+            }
+          </nz-select>
+          <nz-select class="w-60!">
+            @for (group of groupedModels().entries(); track group[0]) {
+              <nz-option-group [nzLabel]="group[0]">
+                @for (model of group[1]; track model.id) {
+                  <nz-option [nzValue]="model.id" [nzLabel]="model.name"></nz-option>
+                }
+              </nz-option-group>
+            }
+          </nz-select>
+        </section>
+      </div>
     } @else {
-      <app-messages />
+      <app-messages [animate.enter]="shouldAnimateTransition() ? 'messages-enter' : ''" />
     }
   </section>
   <!-- Input area -->

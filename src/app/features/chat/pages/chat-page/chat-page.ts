@@ -31,6 +31,13 @@ export class ChatPage implements OnInit {
   #chatApi = inject(ChatApi);
   #aiModelsApi = inject(AiModelsApi);
   messages = select(ChatStore.getMessages);
+
+  // Señal para controlar si es un chat cargado desde ruta
+  #isLoadedChat = signal(false);
+
+  // Solo animar si no es un chat cargado desde ruta (es un chat nuevo)
+  protected shouldAnimateTransition = computed(() => !this.#isLoadedChat());
+
   prompts = signal<
     {
       id: string;
@@ -55,7 +62,14 @@ export class ChatPage implements OnInit {
   ngOnInit(): void {
     this.#activatedRoute.params.subscribe((params) => {
       const chatId = params['id'];
-      if (chatId) this.#chatApi.loadMessages(chatId);
+      if (chatId) {
+        // Marcar que es un chat cargado para evitar animación de transición
+        this.#isLoadedChat.set(true);
+        this.#chatApi.loadMessages(chatId);
+      } else {
+        // Es un chat nuevo, habilitar animaciones de transición
+        this.#isLoadedChat.set(false);
+      }
     });
   }
 

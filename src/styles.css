@@ -53,4 +53,38 @@ p {
   margin: 0;
 }
 
+/* Chat transition animations */
+/* Animación de salida para el mensaje de bienvenida */
+.welcome-leave {
+  animation: welcome-fade-out 350ms ease-out forwards;
+}
+
+@keyframes welcome-fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+}
+
+/* Animación de entrada para los mensajes */
+.messages-enter {
+  animation: messages-fade-in 400ms ease-out 150ms forwards;
+  opacity: 0;
+}
+
+@keyframes messages-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
