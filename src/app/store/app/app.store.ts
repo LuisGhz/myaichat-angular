@@ -46,6 +46,16 @@ export class AppStore {
     });
   }
 
+  @Action(AppActions.RenameChat)
+  renameChat(ctx: StateContext<AppStoreModel>, { payload }: AppActions.RenameChat) {
+    const state = ctx.getState();
+    ctx.patchState({
+      userChats: state.userChats.map((chat) =>
+        chat.id === payload.chatId ? { ...chat, title: payload.newTitle } : chat,
+      ),
+    });
+  }
+
   @Selector()
   static userChats(state: AppStoreModel): UserChatsModel[] {
     return state.userChats || [];

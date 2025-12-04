@@ -21,4 +21,9 @@ export namespace AppActions {
     static readonly type = `${type} Delete Chat`;
     constructor(public payload: string) {}
   }
+
+  export class RenameChat {
+    static readonly type = `${type} Rename Chat`;
+    constructor(public payload: { chatId: string; newTitle: string }) {}
+  }
 }
