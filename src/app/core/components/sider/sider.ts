@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   resource,
   signal,
@@ -11,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
@@ -22,6 +22,7 @@ import { AppStore } from '@st/app/app.store';
 import { AppActions } from '@st/app/app.actions';
 import { ChatApi } from '@chat/services/chat-api';
 import { More } from '../more/more';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-sider',
@@ -37,26 +38,39 @@ import { More } from '../more/more';
     NzInputModule,
     NzIconModule,
     More,
+    NzModalModule,
   ],
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Sider {
-  readonly #router = inject(Router);
-  readonly #chatApi = inject(ChatApi);
-  protected readonly userEmail = select(AuthStore.email);
-  protected readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
-  readonly #toggleSidebar = dispatch(AppActions.ToggleSidebar);
-  protected readonly searchQuery = signal('');
-  protected readonly chatsResource = resource({
+  #router = inject(Router);
+  #chatApi = inject(ChatApi);
+  #updateUserChats = dispatch(AppActions.UpdateUserChats);
+  userEmail = select(AuthStore.email);
+  sidebarCollapsed = select(AppStore.sidebarCollapsed);
+  #toggleSidebar = dispatch(AppActions.ToggleSidebar);
+  #deleteChat = dispatch(AppActions.DeleteChat);
+  searchQuery = signal('');
+  chatsResource = resource({
     loader: () => this.#chatApi.getChats(),
   });
-  protected readonly filteredChats = computed(() => {
-    const chats = this.chatsResource.value() ?? [];
+  #userChats = select(AppStore.userChats);
+  filteredChats = computed(() => {
+    const chats = this.#userChats() ?? [];
     const query = this.searchQuery().toLowerCase().trim();
     if (!query) return chats;
     return chats.filter((chat) => chat.title?.toLowerCase().includes(query));
   });
+  isDeleteChatModalVisible = signal(false);
+  chatIdToDelete = signal<string | null>(null);
+  #modalService = inject(NzModalService);
+
+  constructor() {
+    effect(() => {
+      this.#updateUserChats(this.chatsResource.value() ?? []);
+    });
+  }
 
   onToggleSidebar(): void {
     this.#toggleSidebar();
@@ -64,5 +78,22 @@ export class Sider {
 
   onNavigateToPrompts(): void {
     this.#router.navigate(['/prompts']);
+  }
+
+  onDeleteChatConfirmed(chatId: string): void {
+    this.#modalService.confirm({
+      nzTitle: 'Are you sure you want to delete this chat?',
+      nzOkText: 'Delete',
+      nzOnOk: async () => {
+        const originalChats = this.#userChats();
+        try {
+          await this.#chatApi.deleteChat(chatId);
+          this.#deleteChat(chatId);
+        } catch (error) {
+          this.#updateUserChats(originalChats);
+        }
+      },
+      nzOnCancel: () => {},
+    });
   }
 }

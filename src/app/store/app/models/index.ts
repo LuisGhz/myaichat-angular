@@ -1,1 +1,1 @@
-export { AppStoreModel } from './app.store.model';
+export type { AppStoreModel } from './app.store.model';

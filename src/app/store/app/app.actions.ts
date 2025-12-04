@@ -1,3 +1,5 @@
+import { UserChatsModel } from '@chat/models/chat.model';
+
 export namespace AppActions {
   const type = '[App]';
 
@@ -8,5 +10,15 @@ export namespace AppActions {
   export class SelectChat {
     static readonly type = `${type} Select Chat`;
     constructor(public payload: string | null) {}
+  }
+
+  export class UpdateUserChats {
+    static readonly type = `${type} Update User Chats`;
+    constructor(public payload: UserChatsModel[]) {}
+  }
+
+  export class DeleteChat {
+    static readonly type = `${type} Delete Chat`;
+    constructor(public payload: string) {}
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '@core/services/http-base.service';
+import { HttpBaseService } from '@core/services';
 import { ChatStreamEvent, SendMessageReqModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch } from '@ngxs/store';
@@ -9,7 +9,7 @@ import { Message } from '@st/chat/models/message.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ChatApi extends HttpService {
+export class ChatApi extends HttpBaseService {
   #loadMessages = dispatch(ChatActions.LoadMessages);
 
   async loadMessages(chatId: string) {
@@ -21,11 +21,16 @@ export class ChatApi extends HttpService {
     return this.getP<UserChatsModel[]>('/chat');
   }
 
-  sendMessage(content: string) {
+  deleteChat(chatId: string) {
+    return this.deleteP('/chat/' + chatId);
+  }
+
+  sendMessage({ message, maxTokens, model, chatId }: SendMessageReqModel) {
     return this.ssePost<ChatStreamEvent, SendMessageReqModel>('/chat/openai', {
-      message: content,
-      model: 'gpt-4o-mini',
-      maxTokens: 1000,
+      message,
+      model,
+      maxTokens,
+      chatId,
     });
   }
 }

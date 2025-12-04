@@ -4,7 +4,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { LayoutService } from '../../services/layout.service';
 import { AiModelModel } from '../../../features/chat/models';
 
 @Component({
@@ -14,13 +13,7 @@ import { AiModelModel } from '../../../features/chat/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  protected readonly layoutService = inject(LayoutService);
-
   protected readonly models = signal<AiModelModel[]>([]);
 
   protected selectedModel = 'gpt-4';
-
-  onNewChat(): void {
-    this.layoutService.selectChat(null);
-  }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -8,4 +8,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   templateUrl: './more.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class More {}
+export class More {
+  deleteChat = output<void>();
+
+  onDeleteChat(): void {
+    this.deleteChat.emit();
+  }
+}

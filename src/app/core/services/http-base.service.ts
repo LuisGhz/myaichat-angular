@@ -2,7 +2,6 @@ import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/commo
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { firstValueFrom, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 type HttpClientOptions = {
   headers?: HttpHeaders | Record<string, string | string[]>;
@@ -25,7 +24,7 @@ type HttpClientOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class HttpService {
+export class HttpBaseService {
   #http = inject(HttpClient);
   #apiUrl = environment.apiUrl;
 

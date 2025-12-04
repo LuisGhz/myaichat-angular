@@ -17,9 +17,14 @@ export class MessagesHandler {
   #addAssistantChunk = dispatch(ChatActions.AddAssistantChunk);
   #setMessagesMetadata = dispatch(ChatActions.SetMessagesMetadata);
 
-  handleUserMessage(message: string): void {
+  handleUserMessage(message: string, chatId?: string): void {
     this.#addUserMessage(message);
-    this.#chatApi.sendMessage(message).subscribe((r) => {
+    this.#chatApi.sendMessage({
+      message,
+      model: 'gpt-4o-mini',
+      maxTokens: 1000,
+      chatId,
+    }).subscribe((r) => {
       if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
       if (r.type === 'done') {
         this.#setMessagesMetadata({

@@ -88,7 +88,7 @@
                 [nzTitle]="false"
               ></nz-skeleton>
             }
-            <app-more />
+            <app-more (deleteChat)="onDeleteChatConfirmed(chat.id)" />
           } @else {
             <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
           }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AiModelModel } from '@chat/models';
-import { HttpService } from '@core/services/http-base.service';
+import { HttpBaseService } from '@core/services/http-base.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AiModelsApi extends HttpService {
+export class AiModelsApi extends HttpBaseService {
   getAiModels() {
     return this.getP<AiModelModel[]>('/models');
   }
