@@ -44,12 +44,12 @@ export class HttpBaseService {
     return firstValueFrom(this.#http.post<T>(`${this.#apiUrl}${path}`, body, options));
   }
 
-  protected put<T, B>(path: string, body: B, options?: HttpClientOptions) {
-    return this.#http.put<T>(`${this.#apiUrl}${path}`, body, options);
+  protected patch<T, B>(path: string, body: B, options?: HttpClientOptions) {
+    return this.#http.patch<T>(`${this.#apiUrl}${path}`, body, options);
   }
 
-  protected putP<T, B>(path: string, body: B, options?: HttpClientOptions) {
-    return firstValueFrom(this.#http.put<T>(`${this.#apiUrl}${path}`, body, options));
+  protected patchP<T, B>(path: string, body: B, options?: HttpClientOptions) {
+    return firstValueFrom(this.#http.patch<T>(`${this.#apiUrl}${path}`, body, options));
   }
 
   protected delete<T>(path: string, options?: HttpClientOptions) {
