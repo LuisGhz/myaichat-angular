@@ -88,7 +88,16 @@
                 [nzTitle]="false"
               ></nz-skeleton>
             }
-            <app-more (deleteChat)="onDeleteChatConfirmed(chat.id)" />
+            <app-more
+              (deleteChat)="onDeleteChatConfirmed(chat.id)"
+              (renameChat)="onRenameChat(chat.id)"
+            />
+            <app-rename-chat-modal
+              [isVisible]="isRenameChatModalVisible()"
+              [chatTitle]="chatTitleToRename()!"
+              (saveRename)="onSaveRename($event)"
+              (cancelRename)="onCancelRename()"
+            />
           } @else {
             <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
           }

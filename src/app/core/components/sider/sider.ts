@@ -23,6 +23,7 @@ import { AppActions } from '@st/app/app.actions';
 import { ChatApi } from '@chat/services/chat-api';
 import { More } from '../more/more';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-modal';
 
 @Component({
   selector: 'app-sider',
@@ -39,6 +40,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
     NzIconModule,
     More,
     NzModalModule,
+    RenameChatModal,
   ],
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,6 +68,10 @@ export class Sider {
   isDeleteChatModalVisible = signal(false);
   chatIdToDelete = signal<string | null>(null);
   #modalService = inject(NzModalService);
+  chatIdToRename = signal<string | null>(null);
+  isRenameChatModalVisible = signal(false);
+  chatTitleToRename = signal<string | null>(null);
+  #renameChat = dispatch(AppActions.RenameChat);
 
   constructor() {
     effect(() => {
@@ -100,5 +106,31 @@ export class Sider {
       },
       nzOnCancel: () => {},
     });
+  }
+
+  onRenameChat(chatId: string): void {
+    this.chatIdToRename.set(chatId);
+    this.isRenameChatModalVisible.set(true);
+    const chat = this.#userChats().find((c) => c.id === chatId)!;
+    this.chatTitleToRename.set(chat.title!);
+  }
+
+  async onSaveRename(newTitle: string): Promise<void> {
+    const chatId = this.chatIdToRename();
+    if (chatId) {
+      this.#renameChat({ chatId, newTitle });
+      try {
+        await this.#chatApi.renameChat(chatId, newTitle);
+      } catch {
+        this.#renameChat({ chatId, newTitle: this.chatTitleToRename()! });
+      }
+    }
+    this.isRenameChatModalVisible.set(false);
+    this.chatIdToRename.set(null);
+    this.chatTitleToRename.set(null);
+  }
+
+  onCancelRename(): void {
+    this.isRenameChatModalVisible.set(false);
   }
 }
