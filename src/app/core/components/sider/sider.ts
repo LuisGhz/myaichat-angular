@@ -7,7 +7,7 @@ import {
   resource,
   signal,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -45,6 +45,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 })
 export class Sider {
   #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
   #updateUserChats = dispatch(AppActions.UpdateUserChats);
   userEmail = select(AuthStore.email);
@@ -89,6 +90,10 @@ export class Sider {
         try {
           await this.#chatApi.deleteChat(chatId);
           this.#deleteChat(chatId);
+          const currentChatId = this.#activatedRoute.snapshot.paramMap.get('id');
+          if (currentChatId === chatId) {
+            this.#router.navigate(['/']);
+          }
         } catch (error) {
           this.#updateUserChats(originalChats);
         }
