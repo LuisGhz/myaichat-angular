@@ -1,9 +1,6 @@
 <div class="flex flex-col h-full text-gray-200">
   <!-- Top section: Logo + New Chat -->
-  <div
-    class="p-2 flex items-center justify-between"
-    [class.flex-col]="sidebarCollapsed()"
-  >
+  <div class="p-2 flex items-center justify-between" [class.flex-col]="sidebarCollapsed()">
     @if (!sidebarCollapsed()) {
       <button
         nz-button
@@ -30,7 +27,6 @@
       nz-tooltip
       nzTooltipTitle="New chat"
       class="text-gray-200! hover:bg-dark-input!"
-      (click)="onNewChat()"
     >
       <span nz-icon nzType="edit" nzTheme="outline"></span>
     </button>
@@ -80,8 +76,6 @@
           class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-400 dark:hover:bg-dark-input app-text trans-c-200"
           [routerLink]="['/chat', chat.id]"
           [class.hidden]="sidebarCollapsed()"
-          [class.bg-dark-input]="selectedChatId() === chat.id"
-          (click)="onSelectChat(chat.id)"
         >
           @if (!sidebarCollapsed()) {
             @if (chat.title) {
@@ -94,40 +88,7 @@
                 [nzTitle]="false"
               ></nz-skeleton>
             }
-            <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-              <button
-                nz-button
-                nzType="text"
-                nzSize="small"
-                nz-dropdown
-                [nzDropdownMenu]="chatMenu"
-                nzTrigger="click"
-                class="text-gray-400! hover:text-gray-200!"
-                (click)="$event.stopPropagation()"
-              >
-                <span nz-icon nzType="more" nzTheme="outline"></span>
-              </button>
-              <nz-dropdown-menu #chatMenu>
-                <ul nz-menu class="bg-dark-input!">
-                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                    <span nz-icon nzType="share-alt" class="mr-2"></span>
-                    Share
-                  </li>
-                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                    <span nz-icon nzType="edit" class="mr-2"></span>
-                    Rename
-                  </li>
-                  <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
-                    <span nz-icon nzType="inbox" class="mr-2"></span>
-                    Archive
-                  </li>
-                  <li nz-menu-item class="text-red-400! hover:bg-dark-border!" nzDanger>
-                    <span nz-icon nzType="delete" class="mr-2"></span>
-                    Delete
-                  </li>
-                </ul>
-              </nz-dropdown-menu>
-            </div>
+            <app-more />
           } @else {
             <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
           }

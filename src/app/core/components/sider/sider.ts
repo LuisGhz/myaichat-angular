@@ -21,6 +21,7 @@ import { AuthStore } from '@st/auth/auth.store';
 import { AppStore } from '@st/app/app.store';
 import { AppActions } from '@st/app/app.actions';
 import { ChatApi } from '@chat/services/chat-api';
+import { More } from '../more/more';
 
 @Component({
   selector: 'app-sider',
@@ -30,12 +31,12 @@ import { ChatApi } from '@chat/services/chat-api';
     NzButtonModule,
     NzIconModule,
     NzTooltipDirective,
-    NzDropDownModule,
     NzMenuModule,
     NzAvatarModule,
     NzSkeletonModule,
     NzInputModule,
     NzIconModule,
+    More,
   ],
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,9 +46,7 @@ export class Sider {
   readonly #chatApi = inject(ChatApi);
   protected readonly userEmail = select(AuthStore.email);
   protected readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
-  protected readonly selectedChatId = select(AppStore.selectedChatId);
   readonly #toggleSidebar = dispatch(AppActions.ToggleSidebar);
-  readonly #selectChat = dispatch(AppActions.SelectChat);
   protected readonly searchQuery = signal('');
   protected readonly chatsResource = resource({
     loader: () => this.#chatApi.getChats(),
@@ -58,14 +57,6 @@ export class Sider {
     if (!query) return chats;
     return chats.filter((chat) => chat.title?.toLowerCase().includes(query));
   });
-
-  onNewChat(): void {
-    this.#selectChat(null);
-  }
-
-  onSelectChat(chatId: string): void {
-    this.#selectChat(chatId);
-  }
 
   onToggleSidebar(): void {
     this.#toggleSidebar();

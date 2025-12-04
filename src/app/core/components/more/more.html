@@ -1,0 +1,30 @@
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+  <button
+    class="text-gray-400! hover:text-gray-200! cursor-pointer"
+    nz-button
+    nzType="text"
+    nzSize="small"
+    nz-dropdown
+    [nzDropdownMenu]="chatMenu"
+    nzTrigger="click"
+    (click)="$event.stopPropagation()"
+  >
+    <span nz-icon nzType="more" nzTheme="outline"></span>
+  </button>
+  <nz-dropdown-menu #chatMenu>
+    <ul nz-menu class="bg-dark-input!">
+      <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+        <span nz-icon nzType="edit" class="mr-2"></span>
+        Rename
+      </li>
+      <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+        <span nz-icon nzType="inbox" class="mr-2"></span>
+        Archive
+      </li>
+      <li nz-menu-item class="text-red-400! hover:bg-dark-border!" nzDanger>
+        <span nz-icon nzType="delete" class="mr-2"></span>
+        Delete
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+</div>
