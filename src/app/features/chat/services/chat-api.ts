@@ -25,6 +25,12 @@ export class ChatApi extends HttpBaseService {
     return this.deleteP('/chat/' + chatId);
   }
 
+  renameChat(chatId: string, newTitle: string) {
+    return this.patchP('/chat/' + chatId + '/rename', {
+      title: newTitle,
+    });
+  }
+
   sendMessage({ message, maxTokens, model, chatId }: SendMessageReqModel) {
     return this.ssePost<ChatStreamEvent, SendMessageReqModel>('/chat/openai', {
       message,
