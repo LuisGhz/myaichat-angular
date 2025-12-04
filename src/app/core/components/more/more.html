@@ -13,7 +13,7 @@
   </button>
   <nz-dropdown-menu #chatMenu>
     <ul nz-menu class="bg-dark-input!">
-      <li nz-menu-item class="text-gray-200! hover:bg-dark-border!">
+      <li nz-menu-item class="text-gray-200! hover:bg-dark-border!" (click)="onRenameChat()">
         <span nz-icon nzType="edit" class="mr-2"></span>
         Rename
       </li>
