@@ -24,6 +24,15 @@ export class ChatStore {
     });
   }
 
+  @Action(ChatActions.SetOps)
+  setOps(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.SetOps) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      ...payload,
+    });
+  }
+
   @Action(ChatActions.AddUserMessage)
   addUserMessage(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.AddUserMessage) {
     const state = ctx.getState();
@@ -100,6 +109,15 @@ export class ChatStore {
       ...state,
       messages,
     });
+  }
+
+  @Selector()
+  static getOps(state: ChatStoreModel) {
+    return {
+      model: state.model,
+      maxTokens: state.maxTokens,
+      temperature: state.temperature,
+    };
   }
 
   @Selector()

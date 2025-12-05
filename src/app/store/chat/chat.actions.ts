@@ -1,10 +1,15 @@
-import { Message } from "./models/message.model";
+import { ChatStoreOps, Message } from './models';
 
 export namespace ChatActions {
   const preffix = '[Chat]';
 
   export class ResetChat {
     static readonly type = `${preffix} Reset Chat`;
+  }
+
+  export class SetOps {
+    static readonly type = `${preffix} Set Ops`;
+    constructor(public payload: ChatStoreOps) {}
   }
 
   export class LoadMessages {

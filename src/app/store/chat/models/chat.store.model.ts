@@ -1,4 +1,4 @@
-import { Message } from "./message.model";
+import { Message } from './message.model';
 
 export interface ChatStoreModel {
   messages: Message[];
@@ -6,3 +6,5 @@ export interface ChatStoreModel {
   maxTokens: number;
   temperature: number;
 }
+
+export type ChatStoreOps = Partial<Omit<ChatStoreModel, 'messages'>>;
