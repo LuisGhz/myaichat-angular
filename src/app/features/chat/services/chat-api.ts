@@ -31,12 +31,9 @@ export class ChatApi extends HttpBaseService {
     });
   }
 
-  sendMessage({ message, maxTokens, model, chatId }: SendMessageReqModel) {
+  sendMessage(req: SendMessageReqModel) {
     return this.ssePost<ChatStreamEvent, SendMessageReqModel>('/chat/openai', {
-      message,
-      model,
-      maxTokens,
-      chatId,
+      ...req,
     });
   }
 }

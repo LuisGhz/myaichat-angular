@@ -16,14 +16,15 @@ export class MessagesHandler {
   #addAssistantMessage = dispatch(ChatActions.AddAssistantMessage);
   #addAssistantChunk = dispatch(ChatActions.AddAssistantChunk);
   #setMessagesMetadata = dispatch(ChatActions.SetMessagesMetadata);
+  #chatOps = select(ChatStore.getOps);
 
   handleUserMessage(message: string, chatId?: string): void {
     this.#addUserMessage(message);
+    const ops = this.#chatOps();
     this.#chatApi.sendMessage({
       message,
-      model: 'gpt-4o-mini',
-      maxTokens: 1000,
       chatId,
+      ...ops,
     }).subscribe((r) => {
       if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
       if (r.type === 'done') {
