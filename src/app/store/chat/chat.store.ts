@@ -19,8 +19,8 @@ export class ChatStore {
     ctx.setState({
       messages: [],
       model: '',
-      maxTokens: 2048,
-      temperature: 0.7,
+      maxTokens: 1024,
+      temperature: 0.5,
     });
   }
 

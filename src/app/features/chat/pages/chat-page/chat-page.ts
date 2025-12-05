@@ -12,11 +12,12 @@ import { InputMessage } from '@chat/components/input/input-message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AiModelsApi } from '@chat/services/ai-models-api';
 import { AiModelModel } from '@chat/models';
-import { select } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
 import { Messages } from '@chat/components/messages/messages';
 import { ChatApi } from '@chat/services/chat-api';
 import { ActivatedRoute } from '@angular/router';
+import { ChatActions } from '@st/chat/chat.actions';
 
 @Component({
   selector: 'app-chat-view',
@@ -28,6 +29,7 @@ export class ChatPage implements OnInit {
   #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
   #aiModelsApi = inject(AiModelsApi);
+  #resetChat = dispatch(ChatActions.ResetChat);
   messages = select(ChatStore.getMessages);
 
   // Señal para controlar si es un chat cargado desde ruta
@@ -61,12 +63,11 @@ export class ChatPage implements OnInit {
     this.#activatedRoute.params.subscribe((params) => {
       const chatId = params['id'];
       if (chatId) {
-        // Marcar que es un chat cargado para evitar animación de transición
         this.#isLoadedChat.set(true);
         this.#chatApi.loadMessages(chatId);
       } else {
-        // Es un chat nuevo, habilitar animaciones de transición
         this.#isLoadedChat.set(false);
+        this.#resetChat();
       }
     });
   }
