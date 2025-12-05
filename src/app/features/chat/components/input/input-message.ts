@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessagesHandler } from '@chat/services/message-handler';
@@ -14,13 +22,15 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 export class InputMessage implements OnInit {
   #messagesHandler = inject(MessagesHandler);
   #activatedRoute = inject(ActivatedRoute);
+  #destroyRef = inject(DestroyRef);
   chatId: string | undefined = undefined;
-  protected messageText = signal('');
+  messageText = signal('');
 
   ngOnInit(): void {
-    this.#activatedRoute.params.subscribe((params) => {
+    this.#activatedRoute.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
       this.chatId = params['id'];
-    }).unsubscribe();
+      console.log('Chat ID en InputMessage:', this.chatId);
+    });
   }
 
   onSend(): void {
