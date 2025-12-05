@@ -12,10 +12,11 @@ import { ActivatedRoute } from '@angular/router';
 import { MessagesHandler } from '@chat/services/message-handler';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { MoreOptions } from '../more-options/more-options';
 
 @Component({
   selector: 'app-input-message',
-  imports: [FormsModule, NzInputModule, NzIconModule],
+  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions],
   templateUrl: './input-message.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
