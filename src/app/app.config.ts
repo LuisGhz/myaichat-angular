@@ -36,6 +36,15 @@ import {
   InboxOutline,
   MessageOutline,
   FileTextOutline,
+  PaperClipOutline,
+  CloudUploadOutline,
+  PictureOutline,
+  ExperimentOutline,
+  RadarChartOutline,
+  ShoppingCartOutline,
+  ReadOutline,
+  CompassOutline,
+  RightOutline,
 } from '@ant-design/icons-angular/icons';
 import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor } from '@core/interceptors';
@@ -59,6 +68,15 @@ const icons: IconDefinition[] = [
   InboxOutline,
   MessageOutline,
   FileTextOutline,
+  PaperClipOutline,
+  CloudUploadOutline,
+  PictureOutline,
+  ExperimentOutline,
+  RadarChartOutline,
+  ShoppingCartOutline,
+  ReadOutline,
+  CompassOutline,
+  RightOutline,
 ];
 
 registerLocaleData(en);
