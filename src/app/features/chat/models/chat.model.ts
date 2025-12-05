@@ -61,4 +61,5 @@ export interface SendMessageReqModel {
   message: string;
   model: string;
   maxTokens: number;
+  temperature: number;
 }
