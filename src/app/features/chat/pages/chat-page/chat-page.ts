@@ -2,7 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
+  linkedSignal,
   OnInit,
   resource,
   signal,
@@ -30,6 +32,7 @@ export class ChatPage implements OnInit {
   #chatApi = inject(ChatApi);
   #aiModelsApi = inject(AiModelsApi);
   #resetChat = dispatch(ChatActions.ResetChat);
+  #setOps = dispatch(ChatActions.SetOps);
   messages = select(ChatStore.getMessages);
 
   // Señal para controlar si es un chat cargado desde ruta
@@ -59,18 +62,10 @@ export class ChatPage implements OnInit {
     defaultValue: [],
   });
 
-  ngOnInit(): void {
-    this.#activatedRoute.params.subscribe((params) => {
-      const chatId = params['id'];
-      if (chatId) {
-        this.#isLoadedChat.set(true);
-        this.#chatApi.loadMessages(chatId);
-      } else {
-        this.#isLoadedChat.set(false);
-        this.#resetChat();
-      }
-    });
-  }
+  selectedModel = linkedSignal(() => {
+    const models = this.models.value();
+    return models.length > 0 ? models[0].id : null;
+  });
 
   groupedModels = computed(() => {
     const modelList = this.models.value();
@@ -86,4 +81,28 @@ export class ChatPage implements OnInit {
 
     return grouped;
   });
+
+  constructor() {
+    effect(() => {
+      const modelId = this.selectedModel();
+      const model = this.models.value().find((m) => m.id === modelId);
+      if (model)
+        this.#setOps({
+          model: model.value,
+        });
+    });
+  }
+
+  ngOnInit(): void {
+    this.#activatedRoute.params.subscribe((params) => {
+      const chatId = params['id'];
+      if (chatId) {
+        this.#isLoadedChat.set(true);
+        this.#chatApi.loadMessages(chatId);
+      } else {
+        this.#isLoadedChat.set(false);
+        this.#resetChat();
+      }
+    });
+  }
 }

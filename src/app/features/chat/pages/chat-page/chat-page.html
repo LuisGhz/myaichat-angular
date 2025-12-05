@@ -12,7 +12,7 @@
               <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
             }
           </nz-select>
-          <nz-select class="w-60!">
+          <nz-select class="w-60!" [(ngModel)]="selectedModel">
             @for (group of groupedModels().entries(); track group[0]) {
               <nz-option-group [nzLabel]="group[0]">
                 @for (model of group[1]; track model.id) {
