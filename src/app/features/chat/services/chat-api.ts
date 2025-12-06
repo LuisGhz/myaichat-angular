@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpBaseService } from '@core/services';
 import { ChatStreamEvent, SendMessageReqModel } from '@chat/models';
+import type { TranscribeAudioResModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
@@ -46,5 +47,11 @@ export class ChatApi extends HttpBaseService {
       formData.append('file', req.file, req.file.name);
     }
     return this.ssePost<ChatStreamEvent>('/chat/openai', formData);
+  }
+
+  transcribe(file: Blob) {
+    const formData = new FormData();
+    formData.append('audio', file);
+    return this.postP<TranscribeAudioResModel, FormData>('/chat/transcribe', formData);
   }
 }
