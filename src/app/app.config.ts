@@ -45,6 +45,11 @@ import {
   ReadOutline,
   CompassOutline,
   RightOutline,
+  FilePdfOutline,
+  FileWordOutline,
+  FileExcelOutline,
+  FilePptOutline,
+  FileOutline,
 } from '@ant-design/icons-angular/icons';
 import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor } from '@core/interceptors';
@@ -77,6 +82,11 @@ const icons: IconDefinition[] = [
   ReadOutline,
   CompassOutline,
   RightOutline,
+  FilePdfOutline,
+  FileWordOutline,
+  FileExcelOutline,
+  FilePptOutline,
+  FileOutline,
 ];
 
 registerLocaleData(en);

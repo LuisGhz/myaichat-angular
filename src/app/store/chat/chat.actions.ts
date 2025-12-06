@@ -12,6 +12,10 @@ export namespace ChatActions {
     constructor(public payload: ChatStoreOps) {}
   }
 
+  export class RemoveFile {
+    static readonly type = `${preffix} Remove File`;
+  }
+
   export class LoadMessages {
     static readonly type = `${preffix} Load Messages`;
     constructor(public payload: Message[]) {}

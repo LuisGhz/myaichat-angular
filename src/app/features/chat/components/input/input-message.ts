@@ -13,16 +13,20 @@ import { MessagesHandler } from '@chat/services/message-handler';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { MoreOptions } from '../more-options/more-options';
+import { FilePreview } from '../file-preview/file-preview';
+import { select } from '@ngxs/store';
+import { ChatStore } from '@st/chat/chat.store';
 
 @Component({
   selector: 'app-input-message',
-  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions],
+  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions, FilePreview],
   templateUrl: './input-message.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputMessage implements OnInit {
   #messagesHandler = inject(MessagesHandler);
   #activatedRoute = inject(ActivatedRoute);
+  file = select(ChatStore.getOps)().file;
   #destroyRef = inject(DestroyRef);
   chatId: string | undefined = undefined;
   messageText = signal('');

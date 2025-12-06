@@ -1,37 +1,44 @@
 <div class="p-4 pb-6">
   <div class="max-w-3xl mx-auto">
-    <div class="flex items-end gap-2 app-bg-input app-border-input rounded-2xl p-3 border">
-      <app-more-options />
-      <textarea
-        class="flex-1 bg-transparent! border-none! app-text resize-none focus:shadow-none! hidden-scrollbar"
-        nz-input
-        [(ngModel)]="messageText"
-        (keydown)="onKeydown($event)"
-        placeholder="Ask anything"
-        [nzAutosize]="{ minRows: 1, maxRows: 6 }"
-      ></textarea>
+    <div class="app-bg-input app-border-input rounded-2xl p-3 border">
+      @if (!file) {
+        <section>
+          <app-file-preview />
+        </section>
+      }
+      <section class="flex items-end gap-2">
+        <app-more-options />
+        <textarea
+          class="flex-1 bg-transparent! border-none! app-text resize-none focus:shadow-none! hidden-scrollbar"
+          nz-input
+          [(ngModel)]="messageText"
+          (keydown)="onKeydown($event)"
+          placeholder="Ask anything"
+          [nzAutosize]="{ minRows: 1, maxRows: 6 }"
+        ></textarea>
 
-      <div class="flex items-center gap-1 shrink-0">
-        <button
-          class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"
-          type="button"
-          title="Record audio"
-          aria-label="Record audio"
-        >
-          <nz-icon class="text-xl" nzType="audio" nzTheme="outline" />
-        </button>
-        @if (messageText().trim().length > 0) {
+        <div class="flex items-center gap-1 shrink-0">
           <button
             class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"
             type="button"
-            title="Send message"
-            aria-label="Send message"
-            (click)="onSend()"
+            title="Record audio"
+            aria-label="Record audio"
           >
-            <nz-icon class="text-xl" nzType="send" nzTheme="outline" />
+            <nz-icon class="text-xl" nzType="audio" nzTheme="outline" />
           </button>
-        }
-      </div>
+          @if (messageText().trim().length > 0) {
+            <button
+              class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"
+              type="button"
+              title="Send message"
+              aria-label="Send message"
+              (click)="onSend()"
+            >
+              <nz-icon class="text-xl" nzType="send" nzTheme="outline" />
+            </button>
+          }
+        </div>
+      </section>
     </div>
 
     <p class="text-center text-xs text-gray-500 mt-2">

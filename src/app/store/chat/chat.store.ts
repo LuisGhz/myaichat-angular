@@ -11,6 +11,7 @@ import { ChatActions } from './chat.actions';
     model: '',
     maxTokens: 2048,
     temperature: 0.7,
+    file: undefined,
   },
 })
 export class ChatStore {
@@ -21,6 +22,7 @@ export class ChatStore {
       model: '',
       maxTokens: 1024,
       temperature: 0.5,
+      file: undefined,
     });
   }
 
@@ -111,12 +113,22 @@ export class ChatStore {
     });
   }
 
+  @Action(ChatActions.RemoveFile)
+  removeFile(ctx: StateContext<ChatStoreModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      file: undefined,
+    });
+  }
+
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
       model: state.model,
       maxTokens: state.maxTokens,
       temperature: state.temperature,
+      file: state.file,
     };
   }
 
