@@ -5,6 +5,8 @@ import { ChatActions } from '@st/chat/chat.actions';
 import { dispatch, select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
 import { FileStoreService } from '@st/chat/services/file-store.service';
+import { StreamDoneEvent } from '@chat/models';
+import { AppActions } from '@st/app/app.actions';
 
 @Injectable({
   providedIn: 'any',
@@ -20,6 +22,7 @@ export class MessagesHandler {
   #addAssistantChunk = dispatch(ChatActions.AddAssistantChunk);
   #setMessagesMetadata = dispatch(ChatActions.SetMessagesMetadata);
   #chatOps = select(ChatStore.getOps);
+  #addUserChat = dispatch(AppActions.AddUserChat);
 
   handleUserMessage(message: string, chatId?: string): void {
     const ops = this.#chatOps();
@@ -45,7 +48,7 @@ export class MessagesHandler {
             inputTokens: r.data.inputTokens,
             outputTokens: r.data.outputTokens,
           });
-          this.#updateUrlIfNewChat(r.data.chatId);
+          this.#handleNewChat(r);
           if (r.data.imageUrl) {
             this.#addAssistantMsg('', r.data.imageUrl);
           }
@@ -53,9 +56,15 @@ export class MessagesHandler {
       });
   }
 
-  #updateUrlIfNewChat(chatId: string): void {
-    if (!this.#location.path().includes(chatId)) {
-      this.#location.replaceState(`/chat/${chatId}`);
+  #handleNewChat({ data }: StreamDoneEvent): void {
+    if (!this.#location.path().includes(data.chatId)) {
+      this.#location.replaceState(`/chat/${data.chatId}`);
+
+      this.#addUserChat({
+        id: data.chatId,
+        title: data.title,
+        createdAt: new Date(),
+      });
     }
   }
 

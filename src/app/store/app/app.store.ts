@@ -38,6 +38,14 @@ export class AppStore {
     });
   }
 
+  @Action(AppActions.AddUserChat)
+  addUserChat(ctx: StateContext<AppStoreModel>, { payload }: AppActions.AddUserChat) {
+    const state = ctx.getState();
+    ctx.patchState({
+      userChats: [payload, ...state.userChats],
+    });
+  }
+
   @Action(AppActions.DeleteChat)
   deleteChat(ctx: StateContext<AppStoreModel>, { payload }: AppActions.DeleteChat) {
     const state = ctx.getState();

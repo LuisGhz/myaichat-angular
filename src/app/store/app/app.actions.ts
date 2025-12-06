@@ -17,6 +17,11 @@ export namespace AppActions {
     constructor(public payload: UserChatsModel[]) {}
   }
 
+  export class AddUserChat {
+    static readonly type = `${type} Add User Chat`;
+    constructor(public payload: UserChatsModel) {}
+  }
+
   export class DeleteChat {
     static readonly type = `${type} Delete Chat`;
     constructor(public payload: string) {}
