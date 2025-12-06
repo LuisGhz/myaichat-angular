@@ -5,4 +5,5 @@ export interface Message {
   createdAt?: string;
   inputTokens?: number;
   outputTokens?: number;
+  file?: File | string;
 }

@@ -7,6 +7,24 @@
       [class.self-start]="message.role !== 'user'"
       [class.w-full]="message.role !== 'user'"
     >
+      @if (message.file; as file) {
+        <div class="mb-2">
+          @if (isImage(file)) {
+            <img
+              [src]="getFileUrl(file)"
+              [alt]="getFileName(file)"
+              class="max-w-48 max-h-48 rounded object-contain"
+            />
+          } @else {
+            <div class="flex items-center gap-2 p-2 app-bg-base rounded">
+              <nz-icon class="text-2xl app-text" [nzType]="getFileIcon(file)" nzTheme="outline" />
+              <span class="text-sm app-text truncate max-w-40" [title]="getFileName(file)">{{
+                getFileName(file)
+              }}</span>
+            </div>
+          }
+        </div>
+      }
       <markdown [data]="message.content"></markdown>
       @if (message.outputTokens || message.inputTokens) {
         <span class="text-xs text-gray-500"

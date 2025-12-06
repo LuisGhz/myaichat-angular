@@ -36,11 +36,11 @@ export class ChatStore {
   }
 
   @Action(ChatActions.AddUserMessage)
-  addUserMessage(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.AddUserMessage) {
+  addUserMessage(ctx: StateContext<ChatStoreModel>, { payload, file }: ChatActions.AddUserMessage) {
     const state = ctx.getState();
     ctx.setState({
       ...state,
-      messages: [...state.messages, { role: 'user', content: payload }],
+      messages: [...state.messages, { role: 'user', content: payload, file }],
     });
   }
 

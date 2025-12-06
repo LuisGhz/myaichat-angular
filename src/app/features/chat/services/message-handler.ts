@@ -22,9 +22,9 @@ export class MessagesHandler {
   #chatOps = select(ChatStore.getOps);
 
   handleUserMessage(message: string, chatId?: string): void {
-    this.#addUserMessage(message);
     const ops = this.#chatOps();
     const file = ops.file ? this.#fileStore.getFile(ops.file.id) : undefined;
+    this.#addUserMessage(message, file);
     this.#removeFile();
     this.#chatApi
       .sendMessage({

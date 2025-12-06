@@ -23,7 +23,10 @@ export namespace ChatActions {
 
   export class AddUserMessage {
     static readonly type = `${preffix} Add User Message`;
-    constructor(public payload: string) {}
+    constructor(
+      public payload: string,
+      public file?: File | string,
+    ) {}
   }
 
   export class AddAssistantMessage {
