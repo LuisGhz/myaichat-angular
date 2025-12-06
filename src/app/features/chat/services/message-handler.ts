@@ -7,6 +7,7 @@ import { ChatStore } from '@st/chat/chat.store';
 import { FileStoreService } from '@st/chat/services/file-store.service';
 import { StreamDoneEvent } from '@chat/models';
 import { AppActions } from '@st/app/app.actions';
+import { finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'any',
@@ -23,12 +24,14 @@ export class MessagesHandler {
   #setMessagesMetadata = dispatch(ChatActions.SetMessagesMetadata);
   #chatOps = select(ChatStore.getOps);
   #addUserChat = dispatch(AppActions.AddUserChat);
+  #setIsSending = dispatch(ChatActions.SetIsSending);
 
   handleUserMessage(message: string, chatId?: string): void {
     const ops = this.#chatOps();
     const file = ops.file ? this.#fileStore.getFile(ops.file.id) : undefined;
     this.#addUserMessage(message, file);
     this.#removeFile();
+    this.#setIsSending(true);
     this.#chatApi
       .sendMessage({
         message,
@@ -40,19 +43,25 @@ export class MessagesHandler {
         isWebSearch: ops.isWebSearch,
         file,
       })
-      .subscribe((r) => {
-        this.#fileStore.clear();
-        if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
-        if (r.type === 'done') {
-          this.#setMessagesMetadata({
-            inputTokens: r.data.inputTokens,
-            outputTokens: r.data.outputTokens,
-          });
-          this.#handleNewChat(r);
-          if (r.data.imageUrl) {
-            this.#addAssistantMsg('', r.data.imageUrl);
+      .pipe(finalize(() => this.#setIsSending(false)))
+      .subscribe({
+        next: (r) => {
+          this.#fileStore.clear();
+          if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
+          if (r.type === 'done') {
+            this.#setMessagesMetadata({
+              inputTokens: r.data.inputTokens,
+              outputTokens: r.data.outputTokens,
+            });
+            this.#handleNewChat(r);
+            if (r.data.imageUrl) {
+              this.#addAssistantMsg('', r.data.imageUrl);
+            }
           }
-        }
+        },
+        error: (error) => {
+          console.error('Message stream failed', error);
+        },
       });
   }
 
