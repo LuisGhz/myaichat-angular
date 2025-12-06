@@ -19,14 +19,7 @@
         ></textarea>
 
         <div class="flex items-center gap-1 shrink-0">
-          <button
-            class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"
-            type="button"
-            title="Record audio"
-            aria-label="Record audio"
-          >
-            <nz-icon class="text-xl" nzType="audio" nzTheme="outline" />
-          </button>
+          <app-microphone />
           @if (messageText().trim().length > 0) {
             <button
               class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"

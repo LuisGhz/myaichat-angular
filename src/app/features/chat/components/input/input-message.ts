@@ -11,10 +11,19 @@ import { select, dispatch } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { EnabledOptions } from '../enabled-options/enabled-options';
+import { Microphone } from '../microphone/microphone';
 
 @Component({
   selector: 'app-input-message',
-  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions, FilePreview, EnabledOptions],
+  imports: [
+    FormsModule,
+    NzInputModule,
+    NzIconModule,
+    MoreOptions,
+    FilePreview,
+    EnabledOptions,
+    Microphone,
+  ],
   templateUrl: './input-message.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
