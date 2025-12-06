@@ -18,6 +18,8 @@ export interface ChatStoreModel {
   isImageGeneration: boolean;
   isWebSearch: boolean;
   messageText: string;
+  isTranscribing: boolean;
+  isSending: boolean;
 }
 
 export interface AssistantMessageChunk {
