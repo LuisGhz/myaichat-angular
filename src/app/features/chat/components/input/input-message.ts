@@ -16,10 +16,11 @@ import { MoreOptions } from '../more-options/more-options';
 import { FilePreview } from '../file-preview/file-preview';
 import { select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
+import { EnabledOptions } from '../enabled-options/enabled-options';
 
 @Component({
   selector: 'app-input-message',
-  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions, FilePreview],
+  imports: [FormsModule, NzInputModule, NzIconModule, MoreOptions, FilePreview, EnabledOptions],
   templateUrl: './input-message.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -34,7 +35,6 @@ export class InputMessage implements OnInit {
   ngOnInit(): void {
     this.#activatedRoute.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
       this.chatId = params['id'];
-      console.log('Chat ID en InputMessage:', this.chatId);
     });
   }
 

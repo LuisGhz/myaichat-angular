@@ -51,6 +51,7 @@ export interface StreamDoneEvent {
     inputTokens: number;
     outputTokens: number;
     title?: string;
+    imageUrl?: string;
   };
 }
 
@@ -62,5 +63,7 @@ export interface SendMessageReqModel {
   model: string;
   maxTokens: number;
   temperature: number;
+  isImageGeneration: boolean;
+  isWebSearch: boolean;
   file?: File;
 }

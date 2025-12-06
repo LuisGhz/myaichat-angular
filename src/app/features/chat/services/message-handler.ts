@@ -33,6 +33,8 @@ export class MessagesHandler {
         model: ops.model,
         maxTokens: ops.maxTokens,
         temperature: ops.temperature,
+        isImageGeneration: ops.isImageGeneration,
+        isWebSearch: ops.isWebSearch,
         file,
       })
       .subscribe((r) => {
@@ -44,6 +46,9 @@ export class MessagesHandler {
             outputTokens: r.data.outputTokens,
           });
           this.#updateUrlIfNewChat(r.data.chatId);
+          if (r.data.imageUrl) {
+            this.#addAssistantMsg('', r.data.imageUrl);
+          }
         }
       });
   }
@@ -54,11 +59,14 @@ export class MessagesHandler {
     }
   }
 
-  #addAssistantMsg(message: string): void {
+  #addAssistantMsg(message: string, imageUrl?: string): void {
     if (this.#messages()[this.#messages().length - 1]?.role !== 'assistant') {
       this.#addAssistantMessage(message);
       return;
     }
-    this.#addAssistantChunk(message);
+    this.#addAssistantChunk({
+      content: message,
+      imageUrl,
+    });
   }
 }

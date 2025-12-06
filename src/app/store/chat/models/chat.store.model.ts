@@ -15,6 +15,13 @@ export interface ChatStoreModel {
   temperature: number;
   file?: FileInfo;
   currentChatId?: string | null;
+  isImageGeneration: boolean;
+  isWebSearch: boolean;
+}
+
+export interface AssistantMessageChunk {
+  content: string;
+  imageUrl?: string;
 }
 
 export type ChatStoreOps = Partial<Omit<ChatStoreModel, 'messages'>>;

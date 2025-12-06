@@ -1,2 +1,7 @@
-export type { ChatStoreModel, ChatStoreOps, FileInfo } from './chat.store.model';
+export type {
+  ChatStoreModel,
+  ChatStoreOps,
+  FileInfo,
+  AssistantMessageChunk,
+} from './chat.store.model';
 export type { Message } from './message.model';

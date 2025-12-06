@@ -1,4 +1,4 @@
-import { ChatStoreOps, Message } from './models';
+import { AssistantMessageChunk, ChatStoreOps, Message } from './models';
 
 export namespace ChatActions {
   const preffix = '[Chat]';
@@ -36,7 +36,7 @@ export namespace ChatActions {
 
   export class AddAssistantChunk {
     static readonly type = `${preffix} Add Assistant Chunk`;
-    constructor(public payload: string) {}
+    constructor(public payload: AssistantMessageChunk) {}
   }
 
   export class SetMessagesMetadata {
@@ -47,5 +47,21 @@ export namespace ChatActions {
   export class SetCurrentChatId {
     static readonly type = `${preffix} Set Current Chat Id`;
     constructor(public payload: string | null) {}
+  }
+
+  export class EnableImageGeneration {
+    static readonly type = `${preffix} Enable Image Generation`;
+  }
+
+  export class DisableImageGeneration {
+    static readonly type = `${preffix} Disable Image Generation`;
+  }
+
+  export class EnableWebSearch {
+    static readonly type = `${preffix} Enable Web Search`;
+  }
+
+  export class DisableWebSearch {
+    static readonly type = `${preffix} Disable Web Search`;
   }
 }

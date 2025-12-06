@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal, ElementRef, inject } from '@angular/core';
-import { dispatch } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
+import { ChatStore } from '@st/chat/chat.store';
 import { FileStoreService } from '@st/chat/services';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -25,6 +26,10 @@ export class MoreOptions {
   #fileStoreService = inject(FileStoreService);
   #fileInput: HTMLInputElement | null = null;
   #setOps = dispatch(ChatActions.SetOps);
+  #enableImageGeneration = dispatch(ChatActions.EnableImageGeneration);
+  #enableWebSearch = dispatch(ChatActions.EnableWebSearch);
+  #isImageGeneration = select(ChatStore.isImageGeneration);
+  #isWebSearch = select(ChatStore.isWebSearch);
 
   isMenuOpen = signal(false);
 
@@ -35,8 +40,8 @@ export class MoreOptions {
       onClick: () => this.handleFileUpload(),
     },
     { icon: 'cloud-upload', label: 'Agregar desde OneDrive', onClick: () => {} },
-    { icon: 'picture', label: 'Crea imagen', onClick: () => {} },
-    { icon: 'compass', label: 'Busca en la web', onClick: () => {} },
+    { icon: 'picture', label: 'Crea imagen', onClick: () => this.#onToggleImageGeneration() },
+    { icon: 'compass', label: 'Busca en la web', onClick: () => this.#onToggleWebSearch() },
   ]);
 
   constructor() {
@@ -94,5 +99,15 @@ export class MoreOptions {
       });
       input.value = '';
     }
+  }
+
+  #onToggleImageGeneration(): void {
+    if (this.#isImageGeneration()) return;
+    this.#enableImageGeneration();
+  }
+
+  #onToggleWebSearch(): void {
+    if (this.#isWebSearch()) return;
+    this.#enableWebSearch();
   }
 }

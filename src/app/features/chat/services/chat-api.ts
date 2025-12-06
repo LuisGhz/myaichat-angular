@@ -37,6 +37,8 @@ export class ChatApi extends HttpBaseService {
     formData.append('model', req.model);
     formData.append('maxTokens', req.maxTokens.toString());
     formData.append('temperature', req.temperature.toString());
+    formData.append('isImageGeneration', req.isImageGeneration.toString());
+    formData.append('isWebSearch', req.isWebSearch.toString());
     if (req.chatId) {
       formData.append('chatId', req.chatId);
     }

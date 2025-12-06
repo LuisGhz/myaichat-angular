@@ -14,6 +14,8 @@ import { FileStoreService } from './services';
     temperature: 0.7,
     file: undefined,
     currentChatId: null,
+    isImageGeneration: false,
+    isWebSearch: false,
   },
 })
 export class ChatStore {
@@ -28,15 +30,14 @@ export class ChatStore {
       temperature: 0.5,
       file: undefined,
       currentChatId: null,
+      isImageGeneration: false,
+      isWebSearch: false,
     });
     this.#fileStore.clear();
   }
 
   @Action(ChatActions.SetCurrentChatId)
-  setCurrentChatId(
-    ctx: StateContext<ChatStoreModel>,
-    { payload }: ChatActions.SetCurrentChatId,
-  ) {
+  setCurrentChatId(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.SetCurrentChatId) {
     const state = ctx.getState();
     ctx.setState({
       ...state,
@@ -80,7 +81,10 @@ export class ChatStore {
     const messages = [...state.messages];
     const lastMessage = messages[messages.length - 1];
     if (lastMessage && lastMessage.role === 'assistant') {
-      lastMessage.content += payload;
+      lastMessage.content += payload.content;
+      if (payload.imageUrl) {
+        lastMessage.file = payload.imageUrl;
+      }
       messages[messages.length - 1] = lastMessage;
     }
     ctx.setState({
@@ -140,6 +144,44 @@ export class ChatStore {
     });
   }
 
+  @Action(ChatActions.EnableImageGeneration)
+  enableImageGeneration(ctx: StateContext<ChatStoreModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      isImageGeneration: true,
+      isWebSearch: false,
+    });
+  }
+
+  @Action(ChatActions.DisableImageGeneration)
+  disableImageGeneration(ctx: StateContext<ChatStoreModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      isImageGeneration: false,
+    });
+  }
+
+  @Action(ChatActions.EnableWebSearch)
+  enableWebSearch(ctx: StateContext<ChatStoreModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      isWebSearch: true,
+      isImageGeneration: false,
+    });
+  }
+
+  @Action(ChatActions.DisableWebSearch)
+  disableWebSearch(ctx: StateContext<ChatStoreModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      isWebSearch: false,
+    });
+  }
+
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
@@ -147,6 +189,8 @@ export class ChatStore {
       maxTokens: state.maxTokens,
       temperature: state.temperature,
       file: state.file,
+      isImageGeneration: state.isImageGeneration,
+      isWebSearch: state.isWebSearch,
     };
   }
 
@@ -158,5 +202,15 @@ export class ChatStore {
   @Selector()
   static getCurrentChatId(state: ChatStoreModel) {
     return state.currentChatId;
+  }
+
+  @Selector()
+  static isImageGeneration(state: ChatStoreModel) {
+    return state.isImageGeneration;
+  }
+
+  @Selector()
+  static isWebSearch(state: ChatStoreModel) {
+    return state.isWebSearch;
   }
 }
