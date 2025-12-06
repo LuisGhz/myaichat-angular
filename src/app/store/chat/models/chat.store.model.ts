@@ -14,6 +14,7 @@ export interface ChatStoreModel {
   maxTokens: number;
   temperature: number;
   file?: FileInfo;
+  currentChatId?: string | null;
 }
 
 export type ChatStoreOps = Partial<Omit<ChatStoreModel, 'messages'>>;

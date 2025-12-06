@@ -43,4 +43,9 @@ export namespace ChatActions {
     static readonly type = `${preffix} Set Messages Metadata`;
     constructor(public payload: { inputTokens?: number; outputTokens?: number }) {}
   }
+
+  export class SetCurrentChatId {
+    static readonly type = `${preffix} Set Current Chat Id`;
+    constructor(public payload: string | null) {}
+  }
 }

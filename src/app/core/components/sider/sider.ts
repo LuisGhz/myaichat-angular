@@ -4,12 +4,10 @@ import {
   computed,
   effect,
   inject,
-  OnInit,
   resource,
   signal,
 } from '@angular/core';
-import { Router, RouterLink, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { filter, startWith } from 'rxjs/operators';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -22,6 +20,7 @@ import { dispatch, select } from '@ngxs/store';
 import { AuthStore } from '@st/auth/auth.store';
 import { AppStore } from '@st/app/app.store';
 import { AppActions } from '@st/app/app.actions';
+import { ChatStore } from '@st/chat/chat.store';
 import { ChatApi } from '@chat/services/chat-api';
 import { More } from '../more/more';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -47,9 +46,8 @@ import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-moda
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Sider implements OnInit {
+export class Sider {
   #router = inject(Router);
-  #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
   #updateUserChats = dispatch(AppActions.UpdateUserChats);
   userEmail = select(AuthStore.email);
@@ -74,27 +72,12 @@ export class Sider implements OnInit {
   isRenameChatModalVisible = signal(false);
   chatTitleToRename = signal<string | null>(null);
   #renameChat = dispatch(AppActions.RenameChat);
-  #currentChatId: string | null = null;
+  currentChatId = select(ChatStore.getCurrentChatId);
 
   constructor() {
     effect(() => {
       this.#updateUserChats(this.chatsResource.value() ?? []);
     });
-  }
-
-  ngOnInit(): void {
-    this.#router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        startWith(null),
-      )
-      .subscribe(() => {
-        let route = this.#activatedRoute.root;
-        while (route.firstChild) {
-          route = route.firstChild;
-        }
-        this.#currentChatId = route.snapshot.paramMap.get('id');
-      });
   }
 
   onToggleSidebar(): void {
@@ -114,7 +97,7 @@ export class Sider implements OnInit {
         try {
           await this.#chatApi.deleteChat(chatId);
           this.#deleteChat(chatId);
-          if (this.#currentChatId === chatId) await this.#router.navigateByUrl('/');
+          if (this.currentChatId() === chatId) await this.#router.navigateByUrl('/');
         } catch (error) {
           this.#updateUserChats(originalChats);
         }

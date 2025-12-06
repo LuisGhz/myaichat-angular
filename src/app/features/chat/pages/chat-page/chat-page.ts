@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   linkedSignal,
@@ -20,6 +21,7 @@ import { Messages } from '@chat/components/messages/messages';
 import { ChatApi } from '@chat/services/chat-api';
 import { ActivatedRoute } from '@angular/router';
 import { ChatActions } from '@st/chat/chat.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-chat-view',
@@ -30,9 +32,11 @@ import { ChatActions } from '@st/chat/chat.actions';
 export class ChatPage implements OnInit {
   #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
+  #destroyRef = inject(DestroyRef);
   #aiModelsApi = inject(AiModelsApi);
   #resetChat = dispatch(ChatActions.ResetChat);
   #setOps = dispatch(ChatActions.SetOps);
+  #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
   messages = select(ChatStore.getMessages);
 
   // Señal para controlar si es un chat cargado desde ruta
@@ -94,13 +98,15 @@ export class ChatPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.#activatedRoute.params.subscribe((params) => {
+    this.#activatedRoute.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
       const chatId = params['id'];
       if (chatId) {
         this.#isLoadedChat.set(true);
+        this.#setCurrentChatId(chatId);
         this.#chatApi.loadMessages(chatId);
       } else {
         this.#isLoadedChat.set(false);
+        this.#setCurrentChatId(null);
         this.#resetChat();
       }
     });

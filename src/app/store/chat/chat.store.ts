@@ -13,6 +13,7 @@ import { FileStoreService } from './services';
     maxTokens: 2048,
     temperature: 0.7,
     file: undefined,
+    currentChatId: null,
   },
 })
 export class ChatStore {
@@ -26,8 +27,21 @@ export class ChatStore {
       maxTokens: 1024,
       temperature: 0.5,
       file: undefined,
+      currentChatId: null,
     });
     this.#fileStore.clear();
+  }
+
+  @Action(ChatActions.SetCurrentChatId)
+  setCurrentChatId(
+    ctx: StateContext<ChatStoreModel>,
+    { payload }: ChatActions.SetCurrentChatId,
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      currentChatId: payload,
+    });
   }
 
   @Action(ChatActions.SetOps)
@@ -139,5 +153,10 @@ export class ChatStore {
   @Selector()
   static getMessages(state: ChatStoreModel) {
     return state.messages;
+  }
+
+  @Selector()
+  static getCurrentChatId(state: ChatStoreModel) {
+    return state.currentChatId;
   }
 }
