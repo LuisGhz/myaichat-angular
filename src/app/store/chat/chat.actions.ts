@@ -69,4 +69,14 @@ export namespace ChatActions {
     static readonly type = `${preffix} Set Message Text`;
     constructor(public payload: string) {}
   }
+
+  export class SetIsTranscribing {
+    static readonly type = `${preffix} Set Is Transcribing`;
+    constructor(public payload: boolean) {}
+  }
+
+  export class SetIsSending {
+    static readonly type = `${preffix} Set Is Sending`;
+    constructor(public payload: boolean) {}
+  }
 }
