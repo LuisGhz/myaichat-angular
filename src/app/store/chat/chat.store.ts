@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ChatStoreModel } from './models/chat.store.model';
 import { ChatActions } from './chat.actions';
+import { FileStoreService } from './services';
 
 @Injectable()
 @State<ChatStoreModel>({
@@ -15,6 +16,8 @@ import { ChatActions } from './chat.actions';
   },
 })
 export class ChatStore {
+  #fileStore = inject(FileStoreService);
+
   @Action(ChatActions.ResetChat)
   resetChat(ctx: StateContext<ChatStoreModel>) {
     ctx.setState({
@@ -24,6 +27,7 @@ export class ChatStore {
       temperature: 0.5,
       file: undefined,
     });
+    this.#fileStore.clear();
   }
 
   @Action(ChatActions.SetOps)
