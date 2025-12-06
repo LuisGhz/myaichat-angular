@@ -17,6 +17,8 @@ import { FileStoreService } from './services';
     isImageGeneration: false,
     isWebSearch: false,
     messageText: '',
+    isTranscribing: false,
+    isSending: false,
   },
 })
 export class ChatStore {
@@ -34,6 +36,8 @@ export class ChatStore {
       isImageGeneration: false,
       isWebSearch: false,
       messageText: '',
+      isTranscribing: false,
+      isSending: false,
     });
     this.#fileStore.clear();
   }
@@ -193,6 +197,19 @@ export class ChatStore {
     });
   }
 
+  @Action(ChatActions.SetIsTranscribing)
+  setIsTranscribing(
+    ctx: StateContext<ChatStoreModel>,
+    { payload }: ChatActions.SetIsTranscribing,
+  ) {
+    ctx.patchState({ isTranscribing: payload });
+  }
+
+  @Action(ChatActions.SetIsSending)
+  setIsSending(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.SetIsSending) {
+    ctx.patchState({ isSending: payload });
+  }
+
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
@@ -228,5 +245,15 @@ export class ChatStore {
   @Selector()
   static getMessageText(state: ChatStoreModel) {
     return state.messageText;
+  }
+
+  @Selector()
+  static isTranscribing(state: ChatStoreModel) {
+    return state.isTranscribing;
+  }
+
+  @Selector()
+  static isSending(state: ChatStoreModel) {
+    return state.isSending;
   }
 }
