@@ -23,6 +23,7 @@
           @if (messageText().trim().length > 0) {
             <button
               class="app-text-buttons hover:bg-gray-300! dark:hover:bg-dark-base! rounded-full p-1 w-10 h-10 cursor-pointer trans-c-200 flex items-center justify-center"
+              [disabled]="isTranscribing() || isSending()"
               type="button"
               title="Send message"
               aria-label="Send message"

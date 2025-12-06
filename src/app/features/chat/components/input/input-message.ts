@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -35,6 +35,9 @@ export class InputMessage implements OnInit {
   #dispatch = dispatch(ChatActions.SetMessageText);
   chatId: string | undefined = undefined;
   messageText = select(ChatStore.getMessageText);
+  isTranscribing = select(ChatStore.isTranscribing);
+  isSending = select(ChatStore.isSending);
+  @ViewChild(Microphone) microphone?: Microphone;
 
   ngOnInit(): void {
     this.#activatedRoute.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
@@ -47,8 +50,13 @@ export class InputMessage implements OnInit {
   }
 
   onSend(): void {
-    if (this.messageText().trim()) {
-      this.#messagesHandler.handleUserMessage(this.messageText().trim(), this.chatId);
+    if (this.isTranscribing() || this.isSending() || this.microphone?.isRecording()) {
+      return;
+    }
+
+    const trimmedMessage = this.messageText().trim();
+    if (trimmedMessage) {
+      this.#messagesHandler.handleUserMessage(trimmedMessage, this.chatId);
       this.#dispatch('');
     }
   }
