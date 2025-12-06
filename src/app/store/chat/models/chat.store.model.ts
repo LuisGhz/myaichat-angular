@@ -17,6 +17,7 @@ export interface ChatStoreModel {
   currentChatId?: string | null;
   isImageGeneration: boolean;
   isWebSearch: boolean;
+  messageText: string;
 }
 
 export interface AssistantMessageChunk {

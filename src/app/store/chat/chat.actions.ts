@@ -64,4 +64,9 @@ export namespace ChatActions {
   export class DisableWebSearch {
     static readonly type = `${preffix} Disable Web Search`;
   }
+
+  export class SetMessageText {
+    static readonly type = `${preffix} Set Message Text`;
+    constructor(public payload: string) {}
+  }
 }

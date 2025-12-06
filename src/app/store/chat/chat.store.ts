@@ -16,6 +16,7 @@ import { FileStoreService } from './services';
     currentChatId: null,
     isImageGeneration: false,
     isWebSearch: false,
+    messageText: '',
   },
 })
 export class ChatStore {
@@ -32,6 +33,7 @@ export class ChatStore {
       currentChatId: null,
       isImageGeneration: false,
       isWebSearch: false,
+      messageText: '',
     });
     this.#fileStore.clear();
   }
@@ -182,6 +184,15 @@ export class ChatStore {
     });
   }
 
+  @Action(ChatActions.SetMessageText)
+  setMessageText(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.SetMessageText) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      messageText: payload,
+    });
+  }
+
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
@@ -212,5 +223,10 @@ export class ChatStore {
   @Selector()
   static isWebSearch(state: ChatStoreModel) {
     return state.isWebSearch;
+  }
+
+  @Selector()
+  static getMessageText(state: ChatStoreModel) {
+    return state.messageText;
   }
 }

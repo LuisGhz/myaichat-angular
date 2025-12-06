@@ -11,7 +11,8 @@
         <textarea
           class="flex-1 bg-transparent! border-none! app-text resize-none focus:shadow-none! hidden-scrollbar"
           nz-input
-          [(ngModel)]="messageText"
+          [ngModel]="messageText()"
+          (ngModelChange)="onMessageTextChange($event)"
           (keydown)="onKeydown($event)"
           placeholder="Ask anything"
           [nzAutosize]="{ minRows: 1, maxRows: 6 }"
