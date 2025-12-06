@@ -4,10 +4,12 @@ import {
   computed,
   effect,
   inject,
+  OnInit,
   resource,
   signal,
 } from '@angular/core';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter, startWith } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -45,7 +47,7 @@ import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-moda
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Sider {
+export class Sider implements OnInit {
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
@@ -72,11 +74,27 @@ export class Sider {
   isRenameChatModalVisible = signal(false);
   chatTitleToRename = signal<string | null>(null);
   #renameChat = dispatch(AppActions.RenameChat);
+  #currentChatId: string | null = null;
 
   constructor() {
     effect(() => {
       this.#updateUserChats(this.chatsResource.value() ?? []);
     });
+  }
+
+  ngOnInit(): void {
+    this.#router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(null),
+      )
+      .subscribe(() => {
+        let route = this.#activatedRoute.root;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        this.#currentChatId = route.snapshot.paramMap.get('id');
+      });
   }
 
   onToggleSidebar(): void {
@@ -96,10 +114,7 @@ export class Sider {
         try {
           await this.#chatApi.deleteChat(chatId);
           this.#deleteChat(chatId);
-          const currentChatId = this.#activatedRoute.snapshot.paramMap.get('id');
-          if (currentChatId === chatId) {
-            this.#router.navigate(['/']);
-          }
+          if (this.#currentChatId === chatId) await this.#router.navigateByUrl('/');
         } catch (error) {
           this.#updateUserChats(originalChats);
         }
