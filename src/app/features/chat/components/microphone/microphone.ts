@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ChatApi } from '../../services/chat-api';
-import { dispatch, Store } from '@ngxs/store';
+import { dispatch } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
 
 const INITIAL_TIME = '00:00';
@@ -19,8 +19,8 @@ const SECONDS_PER_MINUTE = 60;
 })
 export class Microphone implements OnDestroy {
   #chatApi = inject(ChatApi);
-  #store = inject(Store);
   #setMessageText = dispatch(ChatActions.SetMessageText);
+  #setIsTranscribing = dispatch(ChatActions.SetIsTranscribing);
 
   isRecording = signal(false);
   isTranscribing = signal(false);
@@ -97,6 +97,7 @@ export class Microphone implements OnDestroy {
   }
   async handleRecording(blob: Blob) {
     this.isTranscribing.set(true);
+    this.#setIsTranscribing(true);
     try {
       const file = new File([blob], 'recording.webm', { type: AUDIO_MIME_TYPE });
       const res = await this.#chatApi.transcribe(file);
@@ -105,6 +106,7 @@ export class Microphone implements OnDestroy {
       console.error('Transcription failed', error);
     } finally {
       this.isTranscribing.set(false);
+      this.#setIsTranscribing(false);
     }
   }
 
