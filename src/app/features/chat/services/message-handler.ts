@@ -13,6 +13,7 @@ export class MessagesHandler {
   #chatApi = inject(ChatApi);
   #location = inject(Location);
   #fileStore = inject(FileStoreService);
+  #removeFile = dispatch(ChatActions.RemoveFile);
   #messages = select(ChatStore.getMessages);
   #addUserMessage = dispatch(ChatActions.AddUserMessage);
   #addAssistantMessage = dispatch(ChatActions.AddAssistantMessage);
@@ -24,6 +25,7 @@ export class MessagesHandler {
     this.#addUserMessage(message);
     const ops = this.#chatOps();
     const file = ops.file ? this.#fileStore.getFile(ops.file.id) : undefined;
+    this.#removeFile();
     this.#chatApi
       .sendMessage({
         message,
@@ -34,6 +36,7 @@ export class MessagesHandler {
         file,
       })
       .subscribe((r) => {
+        this.#fileStore.clear();
         if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
         if (r.type === 'done') {
           this.#setMessagesMetadata({
