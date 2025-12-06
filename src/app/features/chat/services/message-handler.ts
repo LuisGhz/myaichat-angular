@@ -4,6 +4,7 @@ import { ChatApi } from './chat-api';
 import { ChatActions } from '@st/chat/chat.actions';
 import { dispatch, select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
+import { FileStoreService } from '@st/chat/services/file-store.service';
 
 @Injectable({
   providedIn: 'any',
@@ -11,6 +12,7 @@ import { ChatStore } from '@st/chat/chat.store';
 export class MessagesHandler {
   #chatApi = inject(ChatApi);
   #location = inject(Location);
+  #fileStore = inject(FileStoreService);
   #messages = select(ChatStore.getMessages);
   #addUserMessage = dispatch(ChatActions.AddUserMessage);
   #addAssistantMessage = dispatch(ChatActions.AddAssistantMessage);
@@ -21,20 +23,26 @@ export class MessagesHandler {
   handleUserMessage(message: string, chatId?: string): void {
     this.#addUserMessage(message);
     const ops = this.#chatOps();
-    this.#chatApi.sendMessage({
-      message,
-      chatId,
-      ...ops,
-    }).subscribe((r) => {
-      if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
-      if (r.type === 'done') {
-        this.#setMessagesMetadata({
-          inputTokens: r.data.inputTokens,
-          outputTokens: r.data.outputTokens,
-        });
-        this.#updateUrlIfNewChat(r.data.chatId);
-      }
-    });
+    const file = ops.file ? this.#fileStore.getFile(ops.file.id) : undefined;
+    this.#chatApi
+      .sendMessage({
+        message,
+        chatId,
+        model: ops.model,
+        maxTokens: ops.maxTokens,
+        temperature: ops.temperature,
+        file,
+      })
+      .subscribe((r) => {
+        if (r.type === 'delta') this.#addAssistantMsg(r.data || '');
+        if (r.type === 'done') {
+          this.#setMessagesMetadata({
+            inputTokens: r.data.inputTokens,
+            outputTokens: r.data.outputTokens,
+          });
+          this.#updateUrlIfNewChat(r.data.chatId);
+        }
+      });
   }
 
   #updateUrlIfNewChat(chatId: string): void {

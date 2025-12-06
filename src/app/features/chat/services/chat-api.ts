@@ -32,8 +32,17 @@ export class ChatApi extends HttpBaseService {
   }
 
   sendMessage(req: SendMessageReqModel) {
-    return this.ssePost<ChatStreamEvent, SendMessageReqModel>('/chat/openai', {
-      ...req,
-    });
+    const formData = new FormData();
+    formData.append('message', req.message);
+    formData.append('model', req.model);
+    formData.append('maxTokens', req.maxTokens.toString());
+    formData.append('temperature', req.temperature.toString());
+    if (req.chatId) {
+      formData.append('chatId', req.chatId);
+    }
+    if (req.file) {
+      formData.append('file', req.file, req.file.name);
+    }
+    return this.ssePost<ChatStreamEvent>('/chat/openai', formData);
   }
 }

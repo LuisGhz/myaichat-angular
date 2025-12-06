@@ -62,4 +62,5 @@ export interface SendMessageReqModel {
   model: string;
   maxTokens: number;
   temperature: number;
+  file?: File;
 }

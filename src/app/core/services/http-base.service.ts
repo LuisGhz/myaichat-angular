@@ -60,10 +60,14 @@ export class HttpBaseService {
     return firstValueFrom(this.#http.delete<T>(`${this.#apiUrl}${path}`, options));
   }
 
-  protected ssePost<R, B>(path: string, body: B, options?: HttpClientOptions): Observable<R> {
+  protected ssePost<R>(
+    path: string,
+    formData: FormData,
+    options?: HttpClientOptions,
+  ): Observable<R> {
     return new Observable((observer) => {
       this.#http
-        .post(`${this.#apiUrl}${path}`, body, {
+        .post(`${this.#apiUrl}${path}`, formData, {
           ...options,
           responseType: 'text',
         })
