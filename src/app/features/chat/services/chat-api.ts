@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpBaseService } from '@core/services';
-import { ChatStreamEvent, SendMessageReqModel } from '@chat/models';
 import type { TranscribeAudioResModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch } from '@ngxs/store';
@@ -30,23 +29,6 @@ export class ChatApi extends HttpBaseService {
     return this.patchP('/chat/' + chatId + '/rename', {
       title: newTitle,
     });
-  }
-
-  sendMessage(req: SendMessageReqModel) {
-    const formData = new FormData();
-    formData.append('message', req.message);
-    formData.append('model', req.model);
-    formData.append('maxTokens', req.maxTokens.toString());
-    formData.append('temperature', req.temperature.toString());
-    formData.append('isImageGeneration', req.isImageGeneration.toString());
-    formData.append('isWebSearch', req.isWebSearch.toString());
-    if (req.chatId) {
-      formData.append('chatId', req.chatId);
-    }
-    if (req.file) {
-      formData.append('file', req.file, req.file.name);
-    }
-    return this.ssePost<ChatStreamEvent>('/chat/openai', formData);
   }
 
   transcribe(file: Blob) {
