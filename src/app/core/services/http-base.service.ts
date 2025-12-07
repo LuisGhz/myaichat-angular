@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 type HttpClientOptions = {
   headers?: HttpHeaders | Record<string, string | string[]>;
@@ -11,23 +11,12 @@ type HttpClientOptions = {
     | Record<string, string | number | boolean | ReadonlyArray<string | number | boolean>>;
   reportProgress?: boolean;
   withCredentials?: boolean;
-  credentials?: RequestCredentials;
-  priority?: RequestPriority;
-  cache?: RequestCache;
-  mode?: RequestMode;
-  redirect?: RequestRedirect;
-  referrer?: string;
-  integrity?: string;
-  timeout?: number;
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpBaseService {
-  #http = inject(HttpClient);
-  #apiUrl = environment.apiUrl;
-
   protected get<T>(path: string, options?: HttpClientOptions) {
     return this.#http.get<T>(`${this.#apiUrl}${path}`, options);
   }
@@ -60,32 +49,6 @@ export class HttpBaseService {
     return firstValueFrom(this.#http.delete<T>(`${this.#apiUrl}${path}`, options));
   }
 
-  protected ssePost<R>(
-    path: string,
-    formData: FormData,
-    options?: HttpClientOptions,
-  ): Observable<R> {
-    return new Observable((observer) => {
-      this.#http
-        .post(`${this.#apiUrl}${path}`, formData, {
-          ...options,
-          responseType: 'text',
-        })
-        .subscribe({
-          next: (response: string) => {
-            const lines = response.split('\n').filter((line) => line.trim());
-            lines.forEach((line) => {
-              try {
-                const event = JSON.parse(line);
-                observer.next(event as R);
-              } catch (error) {
-                console.error('Failed to parse SSE event:', error, 'Line:', line);
-              }
-            });
-          },
-          error: (error) => observer.error(error),
-          complete: () => observer.complete(),
-        });
-    });
-  }
+  #http = inject(HttpClient);
+  #apiUrl = environment.apiUrl;
 }
