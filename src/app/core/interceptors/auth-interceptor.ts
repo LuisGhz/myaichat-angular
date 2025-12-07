@@ -1,4 +1,4 @@
-import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { HttpInterceptorFn, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { dispatch, select } from '@ngxs/store';
@@ -23,17 +23,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   return next(req).pipe(
-    tap((response) => {
-      if (response instanceof HttpResponse) {
-        const newToken = response.headers.get('x-new-access-token');
-        if (newToken) {
-          uploadToken({ token: newToken });
+    tap({
+      next: (response) => {
+        if (response instanceof HttpResponse) {
+          const newToken = response.headers.get('x-new-access-token');
+          if (newToken) uploadToken({ token: newToken });
         }
-      }
-      if (response instanceof HttpResponse && response.status === 401) {
-        logoutFromRequest();
-        router.navigate(['/auth/login']);
-      }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log('Interceptor error:', error);
+        if (error.status === 401) {
+          logoutFromRequest();
+          router.navigate(['/auth/login']);
+        }
+      },
     }),
   );
 };
