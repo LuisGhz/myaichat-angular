@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { ChatApi } from './chat-api';
+import { ChatStreamApi } from './chat-stream-api';
 import { ChatActions } from '@st/chat/chat.actions';
 import { dispatch, select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
@@ -13,7 +13,7 @@ import { finalize } from 'rxjs';
   providedIn: 'any',
 })
 export class MessagesHandler {
-  #chatApi = inject(ChatApi);
+  #chatStreamApi = inject(ChatStreamApi);
   #location = inject(Location);
   #fileStore = inject(FileStoreService);
   #removeFile = dispatch(ChatActions.RemoveFile);
@@ -32,7 +32,7 @@ export class MessagesHandler {
     this.#addUserMessage(message, file);
     this.#removeFile();
     this.#setIsSending(true);
-    this.#chatApi
+    this.#chatStreamApi
       .sendMessage({
         message,
         chatId,
