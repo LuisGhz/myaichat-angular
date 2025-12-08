@@ -45,24 +45,13 @@ export class ChatPage implements OnInit {
   // Solo animar si no es un chat cargado desde ruta (es un chat nuevo)
   protected shouldAnimateTransition = computed(() => !this.#isLoadedChat());
 
-  prompts = signal<
-    {
-      id: string;
-      name: string;
-    }[]
-  >([
-    {
-      id: '1',
-      name: 'Default',
-    },
-    {
-      id: '2',
-      name: 'Creative',
-    },
-  ]);
-
   models = resource({
     loader: () => this.#aiModelsApi.getAiModels(),
+    defaultValue: [],
+  });
+
+  prompts = resource({
+    loader: () => this.#chatApi.getPrompts(),
     defaultValue: [],
   });
 
@@ -70,6 +59,8 @@ export class ChatPage implements OnInit {
     const models = this.models.value();
     return models.length > 0 ? models[0].id : null;
   });
+
+  selectedPrompt = signal<string | null>(null);
 
   groupedModels = computed(() => {
     const modelList = this.models.value();
@@ -94,6 +85,13 @@ export class ChatPage implements OnInit {
         this.#setOps({
           model: model.value,
         });
+    });
+
+    effect(() => {
+      const promptId = this.selectedPrompt();
+      this.#setOps({
+        promptId: promptId || undefined,
+      });
     });
   }
 
