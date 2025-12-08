@@ -9,6 +9,7 @@ export type {
   StreamEventType,
   SendMessageReqModel,
   UserChatsModel,
+  PromptItemSummaryResModel,
 } from './chat.model';
 export type { AiModelModel } from './ai-model.model';
 export type { TranscribeAudioResModel } from './transcribe-audio-res.model';

@@ -66,4 +66,10 @@ export interface SendMessageReqModel {
   isImageGeneration: boolean;
   isWebSearch: boolean;
   file?: File;
+  promptId?: string;
+}
+
+export interface PromptItemSummaryResModel {
+  id: string;
+  name: string;
 }
