@@ -1,1 +1,1 @@
-export { PromptService } from './prompt.service';
+export { PromptsApi as PromptService } from './prompts-api';
