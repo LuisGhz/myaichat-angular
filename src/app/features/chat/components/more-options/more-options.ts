@@ -39,7 +39,8 @@ export class MoreOptions {
       label: 'Agregar fotos y archivos',
       onClick: () => this.handleFileUpload(),
     },
-    { icon: 'cloud-upload', label: 'Agregar desde OneDrive', onClick: () => {} },
+    // TODO: Enable OneDrive integration
+    // { icon: 'cloud-upload', label: 'Agregar desde OneDrive', onClick: () => {} },
     { icon: 'picture', label: 'Crea imagen', onClick: () => this.#onToggleImageGeneration() },
     { icon: 'compass', label: 'Busca en la web', onClick: () => this.#onToggleWebSearch() },
   ]);
