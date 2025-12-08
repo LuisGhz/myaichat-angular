@@ -50,6 +50,8 @@ import {
   FileExcelOutline,
   FilePptOutline,
   FileOutline,
+  SettingOutline,
+  SettingFill,
 } from '@ant-design/icons-angular/icons';
 import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor } from '@core/interceptors';
@@ -87,6 +89,8 @@ const icons: IconDefinition[] = [
   FileExcelOutline,
   FilePptOutline,
   FileOutline,
+  SettingOutline,
+  SettingFill,
 ];
 
 registerLocaleData(en);
