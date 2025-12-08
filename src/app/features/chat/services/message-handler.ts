@@ -41,6 +41,7 @@ export class MessagesHandler {
         temperature: ops.temperature,
         isImageGeneration: ops.isImageGeneration,
         isWebSearch: ops.isWebSearch,
+        promptId: ops.promptId,
         file,
       })
       .pipe(finalize(() => this.#setIsSending(false)))
