@@ -19,6 +19,7 @@ import { FileStoreService } from './services';
     messageText: '',
     isTranscribing: false,
     isSending: false,
+    promptId: undefined,
   },
 })
 export class ChatStore {
@@ -38,6 +39,7 @@ export class ChatStore {
       messageText: '',
       isTranscribing: false,
       isSending: false,
+      promptId: undefined,
     });
     this.#fileStore.clear();
   }
@@ -218,6 +220,7 @@ export class ChatStore {
       file: state.file,
       isImageGeneration: state.isImageGeneration,
       isWebSearch: state.isWebSearch,
+      promptId: state.promptId,
     };
   }
 
