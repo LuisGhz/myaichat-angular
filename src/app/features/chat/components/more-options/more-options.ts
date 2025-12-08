@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal, ElementRef, inject } from '@angular/core';
+import { AdvancedSettings } from '@chat/modals/advanced-settings/advanced-settings';
 import { dispatch, select } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { ChatStore } from '@st/chat/chat.store';
@@ -13,7 +14,7 @@ interface MenuOption {
 
 @Component({
   selector: 'app-more-options',
-  imports: [NzIconModule],
+  imports: [NzIconModule, AdvancedSettings],
   templateUrl: './more-options.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -30,6 +31,7 @@ export class MoreOptions {
   #enableWebSearch = dispatch(ChatActions.EnableWebSearch);
   #isImageGeneration = select(ChatStore.isImageGeneration);
   #isWebSearch = select(ChatStore.isWebSearch);
+  isAdvancedSettingsVisible = signal(false);
 
   isMenuOpen = signal(false);
 
@@ -43,6 +45,11 @@ export class MoreOptions {
     // { icon: 'cloud-upload', label: 'Agregar desde OneDrive', onClick: () => {} },
     { icon: 'picture', label: 'Crea imagen', onClick: () => this.#onToggleImageGeneration() },
     { icon: 'compass', label: 'Busca en la web', onClick: () => this.#onToggleWebSearch() },
+    {
+      icon: 'setting',
+      label: 'Configuración avanzada',
+      onClick: () => this.#showAdvancedSettings(),
+    },
   ]);
 
   constructor() {
@@ -110,5 +117,13 @@ export class MoreOptions {
   #onToggleWebSearch(): void {
     if (this.#isWebSearch()) return;
     this.#enableWebSearch();
+  }
+
+  #showAdvancedSettings(): void {
+    this.isAdvancedSettingsVisible.set(true);
+  }
+
+  closeAdvancedSettings(): void {
+    this.isAdvancedSettingsVisible.set(false);
   }
 }

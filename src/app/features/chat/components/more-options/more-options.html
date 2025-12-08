@@ -32,4 +32,8 @@
       </ul>
     </nav>
   }
+  <app-advanced-settings
+    [isVisible]="isAdvancedSettingsVisible()"
+    (closeModal)="closeAdvancedSettings()"
+  />
 </div>
