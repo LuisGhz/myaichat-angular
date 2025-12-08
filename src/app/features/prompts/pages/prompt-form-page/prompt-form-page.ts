@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormArray,
@@ -19,7 +13,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { PromptService } from '../../services';
+import { PromptsApi } from '../../services';
 import { PromptMessageModel } from '../../models';
 
 interface MessageFormGroup {
@@ -50,7 +44,7 @@ export class PromptFormPage {
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
   readonly #fb = inject(FormBuilder);
-  readonly #promptService = inject(PromptService);
+  readonly #promptsApi = inject(PromptsApi);
 
   readonly promptId = this.#route.snapshot.paramMap.get('id');
   readonly isEditMode = signal(false);
@@ -80,7 +74,7 @@ export class PromptFormPage {
 
   async #loadPrompt(id: string): Promise<void> {
     try {
-      const prompt = await this.#promptService.getById(id);
+      const prompt = await this.#promptsApi.getById(id);
       this.form.patchValue({
         name: prompt.name,
         content: prompt.content,
@@ -100,7 +94,10 @@ export class PromptFormPage {
   #createMessageGroup(message?: Partial<PromptMessageModel>): FormGroup<MessageFormGroup> {
     return this.#fb.group<MessageFormGroup>({
       role: this.#fb.control(message?.role ?? 'user', { nonNullable: true }),
-      content: this.#fb.control(message?.content ?? '', { nonNullable: true, validators: [Validators.required] }),
+      content: this.#fb.control(message?.content ?? '', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     });
   }
 
@@ -135,13 +132,13 @@ export class PromptFormPage {
 
     try {
       if (this.promptId) {
-        await this.#promptService.update(this.promptId, {
+        await this.#promptsApi.update(this.promptId, {
           name: formValue.name,
           content: formValue.content,
           messages,
         });
       } else {
-        await this.#promptService.create({
+        await this.#promptsApi.create({
           name: formValue.name,
           content: formValue.content,
           messages,

@@ -1,6 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-  PromptModel,
   CreatePromptReqModel,
   CreatePromptResModel,
   UpdatePromptReqModel,
