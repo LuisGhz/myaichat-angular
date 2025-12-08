@@ -11,10 +11,12 @@ import { MessagesHistoryModel } from '@st/chat/models/message.model';
 })
 export class ChatApi extends HttpBaseService {
   #loadMessages = dispatch(ChatActions.LoadMessages);
+  #setOps = dispatch(ChatActions.SetOps);
 
   async loadMessages(chatId: string) {
     const res = await this.getP<MessagesHistoryModel>('/chat/' + chatId + '/messages');
     this.#loadMessages(res);
+    this.#setOps({ maxTokens: res.maxTokens, temperature: res.temperature });
   }
 
   getChats() {
