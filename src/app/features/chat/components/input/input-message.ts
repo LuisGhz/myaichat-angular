@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { MessagesHandler } from '@chat/services/message-handler';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -27,23 +25,15 @@ import { Microphone } from '../microphone/microphone';
   templateUrl: './input-message.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputMessage implements OnInit {
+export class InputMessage {
   #messagesHandler = inject(MessagesHandler);
-  #activatedRoute = inject(ActivatedRoute);
   file = select(ChatStore.getOps)().file;
-  #destroyRef = inject(DestroyRef);
   #dispatch = dispatch(ChatActions.SetMessageText);
-  chatId: string | undefined = undefined;
+  currentChatId = select(ChatStore.getCurrentChatId);
   messageText = select(ChatStore.getMessageText);
   isTranscribing = select(ChatStore.isTranscribing);
   isSending = select(ChatStore.isSending);
   @ViewChild(Microphone) microphone?: Microphone;
-
-  ngOnInit(): void {
-    this.#activatedRoute.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
-      this.chatId = params['id'];
-    });
-  }
 
   onMessageTextChange(value: string): void {
     this.#dispatch(value);
@@ -56,7 +46,7 @@ export class InputMessage implements OnInit {
 
     const trimmedMessage = this.messageText().trim();
     if (trimmedMessage) {
-      this.#messagesHandler.handleUserMessage(trimmedMessage, this.chatId);
+      this.#messagesHandler.handleUserMessage(trimmedMessage, this.currentChatId() ?? undefined);
       this.#dispatch('');
     }
   }
