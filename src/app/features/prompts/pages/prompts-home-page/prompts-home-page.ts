@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
-import { PromptService } from '@prompts/services';
+import { PromptsApi } from '@prompts/services';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -12,10 +12,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptsHomePage {
-  readonly #promptService = inject(PromptService);
+  readonly #promptsApi = inject(PromptsApi);
   readonly #router = inject(Router);
   prompts = resource({
-    loader: () => this.#promptService.fetchAll(),
+    loader: () => this.#promptsApi.fetchAll(),
     defaultValue: [],
   });
 
@@ -31,7 +31,7 @@ export class PromptsHomePage {
   async onDelete(id: string, event: Event): Promise<void> {
     event.stopPropagation();
     try {
-      await this.#promptService.deletePrompt(id);
+      await this.#promptsApi.deletePrompt(id);
     } catch (error) {
       console.error('Failed to delete prompt:', error);
     }

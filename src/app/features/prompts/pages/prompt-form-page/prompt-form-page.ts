@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormArray,
@@ -12,11 +12,13 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { PromptsApi } from '../../services';
 import { PromptMessageModel } from '../../models';
 
 interface MessageFormGroup {
+  id: FormControl<string | null>;
   role: FormControl<'assistant' | 'user'>;
   content: FormControl<string>;
 }
@@ -35,6 +37,7 @@ interface PromptFormGroup {
     NzFormModule,
     NzIconModule,
     NzInputModule,
+    NzPopconfirmModule,
     NzSelectModule,
   ],
   templateUrl: './prompt-form-page.html',
@@ -45,6 +48,7 @@ export class PromptFormPage {
   readonly #route = inject(ActivatedRoute);
   readonly #fb = inject(FormBuilder);
   readonly #promptsApi = inject(PromptsApi);
+  readonly #cdr = inject(ChangeDetectorRef);
 
   readonly promptId = this.#route.snapshot.paramMap.get('id');
   readonly isEditMode = signal(false);
@@ -93,6 +97,7 @@ export class PromptFormPage {
 
   #createMessageGroup(message?: Partial<PromptMessageModel>): FormGroup<MessageFormGroup> {
     return this.#fb.group<MessageFormGroup>({
+      id: this.#fb.control(message?.id ?? null),
       role: this.#fb.control(message?.role ?? 'user', { nonNullable: true }),
       content: this.#fb.control(message?.content ?? '', {
         nonNullable: true,
@@ -109,8 +114,25 @@ export class PromptFormPage {
     this.#addMessageControl();
   }
 
-  onRemoveMessage(index: number): void {
-    this.messages.removeAt(index);
+  async onRemoveMessage(index: number): Promise<void> {
+    const messageGroup = this.messages.at(index);
+    const messageId = messageGroup.value.id;
+
+    // If message has an id, delete it from the database
+    if (messageId && this.promptId) {
+      try {
+        await this.#promptsApi.deleteMessage(this.promptId, messageId);
+        this.messages.removeAt(index);
+        this.#cdr.markForCheck();
+      } catch (error) {
+        console.error('Failed to delete message:', error);
+        return;
+      }
+    } else {
+      // For new messages without id, just remove from form
+      this.messages.removeAt(index);
+      this.#cdr.markForCheck();
+    }
   }
 
   onCancel(): void {

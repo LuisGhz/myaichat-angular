@@ -45,6 +45,5 @@ export class PromptsApi extends HttpBaseService {
 
   async deleteMessage(promptId: string, messageId: string): Promise<void> {
     await this.deleteP<void>(`/prompts/${promptId}/messages/${messageId}`);
-    await this.fetchAll();
   }
 }
