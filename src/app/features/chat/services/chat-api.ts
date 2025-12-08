@@ -4,7 +4,7 @@ import type { TranscribeAudioResModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
-import { Message } from '@st/chat/models/message.model';
+import { MessagesHistoryModel } from '@st/chat/models/message.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class ChatApi extends HttpBaseService {
   #loadMessages = dispatch(ChatActions.LoadMessages);
 
   async loadMessages(chatId: string) {
-    const res = await this.getP<Message[]>('/chat/' + chatId + '/messages');
+    const res = await this.getP<MessagesHistoryModel>('/chat/' + chatId + '/messages');
     this.#loadMessages(res);
   }
 
