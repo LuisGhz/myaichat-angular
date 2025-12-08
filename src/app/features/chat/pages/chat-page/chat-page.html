@@ -4,26 +4,24 @@
     [class.flex-1]="messages().length > 0"
   >
     @if (messages().length === 0) {
-      <div [animate.leave]="shouldAnimateTransition() ? 'welcome-leave' : ''">
-        <h1 class="text-2xl app-text mb-8 text-center">What can I help with?</h1>
-        <section class="flex flex-col gap-2">
-          <nz-select class="w-60!" [(ngModel)]="selectedPrompt">
-            <nz-option nzValue="" nzLabel=""></nz-option>
-            @for (prompt of prompts.value(); track $index) {
-              <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
-            }
-          </nz-select>
-          <nz-select class="w-60!" [(ngModel)]="selectedModel">
-            @for (group of groupedModels().entries(); track group[0]) {
-              <nz-option-group [nzLabel]="group[0]">
-                @for (model of group[1]; track model.id) {
-                  <nz-option [nzValue]="model.id" [nzLabel]="model.name"></nz-option>
-                }
-              </nz-option-group>
-            }
-          </nz-select>
-        </section>
-      </div>
+      <h1 class="text-2xl app-text mb-8 text-center">What can I help with?</h1>
+      <section class="flex flex-col gap-2">
+        <nz-select class="w-60!" [(ngModel)]="selectedPrompt">
+          <nz-option nzValue="" nzLabel=""></nz-option>
+          @for (prompt of prompts.value(); track $index) {
+            <nz-option [nzValue]="prompt.id" [nzLabel]="prompt.name"></nz-option>
+          }
+        </nz-select>
+        <nz-select class="w-60!" [(ngModel)]="selectedModel">
+          @for (group of groupedModels().entries(); track group[0]) {
+            <nz-option-group [nzLabel]="group[0]">
+              @for (model of group[1]; track model.id) {
+                <nz-option [nzValue]="model.id" [nzLabel]="model.name"></nz-option>
+              }
+            </nz-option-group>
+          }
+        </nz-select>
+      </section>
     } @else {
       <app-messages [animate.enter]="shouldAnimateTransition() ? 'messages-enter' : ''" />
     }

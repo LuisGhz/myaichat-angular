@@ -39,11 +39,8 @@ export class ChatPage implements OnInit {
   #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
   messages = select(ChatStore.getMessages);
 
-  // Señal para controlar si es un chat cargado desde ruta
   #isLoadedChat = signal(false);
-
-  // Solo animar si no es un chat cargado desde ruta (es un chat nuevo)
-  protected shouldAnimateTransition = computed(() => !this.#isLoadedChat());
+  shouldAnimateTransition = computed(() => !this.#isLoadedChat());
 
   models = resource({
     loader: () => this.#aiModelsApi.getAiModels(),

@@ -33,6 +33,7 @@ export class MessagesHandler {
     this.#addUserMessage(message, file);
     this.#removeFile();
     this.#setIsSending(true);
+    return;
     this.#chatStreamApi
       .sendMessage({
         message,
