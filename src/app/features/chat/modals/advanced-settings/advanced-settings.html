@@ -1,30 +1,30 @@
 <nz-modal [nzVisible]="isVisible()" [nzFooter]="null" (nzOnCancel)="closeModal.emit()">
   <ng-content *nzModalContent>
-    <h2 class="text-lg font-semibold mb-4">Configuración avanzada</h2>
-    <p class="mb-2">Aquí puedes ajustar las configuraciones avanzadas de tu chat.</p>
-    <div class="mb-4">
-      <label class="block mb-2 text-sm">Max Tokens</label>
-      <nz-input-number
-        class="w-full"
-        [ngModel]="maxTokens()"
-        (ngModelChange)="onMaxTokensChange($event)"
-        [nzMin]="100"
-        [nzMax]="8000"
-        [nzStep]="1"
-        nzPlaceHolder="Max tokens"
-      />
-    </div>
-    <div class="mb-4">
-      <label class="block mb-2 text-sm">Temperature</label>
-      <nz-input-number
-        class="w-full"
-        [ngModel]="temperature()"
-        (ngModelChange)="onTemperatureChange($event)"
-        [nzMin]="0"
-        [nzMax]="2"
-        [nzStep]="0.1"
-        nzPlaceHolder="Temperature"
-      />
-    </div>
+    <form [formGroup]="form">
+      <h2 class="text-lg font-semibold mb-4">Configuración avanzada</h2>
+      <p class="mb-2">Aquí puedes ajustar las configuraciones avanzadas de tu chat.</p>
+      <div class="mb-4">
+        <label class="block mb-2 text-sm">Max Tokens</label>
+        <nz-input-number
+          class="w-full"
+          formControlName="maxTokens"
+          [nzMin]="100"
+          [nzMax]="8000"
+          [nzStep]="1"
+          nzPlaceHolder="Max tokens"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2 text-sm">Temperature</label>
+        <nz-input-number
+          class="w-full"
+          formControlName="temperature"
+          [nzMin]="0"
+          [nzMax]="2"
+          [nzStep]="0.1"
+          nzPlaceHolder="Temperature"
+        />
+      </div>
+    </form>
   </ng-content>
 </nz-modal>
