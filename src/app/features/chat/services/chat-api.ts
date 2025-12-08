@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpBaseService } from '@core/services';
-import type { TranscribeAudioResModel } from '@chat/models';
+import type { PromptItemSummaryResModel, TranscribeAudioResModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
@@ -21,6 +21,10 @@ export class ChatApi extends HttpBaseService {
 
   getChats() {
     return this.getP<UserChatsModel[]>('/chat');
+  }
+
+  getPrompts() {
+    return this.getP<PromptItemSummaryResModel[]>('/prompts/summary');
   }
 
   deleteChat(chatId: string) {
