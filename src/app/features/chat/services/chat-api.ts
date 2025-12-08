@@ -31,6 +31,14 @@ export class ChatApi extends HttpBaseService {
     });
   }
 
+  updateMaxTokens(chatId: string, maxTokens: number) {
+    return this.patchP(`/chat/${chatId}/update-max-tokens`, { maxTokens });
+  }
+
+  updateTemperature(chatId: string, temperature: number) {
+    return this.patchP(`/chat/${chatId}/update-temperature`, { temperature });
+  }
+
   transcribe(file: Blob) {
     const formData = new FormData();
     formData.append('audio', file);

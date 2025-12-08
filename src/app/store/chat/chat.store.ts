@@ -10,8 +10,8 @@ import { FileStoreService } from './services';
   defaults: {
     messages: [],
     model: '',
-    maxTokens: 2048,
-    temperature: 0.7,
+    maxTokens: 2000,
+    temperature: 0.5,
     file: undefined,
     currentChatId: null,
     isImageGeneration: false,
@@ -29,7 +29,7 @@ export class ChatStore {
     ctx.setState({
       messages: [],
       model: '',
-      maxTokens: 1024,
+      maxTokens: 2000,
       temperature: 0.5,
       file: undefined,
       currentChatId: null,
@@ -200,10 +200,7 @@ export class ChatStore {
   }
 
   @Action(ChatActions.SetIsTranscribing)
-  setIsTranscribing(
-    ctx: StateContext<ChatStoreModel>,
-    { payload }: ChatActions.SetIsTranscribing,
-  ) {
+  setIsTranscribing(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.SetIsTranscribing) {
     ctx.patchState({ isTranscribing: payload });
   }
 
