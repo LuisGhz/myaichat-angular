@@ -80,15 +80,17 @@ export class PromptForm {
     return this.form.controls.messages;
   }
 
-  #loadPrompt(id: string): void {
-    const prompt = this.#promptService.getById(id);
-    if (prompt) {
+  async #loadPrompt(id: string): Promise<void> {
+    try {
+      const prompt = await this.#promptService.getById(id);
       this.form.patchValue({
         name: prompt.name,
         content: prompt.content,
       });
       this.messages.clear();
       prompt.messages.forEach((m) => this.#addMessageControl(m));
+    } catch (error) {
+      console.error('Failed to load prompt:', error);
     }
   }
 
@@ -121,34 +123,38 @@ export class PromptForm {
     this.cancelled.emit();
   }
 
-  onSave(): void {
+  async onSave(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
     const formValue = this.form.getRawValue();
-    const messages: Omit<PromptMessageModel, 'id'>[] = formValue.messages.map((m) => ({
+    const messages = formValue.messages.map((m) => ({
       role: m.role,
       content: m.content,
     }));
 
-    const promptId = this.promptId();
-    if (promptId) {
-      this.#promptService.update(promptId, {
-        name: formValue.name,
-        content: formValue.content,
-        messages: messages as PromptMessageModel[],
-      });
-    } else {
-      this.#promptService.create({
-        name: formValue.name,
-        content: formValue.content,
-        messages: messages as PromptMessageModel[],
-      });
-    }
+    try {
+      const promptId = this.promptId();
+      if (promptId) {
+        await this.#promptService.update(promptId, {
+          name: formValue.name,
+          content: formValue.content,
+          messages,
+        });
+      } else {
+        await this.#promptService.create({
+          name: formValue.name,
+          content: formValue.content,
+          messages,
+        });
+      }
 
-    this.#resetForm();
-    this.saved.emit();
+      this.#resetForm();
+      this.saved.emit();
+    } catch (error) {
+      console.error('Failed to save prompt:', error);
+    }
   }
 }
