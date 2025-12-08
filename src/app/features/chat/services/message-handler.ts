@@ -25,6 +25,7 @@ export class MessagesHandler {
   #chatOps = select(ChatStore.getOps);
   #addUserChat = dispatch(AppActions.AddUserChat);
   #setIsSending = dispatch(ChatActions.SetIsSending);
+  #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
 
   handleUserMessage(message: string, chatId?: string): void {
     const ops = this.#chatOps();
@@ -69,7 +70,7 @@ export class MessagesHandler {
   #handleNewChat({ data }: StreamDoneEvent): void {
     if (!this.#location.path().includes(data.chatId)) {
       this.#location.replaceState(`/chat/${data.chatId}`);
-
+      this.#setCurrentChatId(data.chatId);
       this.#addUserChat({
         id: data.chatId,
         title: data.title,
