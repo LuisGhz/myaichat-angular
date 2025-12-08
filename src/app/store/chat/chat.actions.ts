@@ -18,7 +18,7 @@ export namespace ChatActions {
 
   export class LoadMessages {
     static readonly type = `${preffix} Load Messages`;
-    constructor(public payload: Message[]) {}
+    constructor(public payload: { messages: Message[]; maxTokens: number; temperature: number }) {}
   }
 
   export class AddUserMessage {
