@@ -14,6 +14,9 @@ export class ChatStreamApi extends SseBaseService {
     formData.append('temperature', req.temperature.toString());
     formData.append('isImageGeneration', req.isImageGeneration.toString());
     formData.append('isWebSearch', req.isWebSearch.toString());
+    if (req.promptId) {
+      formData.append('promptId', req.promptId);
+    }
 
     if (req.chatId) {
       formData.append('chatId', req.chatId);
