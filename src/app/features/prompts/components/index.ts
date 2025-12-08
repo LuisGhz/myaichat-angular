@@ -1,1 +1,1 @@
-export { PromptForm } from './prompt-form/prompt-form';
+// Components have been consolidated into pages
