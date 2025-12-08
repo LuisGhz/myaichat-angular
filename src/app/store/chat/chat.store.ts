@@ -103,7 +103,9 @@ export class ChatStore {
   loadMessages(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.LoadMessages) {
     ctx.setState({
       ...ctx.getState(),
-      messages: payload,
+      messages: payload.messages,
+      maxTokens: payload.maxTokens,
+      temperature: payload.temperature,
     });
   }
 
