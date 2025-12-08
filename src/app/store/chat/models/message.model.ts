@@ -7,3 +7,9 @@ export interface Message {
   outputTokens?: number;
   file?: File | string;
 }
+
+export interface MessagesHistoryModel {
+  messages: Message[];
+  maxTokens: number;
+  temperature: number;
+}
