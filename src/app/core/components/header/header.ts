@@ -1,19 +1,28 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { AiModelModel } from '../../../features/chat/models';
+import { NavigationEnd, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
-  imports: [FormsModule, NzButtonModule, NzIconModule, NzSelectModule, NzToolTipModule],
+  imports: [],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  protected readonly models = signal<AiModelModel[]>([]);
+  #title = inject(Title);
+  #router = inject(Router);
+  headerTitle = signal('');
 
-  protected selectedModel = 'gpt-4';
+  ngOnInit(): void {
+    this.#router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      setTimeout(() => {
+        this.headerTitle.set(this.#title.getTitle());
+      }, 150);
+    });
+
+    setTimeout(() => {
+      this.headerTitle.set(this.#title.getTitle());
+    }, 1000);
+  }
 }
