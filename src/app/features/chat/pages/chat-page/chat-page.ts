@@ -100,6 +100,13 @@ export class ChatPage implements OnInit, AfterViewInit {
         promptId: promptId || undefined,
       });
     });
+
+    effect(() => {
+      if (this.messages().length > 0 && this.messages()[this.messages().length - 1].role === 'user')
+        setTimeout(() => {
+          this.#scrollToBottom();
+        }, 100);
+    });
   }
 
   ngOnInit(): void {
