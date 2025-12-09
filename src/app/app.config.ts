@@ -54,7 +54,7 @@ import {
   SettingFill,
 } from '@ant-design/icons-angular/icons';
 import { provideMarkdown } from 'ngx-markdown';
-import { authInterceptor } from '@core/interceptors';
+import { authInterceptor, errorHandlerInterceptor } from '@core/interceptors';
 import { ChatStore } from '@st/chat/chat.store';
 import { AppStore } from '@st/app/app.store';
 
@@ -97,7 +97,7 @@ registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorHandlerInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
