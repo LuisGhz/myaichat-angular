@@ -1,14 +1,17 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   effect,
+  ElementRef,
   inject,
   linkedSignal,
   OnInit,
   resource,
   signal,
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputMessage } from '@chat/components/input/input-message';
@@ -29,7 +32,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './chat-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatPage implements OnInit {
+export class ChatPage implements OnInit, AfterViewInit {
+  messagesContainer = viewChild<ElementRef<HTMLElement>>('messagesContainer');
   #activatedRoute = inject(ActivatedRoute);
   #chatApi = inject(ChatApi);
   #destroyRef = inject(DestroyRef);
@@ -104,6 +108,20 @@ export class ChatPage implements OnInit {
         this.#setCurrentChatId(null);
         this.#resetChat();
       }
+      this.#scrollToBottom();
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.#scrollToBottom();
+  }
+
+  #scrollToBottom(): void {
+    setTimeout(() => {
+      this.messagesContainer()?.nativeElement.scrollTo({
+        top: this.messagesContainer()!.nativeElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 250);
   }
 }

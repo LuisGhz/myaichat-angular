@@ -2,6 +2,7 @@
   <section
     class="flex flex-col items-center justify-center px-4 overflow-y-auto thin-scrollbar"
     [class.flex-1]="messages().length > 0"
+    #messagesContainer
   >
     @if (messages().length === 0) {
       <h1 class="text-2xl app-text mb-8 text-center">What can I help with?</h1>
