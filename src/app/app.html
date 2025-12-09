@@ -1,13 +1,17 @@
 @if (isAuthenticated()) {
-  <nz-layout class="h-dvh">
+  <nz-layout class="h-dvh relative">
     <nz-sider
-      [nzCollapsed]="sidebarCollapsed()"
+      [nzCollapsed]="isSidebarCollapsed()"
       [nzCollapsedWidth]="collapsedWidth()"
       [nzWidth]="260"
-      class="app-bg-base"
+      [class.absolute!]="isMobile()"
+      class="app-bg-base top-0 left-0 h-dvh z-50"
     >
       <app-sider />
     </nz-sider>
+    @if (isMobile() && !isSidebarCollapsed()) {
+      <div class="absolute w-dvw h-dvh bg-black/35 z-10" (click)="closeFromBackdrop()"></div>
+    }
     <nz-layout>
       <nz-header class="h-12! p-0! app-bg-surface">
         <app-header />

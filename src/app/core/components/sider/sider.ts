@@ -73,6 +73,9 @@ export class Sider {
   chatTitleToRename = signal<string | null>(null);
   #renameChat = dispatch(AppActions.RenameChat);
   currentChatId = select(ChatStore.getCurrentChatId);
+  readonly #isMobile = select(AppStore.isMobile);
+  readonly #isSidebarCollapsed = select(AppStore.sidebarCollapsed);
+  readonly #collapseSidebar = dispatch(AppActions.CollapseSidebar);
 
   constructor() {
     effect(() => {
@@ -86,6 +89,7 @@ export class Sider {
 
   onNavigateToPrompts(): void {
     this.#router.navigate(['/prompts']);
+    this.collapseIfMobileAndNotCollapsed();
   }
 
   onDeleteChatConfirmed(chatId: string): void {
@@ -130,5 +134,11 @@ export class Sider {
 
   onCancelRename(): void {
     this.isRenameChatModalVisible.set(false);
+  }
+
+  collapseIfMobileAndNotCollapsed(): void {
+    if (this.#isMobile() && !this.#isSidebarCollapsed()) {
+      this.#collapseSidebar();
+    }
   }
 }
