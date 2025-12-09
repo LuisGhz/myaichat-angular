@@ -7,6 +7,19 @@ export namespace AppActions {
     static readonly type = `${type} Toggle Sidebar`;
   }
 
+  export class CollapseSidebar {
+    static readonly type = `${type} Collapse Sidebar`;
+  }
+
+  export class UnCollapseSidebar {
+    static readonly type = `${type} Uncollapse Sidebar`;
+  }
+
+  export class SetIsMobile {
+    static readonly type = `${type} Is Mobile`;
+    constructor(public payload: boolean) {}
+  }
+
   export class SelectChat {
     static readonly type = `${type} Select Chat`;
     constructor(public payload: string | null) {}
