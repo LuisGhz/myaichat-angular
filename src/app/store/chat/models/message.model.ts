@@ -12,4 +12,5 @@ export interface MessagesHistoryModel {
   messages: Message[];
   maxTokens: number;
   temperature: number;
+  hasMore: boolean;
 }
