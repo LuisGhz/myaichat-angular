@@ -21,6 +21,8 @@ export interface ChatStoreModel {
   messageText: string;
   isTranscribing: boolean;
   isSending: boolean;
+  hasMoreMessages: boolean;
+  isLoadingOlderMessages: boolean;
 }
 
 export interface AssistantMessageChunk {
