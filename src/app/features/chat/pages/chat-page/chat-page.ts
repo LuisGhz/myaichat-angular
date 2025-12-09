@@ -25,6 +25,8 @@ import { ChatApi } from '@chat/services/chat-api';
 import { ActivatedRoute } from '@angular/router';
 import { ChatActions } from '@st/chat/chat.actions';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-view',
@@ -41,7 +43,11 @@ export class ChatPage implements OnInit, AfterViewInit {
   #resetChat = dispatch(ChatActions.ResetChat);
   #setOps = dispatch(ChatActions.SetOps);
   #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
+  #prependMessages = dispatch(ChatActions.PrependMessages);
+  #setIsLoadingOlderMessages = dispatch(ChatActions.SetIsLoadingOlderMessages);
   messages = select(ChatStore.getMessages);
+  hasMoreMessages = select(ChatStore.hasMoreMessages);
+  isLoadingOlderMessages = select(ChatStore.isLoadingOlderMessages);
 
   #isLoadedChat = signal(false);
   shouldAnimateTransition = computed(() => !this.#isLoadedChat());
@@ -114,6 +120,7 @@ export class ChatPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.#scrollToBottom();
+    this.#setupScrollListener();
   }
 
   #scrollToBottom(): void {
@@ -123,5 +130,66 @@ export class ChatPage implements OnInit, AfterViewInit {
         behavior: 'smooth',
       });
     }, 250);
+  }
+
+  #setupScrollListener(): void {
+    const container = this.messagesContainer()?.nativeElement;
+    if (!container) return;
+
+    fromEvent(container, 'scroll')
+      .pipe(debounceTime(100), takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => {
+        this.#onScroll();
+      });
+  }
+
+  #onScroll(): void {
+    const container = this.messagesContainer()?.nativeElement;
+    if (!container) return;
+
+    const scrollTop = container.scrollTop;
+    const threshold = 50;
+
+    if (
+      scrollTop <= threshold &&
+      this.hasMoreMessages() &&
+      !this.isLoadingOlderMessages() &&
+      this.messages().length > 0
+    ) {
+      this.#loadOlderMessages();
+    }
+  }
+
+  async #loadOlderMessages(): Promise<void> {
+    const currentChatId = this.#activatedRoute.snapshot.params['id'];
+    if (!currentChatId) return;
+
+    const oldestMessage = this.messages()[0];
+    if (!oldestMessage?.id) return;
+
+    const container = this.messagesContainer()?.nativeElement;
+    if (!container) return;
+
+    const previousScrollHeight = container.scrollHeight;
+
+    this.#setIsLoadingOlderMessages(true);
+
+    try {
+      const result = await this.#chatApi.loadOlderMessages(currentChatId, oldestMessage.id);
+      this.#prependMessages({
+        messages: result.messages,
+        hasMore: result.hasMore,
+      });
+
+      setTimeout(() => {
+        const newScrollHeight = container.scrollHeight;
+        const scrollDifference = newScrollHeight - previousScrollHeight;
+        container.scrollTop = scrollDifference;
+      }, 0);
+    } catch (error) {
+      console.error('Error loading older messages:', error);
+    } finally {
+      this.#setIsLoadingOlderMessages(false);
+    }
   }
 }
