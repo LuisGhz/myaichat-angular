@@ -11,6 +11,7 @@ import { UserChatsModel } from '@chat/models/chat.model';
     sidebarCollapsed: false,
     selectedChatId: null,
     userChats: [],
+    isMobile: false,
   },
 })
 @Injectable()
@@ -21,6 +22,27 @@ export class AppStore {
     const state = ctx.getState();
     ctx.patchState({
       sidebarCollapsed: !state.sidebarCollapsed,
+    });
+  }
+
+  @Action(AppActions.CollapseSidebar)
+  collapseSidebar(ctx: StateContext<AppStoreModel>) {
+    ctx.patchState({
+      sidebarCollapsed: true,
+    });
+  }
+
+  @Action(AppActions.UnCollapseSidebar)
+  unCollapseSidebar(ctx: StateContext<AppStoreModel>) {
+    ctx.patchState({
+      sidebarCollapsed: false,
+    });
+  }
+
+  @Action(AppActions.SetIsMobile)
+  setIsMobile(ctx: StateContext<AppStoreModel>, { payload }: AppActions.SetIsMobile) {
+    ctx.patchState({
+      isMobile: payload,
     });
   }
 
@@ -62,6 +84,11 @@ export class AppStore {
         chat.id === payload.chatId ? { ...chat, title: payload.newTitle } : chat,
       ),
     });
+  }
+
+  @Selector()
+  static isMobile(state: AppStoreModel): boolean {
+    return state.isMobile;
   }
 
   @Selector()
