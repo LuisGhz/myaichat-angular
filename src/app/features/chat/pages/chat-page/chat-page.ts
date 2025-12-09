@@ -13,6 +13,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { InputMessage } from '@chat/components/input/input-message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -27,6 +28,7 @@ import { ChatActions } from '@st/chat/chat.actions';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AppStore } from '@st/app/app.store';
 
 @Component({
   selector: 'app-chat-view',
@@ -45,6 +47,8 @@ export class ChatPage implements OnInit, AfterViewInit {
   #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
   #prependMessages = dispatch(ChatActions.PrependMessages);
   #setIsLoadingOlderMessages = dispatch(ChatActions.SetIsLoadingOlderMessages);
+  #userChats = select(AppStore.userChats);
+  #title = inject(Title);
   messages = select(ChatStore.getMessages);
   hasMoreMessages = select(ChatStore.hasMoreMessages);
   isLoadingOlderMessages = select(ChatStore.isLoadingOlderMessages);
@@ -116,13 +120,27 @@ export class ChatPage implements OnInit, AfterViewInit {
         this.#isLoadedChat.set(true);
         this.#setCurrentChatId(chatId);
         this.#chatApi.loadMessages(chatId);
+        this.#setChatTitle(chatId);
       } else {
         this.#isLoadedChat.set(false);
         this.#setCurrentChatId(null);
         this.#resetChat();
+        this.#setChatTitle(null);
       }
       this.#scrollToBottom();
     });
+  }
+
+  #setChatTitle(currentChatId: string | null): void {
+    if (currentChatId === null) {
+      this.#title.setTitle('New Chat');
+      return;
+    }
+
+    const currentChat = this.#userChats().find((chat) => chat.id === currentChatId);
+    if (!currentChatId) return;
+    const title = currentChat ? currentChat.title : 'New Chat';
+    this.#title.setTitle(title!);
   }
 
   ngAfterViewInit(): void {
