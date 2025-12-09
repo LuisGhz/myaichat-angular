@@ -1,6 +1,9 @@
 <div class="flex flex-col h-full">
   <div class="flex items-center justify-end p-4 border-b border-dark-input">
-    <button class="app-text px-3 py-2 app-bg-base app-hover-bg-base trans-c-200 rounded-lg cursor-pointer" (click)="onCreate()">
+    <button
+      class="app-text px-3 py-2 app-bg-base app-hover-bg-base trans-c-200 rounded-lg cursor-pointer"
+      (click)="onCreate()"
+    >
       <span nz-icon nzType="plus"></span>
       New Prompt
     </button>
@@ -17,11 +20,11 @@
     } @else {
       @for (prompt of prompts.value(); track prompt.id) {
         <div
-          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-dark-input mb-1 transition-colors max-w-xl mx-auto"
+          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-300 hover:dark:bg-dark-input mb-1 transition-colors max-w-xl mx-auto"
           (click)="onSelectPrompt(prompt.id)"
         >
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-gray-200 truncate">
+            <div class="text-sm font-medium app-text truncate">
               {{ prompt.name }}
             </div>
           </div>
@@ -30,19 +33,19 @@
               nz-button
               nzType="text"
               nzSize="small"
-              class="text-gray-400! hover:text-gray-200! hover:bg-dark-border!"
+              class="text-gray-600! dark:text-gray-400! hover:text-gray-800! hover:dark:text-gray-200! hover:dark:bg-dark-border!"
               (click)="onEdit(prompt.id, $event)"
             >
-              <span nz-icon nzType="edit"></span>
+              <span class="text-lg!" nz-icon nzType="edit"></span>
             </button>
             <button
               nz-button
               nzType="text"
               nzSize="small"
-              class="text-red-400! hover:text-red-300! hover:bg-dark-border!"
+              class="text-red-400! hover:text-red-600! hover:dark:text-red-300! hover:dark:bg-dark-border!"
               (click)="onDelete(prompt.id, $event)"
             >
-              <span nz-icon nzType="delete"></span>
+              <span class="text-lg!" nz-icon nzType="delete"></span>
             </button>
           </div>
         </div>
