@@ -20,6 +20,8 @@ import { FileStoreService } from './services';
     isTranscribing: false,
     isSending: false,
     promptId: undefined,
+    hasMoreMessages: true,
+    isLoadingOlderMessages: false,
   },
 })
 export class ChatStore {
@@ -40,6 +42,8 @@ export class ChatStore {
       isTranscribing: false,
       isSending: false,
       promptId: undefined,
+      hasMoreMessages: true,
+      isLoadingOlderMessages: false,
     });
     this.#fileStore.clear();
   }
@@ -68,6 +72,7 @@ export class ChatStore {
     ctx.setState({
       ...state,
       messages: [...state.messages, { role: 'user', content: payload, file }],
+      hasMoreMessages: true,
     });
   }
 
@@ -108,6 +113,7 @@ export class ChatStore {
       messages: payload.messages,
       maxTokens: payload.maxTokens,
       temperature: payload.temperature,
+      hasMoreMessages: payload.hasMore,
     });
   }
 
@@ -211,6 +217,24 @@ export class ChatStore {
     ctx.patchState({ isSending: payload });
   }
 
+  @Action(ChatActions.PrependMessages)
+  prependMessages(ctx: StateContext<ChatStoreModel>, { payload }: ChatActions.PrependMessages) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      messages: [...payload.messages, ...state.messages],
+      hasMoreMessages: payload.hasMore,
+    });
+  }
+
+  @Action(ChatActions.SetIsLoadingOlderMessages)
+  setIsLoadingOlderMessages(
+    ctx: StateContext<ChatStoreModel>,
+    { payload }: ChatActions.SetIsLoadingOlderMessages,
+  ) {
+    ctx.patchState({ isLoadingOlderMessages: payload });
+  }
+
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
@@ -257,5 +281,15 @@ export class ChatStore {
   @Selector()
   static isSending(state: ChatStoreModel) {
     return state.isSending;
+  }
+
+  @Selector()
+  static hasMoreMessages(state: ChatStoreModel) {
+    return state.hasMoreMessages;
+  }
+
+  @Selector()
+  static isLoadingOlderMessages(state: ChatStoreModel) {
+    return state.isLoadingOlderMessages;
   }
 }
