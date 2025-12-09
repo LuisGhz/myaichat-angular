@@ -18,7 +18,9 @@ export namespace ChatActions {
 
   export class LoadMessages {
     static readonly type = `${preffix} Load Messages`;
-    constructor(public payload: { messages: Message[]; maxTokens: number; temperature: number }) {}
+    constructor(
+      public payload: { messages: Message[]; maxTokens: number; temperature: number; hasMore: boolean },
+    ) {}
   }
 
   export class AddUserMessage {
@@ -77,6 +79,16 @@ export namespace ChatActions {
 
   export class SetIsSending {
     static readonly type = `${preffix} Set Is Sending`;
+    constructor(public payload: boolean) {}
+  }
+
+  export class PrependMessages {
+    static readonly type = `${preffix} Prepend Messages`;
+    constructor(public payload: { messages: Message[]; hasMore: boolean }) {}
+  }
+
+  export class SetIsLoadingOlderMessages {
+    static readonly type = `${preffix} Set Is Loading Older Messages`;
     constructor(public payload: boolean) {}
   }
 }
