@@ -19,6 +19,12 @@ export class ChatApi extends HttpBaseService {
     this.#setOps({ maxTokens: res.maxTokens, temperature: res.temperature });
   }
 
+  loadOlderMessages(chatId: string, beforeMessageId: string) {
+    return this.getP<MessagesHistoryModel>(
+      `/chat/${chatId}/messages?beforeMessageId=${beforeMessageId}`,
+    );
+  }
+
   getChats() {
     return this.getP<UserChatsModel[]>('/chat');
   }
