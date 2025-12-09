@@ -6,13 +6,16 @@ export const PROMPTS_ROUTES: Routes = [
   {
     path: '',
     component: PromptsHomePage,
+    title: 'Prompts',
   },
   {
     path: 'new',
     component: PromptFormPage,
+    title: 'New Prompt',
   },
   {
     path: ':id',
     component: PromptFormPage,
+    title: 'Edit Prompt',
   },
 ];
