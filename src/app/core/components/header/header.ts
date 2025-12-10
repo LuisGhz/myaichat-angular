@@ -15,12 +15,12 @@ import { AppActions } from '@st/app/app.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  #title = inject(Title);
-  #router = inject(Router);
+  readonly #title = inject(Title);
+  readonly #router = inject(Router);
+  readonly unCollapseSideNav = dispatch(AppActions.UnCollapseSidebar);
+  readonly isCollapsed = select(AppStore.sidebarCollapsed);
+  readonly isMobile = select(AppStore.isMobile);
   headerTitle = signal('');
-  unCollapseSideNav = dispatch(AppActions.UnCollapseSidebar);
-  isCollapsed = select(AppStore.sidebarCollapsed);
-  isMobile = select(AppStore.isMobile);
 
   ngOnInit(): void {
     this.#router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {

@@ -11,23 +11,23 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuccessPage {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private store = inject(Store);
+  readonly #route = inject(ActivatedRoute);
+  readonly #router = inject(Router);
+  readonly #store = inject(Store);
 
   constructor() {
     effect(() => {
-      this.route.queryParams.subscribe((params) => {
+      this.#route.queryParams.subscribe((params) => {
         const accessToken = params['accessToken'];
         console.log('Access Token:', accessToken);
         if (accessToken) {
-          this.store.dispatch(new AuthActions.Login({ token: accessToken })).subscribe(() => {
+          this.#store.dispatch(new AuthActions.Login({ token: accessToken })).subscribe(() => {
             setTimeout(() => {
-              this.router.navigate(['/']);
+              this.#router.navigate(['/']);
             }, 500);
           });
         } else {
-          this.router.navigate(['/auth/login']);
+          this.#router.navigate(['/auth/login']);
         }
       });
     });

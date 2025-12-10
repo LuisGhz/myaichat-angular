@@ -17,13 +17,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.css',
 })
 export class App {
-  readonly isSidebarCollapsed = select(AppStore.sidebarCollapsed);
-  readonly isAuthenticated = select(AuthStore.isAuthenticated);
+  readonly #breakpointObserver = inject(BreakpointObserver);
   readonly #collapse = dispatch(AppActions.CollapseSidebar);
   readonly #uncollapse = dispatch(AppActions.UnCollapseSidebar);
-  readonly #breakpointObserver = inject(BreakpointObserver);
   readonly #setIsMobile = dispatch(AppActions.SetIsMobile);
   readonly #mobileQuery = '(max-width: 991px)';
+  readonly isSidebarCollapsed = select(AppStore.sidebarCollapsed);
+  readonly isAuthenticated = select(AuthStore.isAuthenticated);
   collapsedWidth = signal(60);
   isMobile = signal(false);
 

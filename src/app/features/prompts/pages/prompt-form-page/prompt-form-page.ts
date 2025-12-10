@@ -46,18 +46,16 @@ interface PromptFormGroup {
 export class PromptFormPage {
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
+  readonly #cdr = inject(ChangeDetectorRef);
   readonly #fb = inject(FormBuilder);
   readonly #promptsApi = inject(PromptsApi);
-  readonly #cdr = inject(ChangeDetectorRef);
-
   readonly promptId = this.#route.snapshot.paramMap.get('id');
-  readonly isEditMode = signal(false);
-
   readonly form = this.#fb.group<PromptFormGroup>({
     name: this.#fb.control('', { nonNullable: true, validators: [Validators.required] }),
     content: this.#fb.control('', { nonNullable: true, validators: [Validators.required] }),
     messages: this.#fb.array<FormGroup<MessageFormGroup>>([]),
   });
+  readonly isEditMode = signal(false);
 
   constructor() {
     effect(() => {

@@ -12,7 +12,7 @@ import { ChatStore } from '@st/chat/chat.store';
   host: { class: 'block h-full w-full' },
 })
 export class Messages {
-  messages = select(ChatStore.getMessages);
+  readonly messages = select(ChatStore.getMessages);
   #copiedIndex = signal<number | null>(null);
 
   onCopyClick(content: string, index: number): void {

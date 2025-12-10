@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage implements OnInit {
-  #route = inject(ActivatedRoute);
+  readonly #route = inject(ActivatedRoute);
   errorMessage = signal<string | null>(null);
 
   ngOnInit() {

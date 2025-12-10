@@ -14,30 +14,26 @@ import { ChatActions } from '@st/chat/chat.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilePreview {
-  #fileStoreService = inject(FileStoreService);
-  #fileInfo = select(ChatStore.getOps);
-  #removeFile = dispatch(ChatActions.RemoveFile);
-
-  isImage = computed(() => {
+  readonly #fileStoreService = inject(FileStoreService);
+  readonly #fileInfo = select(ChatStore.getOps);
+  readonly #removeFile = dispatch(ChatActions.RemoveFile);
+  readonly isImage = computed(() => {
     const fileInfo = this.#fileInfo().file;
     if (!fileInfo) return false;
     return fileInfo.type.startsWith('image/');
   });
-
-  imagePreview = computed(() => {
+  readonly imagePreview = computed(() => {
     const fileInfo = this.#fileInfo().file;
     if (!fileInfo) return '';
     const file = this.#fileStoreService.getFile(fileInfo.id);
     return file ? URL.createObjectURL(file) : '';
   });
-
-  fileIcon = computed(() => {
+  readonly fileIcon = computed(() => {
     const fileInfo = this.#fileInfo().file;
     if (!fileInfo) return 'file';
     return this.#getIconForFile(fileInfo);
   });
-
-  fileName = computed(() => {
+  readonly fileName = computed(() => {
     const fileInfo = this.#fileInfo().file;
     return fileInfo?.name || '';
   });

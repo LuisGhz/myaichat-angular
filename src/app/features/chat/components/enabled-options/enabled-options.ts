@@ -11,11 +11,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnabledOptions {
-  isImageGeneration = select(ChatStore.isImageGeneration);
-  #disableImageGeneration = dispatch(ChatActions.DisableImageGeneration);
-  isWebSearch = select(ChatStore.isWebSearch);
-  #disableWebSearch = dispatch(ChatActions.DisableWebSearch);
-
+  readonly isImageGeneration = select(ChatStore.isImageGeneration);
+  readonly isWebSearch = select(ChatStore.isWebSearch);
+  readonly #disableImageGeneration = dispatch(ChatActions.DisableImageGeneration);
+  readonly #disableWebSearch = dispatch(ChatActions.DisableWebSearch);
   isImageGenerationHovered = signal(false);
   isWebSearchHovered = signal(false);
 

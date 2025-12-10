@@ -37,43 +37,29 @@ import { AppStore } from '@st/app/app.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatPage implements OnInit, AfterViewInit {
-  messagesContainer = viewChild<ElementRef<HTMLElement>>('messagesContainer');
-  #activatedRoute = inject(ActivatedRoute);
-  #chatApi = inject(ChatApi);
-  #destroyRef = inject(DestroyRef);
-  #aiModelsApi = inject(AiModelsApi);
-  #resetChat = dispatch(ChatActions.ResetChat);
-  #setOps = dispatch(ChatActions.SetOps);
-  #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
-  #prependMessages = dispatch(ChatActions.PrependMessages);
-  #setIsLoadingOlderMessages = dispatch(ChatActions.SetIsLoadingOlderMessages);
-  #userChats = select(AppStore.userChats);
-  #title = inject(Title);
-  messages = select(ChatStore.getMessages);
-  hasMoreMessages = select(ChatStore.hasMoreMessages);
-  isLoadingOlderMessages = select(ChatStore.isLoadingOlderMessages);
-
-  #isLoadedChat = signal(false);
-  shouldAnimateTransition = computed(() => !this.#isLoadedChat());
-
-  models = resource({
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #title = inject(Title);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #chatApi = inject(ChatApi);
+  readonly #aiModelsApi = inject(AiModelsApi);
+  readonly models = resource({
     loader: () => this.#aiModelsApi.getAiModels(),
     defaultValue: [],
   });
-
-  prompts = resource({
+  readonly prompts = resource({
     loader: () => this.#chatApi.getPrompts(),
     defaultValue: [],
   });
-
-  selectedModel = linkedSignal(() => {
-    const models = this.models.value();
-    return models.length > 0 ? models[0].id : null;
-  });
-
-  selectedPrompt = signal<string | null>(null);
-
-  groupedModels = computed(() => {
+  readonly #userChats = select(AppStore.userChats);
+  readonly messages = select(ChatStore.getMessages);
+  readonly hasMoreMessages = select(ChatStore.hasMoreMessages);
+  readonly isLoadingOlderMessages = select(ChatStore.isLoadingOlderMessages);
+  readonly #resetChat = dispatch(ChatActions.ResetChat);
+  readonly #setOps = dispatch(ChatActions.SetOps);
+  readonly #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
+  readonly #prependMessages = dispatch(ChatActions.PrependMessages);
+  readonly #setIsLoadingOlderMessages = dispatch(ChatActions.SetIsLoadingOlderMessages);
+  readonly groupedModels = computed(() => {
     const modelList = this.models.value();
     const grouped = new Map<string, AiModelModel[]>();
 
@@ -87,6 +73,14 @@ export class ChatPage implements OnInit, AfterViewInit {
 
     return grouped;
   });
+  readonly shouldAnimateTransition = computed(() => !this.#isLoadedChat());
+  readonly #isLoadedChat = signal(false);
+  selectedModel = linkedSignal(() => {
+    const models = this.models.value();
+    return models.length > 0 ? models[0].id : null;
+  });
+  selectedPrompt = signal<string | null>(null);
+  messagesContainer = viewChild<ElementRef<HTMLElement>>('messagesContainer');
 
   constructor() {
     effect(() => {

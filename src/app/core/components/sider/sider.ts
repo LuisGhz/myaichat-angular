@@ -47,35 +47,35 @@ import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-moda
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Sider {
-  #router = inject(Router);
-  #chatApi = inject(ChatApi);
-  #updateUserChats = dispatch(AppActions.UpdateUserChats);
-  userEmail = select(AuthStore.email);
-  sidebarCollapsed = select(AppStore.sidebarCollapsed);
-  #toggleSidebar = dispatch(AppActions.ToggleSidebar);
-  #deleteChat = dispatch(AppActions.DeleteChat);
-  searchQuery = signal('');
-  chatsResource = resource({
+  readonly #router = inject(Router);
+  readonly #modalService = inject(NzModalService);
+  readonly #chatApi = inject(ChatApi);
+  readonly chatsResource = resource({
     loader: () => this.#chatApi.getChats(),
   });
-  #userChats = select(AppStore.userChats);
-  filteredChats = computed(() => {
+  readonly #userChats = select(AppStore.userChats);
+  readonly #isMobile = select(AppStore.isMobile);
+  readonly #isSidebarCollapsed = select(AppStore.sidebarCollapsed);
+  readonly #updateUserChats = dispatch(AppActions.UpdateUserChats);
+  readonly #toggleSidebar = dispatch(AppActions.ToggleSidebar);
+  readonly #deleteChat = dispatch(AppActions.DeleteChat);
+  readonly #renameChat = dispatch(AppActions.RenameChat);
+  readonly #collapseSidebar = dispatch(AppActions.CollapseSidebar);
+  readonly filteredChats = computed(() => {
     const chats = this.#userChats() ?? [];
     const query = this.searchQuery().toLowerCase().trim();
     if (!query) return chats;
     return chats.filter((chat) => chat.title?.toLowerCase().includes(query));
   });
+  searchQuery = signal('');
   isDeleteChatModalVisible = signal(false);
   chatIdToDelete = signal<string | null>(null);
-  #modalService = inject(NzModalService);
   chatIdToRename = signal<string | null>(null);
   isRenameChatModalVisible = signal(false);
   chatTitleToRename = signal<string | null>(null);
-  #renameChat = dispatch(AppActions.RenameChat);
-  currentChatId = select(ChatStore.getCurrentChatId);
-  readonly #isMobile = select(AppStore.isMobile);
-  readonly #isSidebarCollapsed = select(AppStore.sidebarCollapsed);
-  readonly #collapseSidebar = dispatch(AppActions.CollapseSidebar);
+  readonly userEmail = select(AuthStore.email);
+  readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
+  readonly currentChatId = select(ChatStore.getCurrentChatId);
 
   constructor() {
     effect(() => {

@@ -23,18 +23,15 @@ interface MenuOption {
   },
 })
 export class MoreOptions {
-  #elementRef = inject(ElementRef);
-  #fileStoreService = inject(FileStoreService);
-  #fileInput: HTMLInputElement | null = null;
-  #setOps = dispatch(ChatActions.SetOps);
-  #enableImageGeneration = dispatch(ChatActions.EnableImageGeneration);
-  #enableWebSearch = dispatch(ChatActions.EnableWebSearch);
-  #isImageGeneration = select(ChatStore.isImageGeneration);
-  #isWebSearch = select(ChatStore.isWebSearch);
+  readonly #elementRef = inject(ElementRef);
+  readonly #fileStoreService = inject(FileStoreService);
+  readonly #isImageGeneration = select(ChatStore.isImageGeneration);
+  readonly #isWebSearch = select(ChatStore.isWebSearch);
+  readonly #setOps = dispatch(ChatActions.SetOps);
+  readonly #enableImageGeneration = dispatch(ChatActions.EnableImageGeneration);
+  readonly #enableWebSearch = dispatch(ChatActions.EnableWebSearch);
   isAdvancedSettingsVisible = signal(false);
-
   isMenuOpen = signal(false);
-
   menuOptions = signal<MenuOption[]>([
     {
       icon: 'paper-clip',
@@ -51,6 +48,7 @@ export class MoreOptions {
       onClick: () => this.#showAdvancedSettings(),
     },
   ]);
+  #fileInput: HTMLInputElement | null = null;
 
   constructor() {
     this.createFileInput();

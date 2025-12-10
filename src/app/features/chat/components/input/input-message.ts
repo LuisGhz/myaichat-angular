@@ -26,13 +26,13 @@ import { Microphone } from '../microphone/microphone';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputMessage {
-  #messagesHandler = inject(MessagesHandler);
-  file = select(ChatStore.getOps)().file;
-  #dispatch = dispatch(ChatActions.SetMessageText);
-  currentChatId = select(ChatStore.getCurrentChatId);
-  messageText = select(ChatStore.getMessageText);
-  isTranscribing = select(ChatStore.isTranscribing);
-  isSending = select(ChatStore.isSending);
+  readonly #messagesHandler = inject(MessagesHandler);
+  readonly #dispatch = dispatch(ChatActions.SetMessageText);
+  readonly file = select(ChatStore.getOps)().file;
+  readonly currentChatId = select(ChatStore.getCurrentChatId);
+  readonly messageText = select(ChatStore.getMessageText);
+  readonly isTranscribing = select(ChatStore.isTranscribing);
+  readonly isSending = select(ChatStore.isSending);
   @ViewChild(Microphone) microphone?: Microphone;
 
   onMessageTextChange(value: string): void {

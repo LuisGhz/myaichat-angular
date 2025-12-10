@@ -18,14 +18,12 @@ const SECONDS_PER_MINUTE = 60;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Microphone implements OnDestroy {
-  #chatApi = inject(ChatApi);
-  #setMessageText = dispatch(ChatActions.SetMessageText);
-  #setIsTranscribing = dispatch(ChatActions.SetIsTranscribing);
-
+  readonly #chatApi = inject(ChatApi);
+  readonly #setMessageText = dispatch(ChatActions.SetMessageText);
+  readonly #setIsTranscribing = dispatch(ChatActions.SetIsTranscribing);
   isRecording = signal(false);
   isTranscribing = signal(false);
   recordingTime = signal(INITIAL_TIME);
-
   #mediaRecorder: MediaRecorder | null = null;
   #chunks: Blob[] = [];
   #timerInterval: any;

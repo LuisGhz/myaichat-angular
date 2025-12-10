@@ -12,9 +12,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptsHomePage {
-  readonly #promptsApi = inject(PromptsApi);
   readonly #router = inject(Router);
-  prompts = resource({
+  readonly #promptsApi = inject(PromptsApi);
+  readonly prompts = resource({
     loader: () => this.#promptsApi.fetchAll(),
     defaultValue: [],
   });

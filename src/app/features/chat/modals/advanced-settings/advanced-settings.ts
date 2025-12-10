@@ -39,25 +39,23 @@ export class AdvancedSettings implements OnInit {
   isVisible = input.required<boolean>();
   closeModal = output<void>();
 
-  #fb = inject(FormBuilder);
-  #chatApi = inject(ChatApi);
-  #ops = select(ChatStore.getOps);
-  #currentChatId = select(ChatStore.getCurrentChatId);
-  #setOps = dispatch(ChatActions.SetOps);
-  #destroyRef = inject(DestroyRef);
-  #minTokens = 100;
-  #maxTokens = 8000;
-  #minTemperature = 0;
-  #maxTemperature = 1;
-
-  maxTokens = computed(() => this.#ops().maxTokens);
-  maxTokensTimeout: number | null = null;
-  temperature = computed(() => this.#ops().temperature);
-  temperatureTimeout: number | null = null;
+  readonly #fb = inject(FormBuilder);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #chatApi = inject(ChatApi);
+  readonly #ops = select(ChatStore.getOps);
+  readonly #currentChatId = select(ChatStore.getCurrentChatId);
+  readonly #setOps = dispatch(ChatActions.SetOps);
+  readonly maxTokens = computed(() => this.#ops().maxTokens);
+  readonly temperature = computed(() => this.#ops().temperature);
+  readonly maxTokensErrors = computed(() => this.form.controls.maxTokens.errors);
+  readonly temperatureErrors = computed(() => this.form.controls.temperature.errors);
+  readonly #minTokens = 100;
+  readonly #maxTokens = 8000;
+  readonly #minTemperature = 0;
+  readonly #maxTemperature = 1;
   debounceDelay = 500;
-
-  maxTokensErrors = computed(() => this.form.controls.maxTokens.errors);
-  temperatureErrors = computed(() => this.form.controls.temperature.errors);
+  maxTokensTimeout: number | null = null;
+  temperatureTimeout: number | null = null;
   form = this.#fb.group<AdvancedSettingsFormModel>({
     maxTokens: this.#fb.nonNullable.control<number>(0, [
       Validators.min(this.#minTokens),
