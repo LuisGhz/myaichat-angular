@@ -8,6 +8,7 @@ export interface ModelResModel {
   shortName: string;
   value: string;
   link: string;
+  guestAccess: boolean;
   price: PriceModel;
   metadata: MetadataModel;
   developer: DeveloperModel;
