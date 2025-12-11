@@ -6,6 +6,7 @@ export interface CreateModelReqModel {
   name: string;
   shortName: string;
   value: string;
+  guestAccess: boolean;
   link: string;
   price: PriceModel;
   metadata: MetadataModel;
