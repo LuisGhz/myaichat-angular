@@ -1,0 +1,82 @@
+<div class="flex flex-col h-full app-bg-base">
+  <!-- Header -->
+  <div class="flex items-center justify-between p-4 border-b app-border-input">
+    <h1 class="text-2xl font-bold app-text">Models</h1>
+  </div>
+
+  <!-- Table Container -->
+  <div class="flex-1 overflow-hidden p-4">
+    <div class="h-full thin-scrollbar overflow-auto app-bg-surface rounded-lg">
+      <nz-table
+        #modelTable
+        [nzData]="models.value()"
+        [nzLoading]="models.isLoading()"
+        [nzShowPagination]="true"
+        [nzPageSize]="10"
+        class="[&_.ant-table]:app-bg-surface! [&_.ant-table-thead_.ant-table-cell]:app-bg-input! [&_.ant-table-thead_.ant-table-cell]:app-text! [&_.ant-table-thead_.ant-table-cell]:border-dark-border! [&_.ant-table-tbody_.ant-table-cell]:app-bg-surface! [&_.ant-table-tbody_.ant-table-cell]:app-text! [&_.ant-table-tbody_.ant-table-cell]:border-dark-border! [&_.ant-table-tbody_.ant-table-row:hover_.ant-table-cell]:app-bg-input!"
+      >
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Short Name</th>
+            <th>Value</th>
+            @if (!isMobile()) {
+              <th>Developer</th>
+            }
+            <th nzWidth="100px" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (model of models.value(); track model.id) {
+            <tr class="group">
+              <td>{{ model.name }}</td>
+              <td>{{ model.shortName }}</td>
+              <td>
+                <code class="px-2 py-1 rounded app-bg-input text-sm">{{ model.value }}</code>
+              </td>
+              @if (!isMobile()) {
+                <td>{{ model.developer.name }}</td>
+              }
+              <td class="text-center">
+                <div
+                  class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    nz-button
+                    nzType="text"
+                    nzSize="small"
+                    (click)="onEdit(model)"
+                    class="app-text! hover:text-blue-500!"
+                  >
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                  </button>
+                  <button
+                    nz-button
+                    nzType="text"
+                    nzSize="small"
+                    (click)="onDelete(model)"
+                    class="app-text! hover:text-red-500!"
+                  >
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+  <!-- Floating Add Button -->
+  <button
+    nz-button
+    nzType="primary"
+    nzShape="circle"
+    nzSize="large"
+    (click)="onAdd()"
+    class="fixed bottom-4 right-4 z-10 w-14! h-14! shadow-lg"
+  >
+    <span nz-icon nzType="plus" nzTheme="outline" class="text-xl"></span>
+  </button>
+</div>
