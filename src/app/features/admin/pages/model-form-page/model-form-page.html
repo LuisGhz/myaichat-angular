@@ -65,11 +65,28 @@
               />
             </nz-form-control>
           </nz-form-item>
+
+          <!-- Guest Access -->
+          <nz-form-item>
+            <nz-form-label nzRequired class="app-text!">Guest Access</nz-form-label>
+            <nz-form-control nzErrorTip="Please specify if guest access is allowed">
+              <nz-select
+                formControlName="guestAccess"
+                class="app-bg-input! app-border-input! app-text!"
+              >
+                <nz-option [nzValue]="true" nzLabel="Yes"></nz-option>
+                <nz-option [nzValue]="false" nzLabel="No"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
         </div>
       </div>
 
       <!-- Pricing Section -->
-      <div class="app-bg-surface rounded-lg p-4 sm:p-6 mb-4 border app-border-input" formGroupName="price">
+      <div
+        class="app-bg-surface rounded-lg p-4 sm:p-6 mb-4 border app-border-input"
+        formGroupName="price"
+      >
         <h2 class="text-lg font-semibold app-text mb-4">Pricing</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -106,7 +123,10 @@
       </div>
 
       <!-- Metadata Section -->
-      <div class="app-bg-surface rounded-lg p-4 sm:p-6 mb-4 border app-border-input" formGroupName="metadata">
+      <div
+        class="app-bg-surface rounded-lg p-4 sm:p-6 mb-4 border app-border-input"
+        formGroupName="metadata"
+      >
         <h2 class="text-lg font-semibold app-text mb-4">Metadata</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -165,11 +185,7 @@
               nzPlaceHolder="Select a developer"
               nzShowSearch
               [nzLoading]="developers.isLoading()"
-              class="w-full
-                     [&_.ant-select-selector]:app-bg-input!
-                     [&_.ant-select-selector]:app-border-input!
-                     [&_.ant-select-selection-item]:app-text!
-                     [&_.ant-select-selection-placeholder]:text-gray-500!"
+              class="w-full [&_.ant-select-selector]:app-bg-input! [&_.ant-select-selector]:app-border-input! [&_.ant-select-selection-item]:app-text! [&_.ant-select-selection-placeholder]:text-gray-500!"
             >
               @for (dev of developers.value(); track dev.id) {
                 <nz-option [nzValue]="dev.id" [nzLabel]="dev.name"></nz-option>
