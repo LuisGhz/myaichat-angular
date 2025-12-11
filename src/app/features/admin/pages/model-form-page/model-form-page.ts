@@ -102,6 +102,7 @@ export class ModelFormPage {
         value: formValue.value,
         link: formValue.link,
         price: formValue.price,
+        guestAccess: formValue.guestAccess,
         metadata: formValue.metadata,
         developerId: formValue.developerId!,
       };
