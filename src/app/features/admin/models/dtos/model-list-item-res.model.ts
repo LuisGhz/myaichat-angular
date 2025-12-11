@@ -4,6 +4,7 @@ export interface ModelListItemResModel {
   id: string;
   name: string;
   shortName: string;
+  guestAccess: boolean;
   value: string;
   developer: ModelListItemDeveloperResModel;
 }
