@@ -122,6 +122,16 @@
           <span class="text-sm">Prompts</span>
         }
       </div>
+      <div
+        class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
+        routerLink="/admin"
+        (click)="collapseIfMobileAndNotCollapsed()"
+      >
+        <span nz-icon nzType="setting" nzTheme="outline"></span>
+        @if (!sidebarCollapsed()) {
+          <span class="text-sm">Admin</span>
+        }
+      </div>
     </div>
     <div class="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-dark-input">
       <nz-avatar nzSize="small" nzText="U" class="bg-teal-600! text-white!"></nz-avatar>
