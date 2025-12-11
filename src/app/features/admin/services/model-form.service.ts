@@ -16,6 +16,7 @@ export type ModelFormModel = {
   name: FormControl<string>;
   shortName: FormControl<string>;
   value: FormControl<string>;
+  guestAccess: FormControl<boolean>;
   link: FormControl<string>;
   price: FormGroup<PriceFormModel>;
   metadata: FormGroup<MetadataFormModel>;
@@ -39,6 +40,9 @@ export class ModelFormService {
       value: this.#fb.control('', {
         nonNullable: true,
         validators: [Validators.required, Validators.maxLength(MODEL_VALUE_MAX_LENGTH)],
+      }),
+      guestAccess: this.#fb.control(false, {
+        nonNullable: true,
       }),
       link: this.#fb.control('', {
         nonNullable: true,
