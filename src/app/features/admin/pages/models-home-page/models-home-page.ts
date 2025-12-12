@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { select } from '@ngxs/store';
+import { AppStore } from '@st/app/app.store';
 import { ModelsApi } from '../../services';
 import { ModelListItemResModel } from '../../models';
 
@@ -21,24 +21,12 @@ export class ModelsHomePage {
   readonly #modelsApi = inject(ModelsApi);
   readonly #modal = inject(NzModalService);
   readonly #message = inject(NzMessageService);
-  readonly #breakpointObserver = inject(BreakpointObserver);
-  readonly #destroyRef = inject(DestroyRef);
-  readonly #mobileQuery = '(max-width: 991px)';
 
-  readonly isMobile = signal(false);
+  readonly isMobile = select(AppStore.isMobile);
   readonly models = resource({
     loader: () => this.#modelsApi.fetchAll(),
     defaultValue: [],
   });
-
-  constructor() {
-    this.#breakpointObserver
-      .observe([this.#mobileQuery])
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((state) => {
-        this.isMobile.set(state.matches);
-      });
-  }
 
   onAdd(): void {
     this.#router.navigate(['/admin/new']);
