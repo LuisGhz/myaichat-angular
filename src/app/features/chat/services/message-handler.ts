@@ -38,6 +38,7 @@ export class MessagesHandler {
         message,
         chatId,
         model: ops.model,
+        modelDeveloper: ops.modelDeveloper.toLocaleLowerCase(),
         maxTokens: ops.maxTokens,
         temperature: ops.temperature,
         isImageGeneration: ops.isImageGeneration,

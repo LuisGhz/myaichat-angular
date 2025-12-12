@@ -61,6 +61,7 @@ export interface SendMessageReqModel {
   chatId?: string;
   message: string;
   model: string;
+  modelDeveloper: string;
   maxTokens: number;
   temperature: number;
   isImageGeneration: boolean;

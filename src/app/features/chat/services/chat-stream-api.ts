@@ -10,6 +10,7 @@ export class ChatStreamApi extends SseBaseService {
     const formData = new FormData();
     formData.append('message', req.message);
     formData.append('model', req.model);
+    formData.append('modelDeveloper', req.modelDeveloper);
     formData.append('maxTokens', req.maxTokens.toString());
     formData.append('temperature', req.temperature.toString());
     formData.append('isImageGeneration', req.isImageGeneration.toString());

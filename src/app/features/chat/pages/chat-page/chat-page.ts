@@ -88,6 +88,7 @@ export class ChatPage implements OnInit, AfterViewInit {
       const model = this.models.value().find((m) => m.id === modelId);
       if (model)
         this.#setOps({
+          modelDeveloper: model.developer.name,
           model: model.value,
         });
     });

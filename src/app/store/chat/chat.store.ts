@@ -10,6 +10,7 @@ import { FileStoreService } from './services';
   defaults: {
     messages: [],
     model: '',
+    modelDeveloper: '',
     maxTokens: 2000,
     temperature: 0.5,
     file: undefined,
@@ -32,6 +33,7 @@ export class ChatStore {
     ctx.setState({
       messages: [],
       model: '',
+      modelDeveloper: '',
       maxTokens: 2000,
       temperature: 0.5,
       file: undefined,
@@ -239,6 +241,7 @@ export class ChatStore {
   static getOps(state: ChatStoreModel) {
     return {
       model: state.model,
+      modelDeveloper: state.modelDeveloper,
       maxTokens: state.maxTokens,
       temperature: state.temperature,
       file: state.file,

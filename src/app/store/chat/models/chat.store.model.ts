@@ -12,6 +12,7 @@ export interface ChatStoreModel {
   messages: Message[];
   promptId?: string;
   model: string;
+  modelDeveloper: string;
   maxTokens: number;
   temperature: number;
   file?: FileInfo;
