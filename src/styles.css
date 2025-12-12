@@ -51,7 +51,7 @@
 @media (prefers-color-scheme: dark) {
   /* SELECT */
   .ant-select {
-    color: var(--color-dark-border-light);
+    color: var(--color-gray-300);
   }
 
   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -59,7 +59,7 @@
   }
 
   .ant-select-arrow .anticon:not(.ant-select-suffix) {
-    color: var(--color-dark-border-light);
+    color: var(--color-gray-300);
   }
 
   .ant-select-dropdown {
@@ -75,7 +75,7 @@
   }
 
   .ant-select-item-option-content {
-    color: var(--color-dark-border-light);
+    color: var(--color-gray-300);
   }
 
   /* DATE RANGE */
@@ -139,12 +139,12 @@
 
   /* Table */
   .ant-table-thead > tr > th {
-    background-color: var(--color-dark-surface);
+    background-color: var(--color-dark-elevated);
     color: var(--color-gray-300);
   }
 
   .ant-table {
-    background-color: var(--color-dark-surface);
+    background-color: var(--color-dark-elevated);
     color: var(--color-gray-300);
   }
 
@@ -185,6 +185,11 @@
     background-color: var(--color-dark-base);
     color: white;
   }
+
+  /* label */
+  .ant-form-item .ant-form-item-label > label {
+    color: var(--color-gray-200);
+  }
 }
 
 .hidden-scrollbar::-webkit-scrollbar {
@@ -196,13 +201,19 @@
   scrollbar-width: none; /* Firefox */
 }
 
+.thin-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent; /* Firefox */
+}
+
 .thin-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {

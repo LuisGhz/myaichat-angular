@@ -1,7 +1,7 @@
 <div class="flex flex-col h-full relative">
   <div class="flex justify-end pe-2">
     <button
-      class="app-text px-3 py-2 app-bg-base app-hover-bg-base trans-c-200 rounded-lg cursor-pointer"
+      class="app-text px-5 py-2.5 app-bg-base app-hover-bg-base trans-c-200 rounded-lg cursor-pointer"
       (click)="onAdd()"
     >
       <span nz-icon nzType="plus"></span>
@@ -9,12 +9,14 @@
     </button>
   </div>
   <!-- Table Container -->
-  <div class="flex-1 overflow-hidden p-4">
-    <div class="h-full thin-scrollbar overflow-auto app-bg-surface rounded-lg">
+  <div class="flex-1 overflow-hidden min-w-0 p-4">
+    <div class="h-full w-full min-w-0 thin-scrollbar overflow-x-auto overflow-y-auto app-bg-surface rounded-lg">
       <nz-table
+        class="min-w-max"
         #modelTable
         [nzData]="models.value()"
         [nzLoading]="models.isLoading()"
+        [nzScroll]="{ x: 'max-content' }"
         [nzShowPagination]="false"
       >
         <thead>
@@ -35,7 +37,7 @@
               <td>{{ model.name }}</td>
               <td>{{ model.shortName }}</td>
               <td>
-                <code class="px-2 py-1 rounded app-bg-input text-sm">{{ model.value }}</code>
+                <code class="px-2 py-1 rounded text-sm">{{ model.value }}</code>
               </td>
               <td>
                 {{ model.guestAccess ? 'Yes' : 'No' }}
@@ -45,12 +47,12 @@
               }
               <td class="text-center">
                 <div
-                  class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="flex items-center justify-center gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <button
                     nz-button
                     nzType="text"
-                    nzSize="small"
+                    nzSize="large"
                     (click)="onEdit(model)"
                     class="text-dark-base! dark:text-gray-300! hover:text-blue-500!"
                   >
@@ -59,7 +61,7 @@
                   <button
                     nz-button
                     nzType="text"
-                    nzSize="small"
+                    nzSize="large"
                     (click)="onDelete(model)"
                     class="text-dark-base! dark:text-gray-300! hover:text-red-500!"
                   >
