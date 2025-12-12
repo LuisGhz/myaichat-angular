@@ -109,9 +109,7 @@
     }
   </div>
 
-  <!-- User section -->
   <div class="p-2 border-t border-dark-input">
-    <!-- Navigation items -->
     <div class="mb-2">
       <div
         class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
@@ -124,6 +122,7 @@
       </div>
       <div
         class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
+        *appIsAdmin
         routerLink="/admin"
         (click)="collapseIfMobileAndNotCollapsed()"
       >

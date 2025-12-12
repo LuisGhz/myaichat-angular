@@ -25,6 +25,7 @@ import { ChatApi } from '@chat/services/chat-api';
 import { More } from '../more/more';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-modal';
+import { IsAdmin } from '@sh/directives/is-admin';
 
 @Component({
   selector: 'app-sider',
@@ -42,6 +43,7 @@ import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-moda
     More,
     NzModalModule,
     RenameChatModal,
+    IsAdmin,
   ],
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
