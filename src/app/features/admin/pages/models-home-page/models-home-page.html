@@ -12,11 +12,10 @@
   <div class="flex-1 overflow-hidden min-w-0 p-4">
     <div class="h-full w-full min-w-0 thin-scrollbar overflow-x-auto overflow-y-auto app-bg-surface rounded-lg">
       <nz-table
-        class="min-w-max"
+        class="min-w-xl"
         #modelTable
         [nzData]="models.value()"
         [nzLoading]="models.isLoading()"
-        [nzScroll]="{ x: 'max-content' }"
         [nzShowPagination]="false"
       >
         <thead>

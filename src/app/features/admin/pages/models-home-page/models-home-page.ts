@@ -29,11 +29,11 @@ export class ModelsHomePage {
   });
 
   onAdd(): void {
-    this.#router.navigate(['/admin/new']);
+    this.#router.navigate(['/admin/models/new']);
   }
 
   onEdit(model: ModelListItemResModel): void {
-    this.#router.navigate(['/admin', model.id]);
+    this.#router.navigate(['/admin/models', model.id]);
   }
 
   onDelete(model: ModelListItemResModel): void {
