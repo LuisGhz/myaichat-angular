@@ -69,4 +69,10 @@ export class AuthStore {
     const decoded = jwtDecode(state.token!) as JwtPayloadModel;
     return decoded.role;
   }
+
+  @Selector()
+  static isAdmin(state: AuthStoreModel): boolean {
+    const decoded = jwtDecode(state.token!) as JwtPayloadModel;
+    return decoded.role === 'admin';
+  }
 }
