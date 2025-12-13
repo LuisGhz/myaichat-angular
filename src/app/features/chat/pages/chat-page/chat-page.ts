@@ -52,6 +52,7 @@ export class ChatPage implements OnInit, AfterViewInit {
   });
   readonly #userChats = select(AppStore.userChats);
   readonly messages = select(ChatStore.getMessages);
+  readonly #currentChatId = select(ChatStore.getCurrentChatId);
   readonly hasMoreMessages = select(ChatStore.hasMoreMessages);
   readonly isLoadingOlderMessages = select(ChatStore.isLoadingOlderMessages);
   readonly #resetChat = dispatch(ChatActions.ResetChat);
@@ -84,6 +85,9 @@ export class ChatPage implements OnInit, AfterViewInit {
 
   constructor() {
     effect(() => {
+      // Re-run this effect when navigating between `/` and `/chat/:id`.
+      // This keeps store ops in sync after ResetChat() clears model fields.
+      this.#isLoadedChat();
       const modelId = this.selectedModel();
       const model = this.models.value().find((m) => m.id === modelId);
       if (model)
@@ -113,8 +117,16 @@ export class ChatPage implements OnInit, AfterViewInit {
       const chatId = params['id'];
       if (chatId) {
         this.#isLoadedChat.set(true);
+        const hasMessages = this.messages().length > 0;
+        const isAlreadyOnThatChat = this.#currentChatId() === chatId;
+
         this.#setCurrentChatId(chatId);
-        this.#chatApi.loadMessages(chatId);
+
+        // If this navigation happens right after creating a new chat, the store already has
+        // the streamed messages, so re-loading would duplicate work (and can duplicate messages).
+        if (!(hasMessages && isAlreadyOnThatChat)) {
+          this.#chatApi.loadMessages(chatId);
+        }
         this.#setChatTitle(chatId);
       } else {
         this.#isLoadedChat.set(false);
