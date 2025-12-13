@@ -1,0 +1,76 @@
+<div class="p-2 border-t border-dark-input">
+  <div class="mb-2">
+    <div
+      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
+      (click)="onNavigateToPrompts()"
+    >
+      <span nz-icon nzType="file-text" nzTheme="outline"></span>
+      @if (!sidebarCollapsed()) {
+        <span class="text-sm">Prompts</span>
+      }
+    </div>
+    <div
+      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
+      *appIsAdmin
+      routerLink="/admin"
+      (click)="emitCollapseIfMobileAndNotCollapsed()"
+    >
+      <span nz-icon nzType="setting" nzTheme="outline"></span>
+      @if (!sidebarCollapsed()) {
+        <span class="text-sm">Admin</span>
+      }
+    </div>
+  </div>
+  <button
+    class="flex items-center gap-2 p-2 rounded-lg cursor-pointer relative w-full"
+    aria-label="User button"
+    (click)="toggleMenu()"
+  >
+    <nz-avatar
+      nzSize="small"
+      [nzText]="firstLetterOfUsername()"
+      class="bg-teal-600! text-white!"
+    ></nz-avatar>
+    @if (!sidebarCollapsed()) {
+      <span class="text-sm truncate">{{ userEmail() }}</span>
+    }
+    @if (isMenuOpen()) {
+      <nav
+        class="absolute bottom-full left-0 mb-2 bg-[#2d2d2d] rounded-2xl shadow-2xl py-2 min-w-xs z-50"
+        role="menu"
+        aria-label="Options menu"
+      >
+        <ul class="list-none m-0! p-0!">
+          <li>
+            <section class="flex gap-2 ms-1.5 py-2">
+              <div>
+                <nz-avatar
+                  nzSize="small"
+                  [nzText]="firstLetterOfUsername()"
+                  class="bg-teal-600! text-white!"
+                ></nz-avatar>
+              </div>
+              <div class="text-start">
+                <p class="app-text font-semibold text-sm mt-2">{{ userName() }}</p>
+                <p class="app-text text-xs app-text opacity-75 truncate">@{{ userEmail() }}</p>
+              </div>
+            </section>
+          </li>
+          @for (option of menuOptions(); track option.label) {
+            <li>
+              <button
+                class="w-full flex items-center gap-3 px-4 py-2.5 app-text hover:bg-[#3d3d3d] cursor-pointer bg-transparent border-none text-left"
+                type="button"
+                role="menuitem"
+                (click)="onOptionClick(option)"
+              >
+                <nz-icon class="text-base" [nzType]="option.icon" nzTheme="outline" />
+                <span class="text-sm">{{ option.label }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </nav>
+    }
+  </button>
+</div>

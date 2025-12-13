@@ -59,7 +59,7 @@ export class MoreOptions {
     this.#fileInput.type = 'file';
     this.#fileInput.multiple = false;
     this.#fileInput.accept =
-      'image/png,image/jpeg,image/jpg,.pdf,.doc,.docx,.txt,.xlsx,.xls,.pptx,.ppt';
+      'image/png,image/jpeg,image/jpg';
     this.#fileInput.style.display = 'none';
     this.#fileInput.addEventListener('change', (e) => this.#onFileSelected(e));
     document.body.appendChild(this.#fileInput);

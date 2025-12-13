@@ -16,7 +16,7 @@ export class ChatApi extends HttpBaseService {
   async loadMessages(chatId: string) {
     const res = await this.getP<MessagesHistoryModel>('/chat/' + chatId + '/messages');
     this.#loadMessages(res);
-    this.#setOps({ maxTokens: res.maxTokens, temperature: res.temperature });
+    this.#setOps({ maxTokens: res.maxTokens, temperature: res.temperature, isWebSearch: res.isWebSearch, isImageGeneration: res.isImageGeneration });
   }
 
   loadOlderMessages(chatId: string, beforeMessageId: string) {

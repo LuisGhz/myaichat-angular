@@ -13,7 +13,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { dispatch, select } from '@ngxs/store';
@@ -26,6 +25,7 @@ import { More } from '../more/more';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-modal';
 import { IsAdmin } from '@sh/directives/is-admin';
+import { BottomSider } from '../bottom-sider/bottom-sider';
 
 @Component({
   selector: 'app-sider',
@@ -36,7 +36,6 @@ import { IsAdmin } from '@sh/directives/is-admin';
     NzIconModule,
     NzTooltipDirective,
     NzMenuModule,
-    NzAvatarModule,
     NzSkeletonModule,
     NzInputModule,
     NzIconModule,
@@ -44,6 +43,7 @@ import { IsAdmin } from '@sh/directives/is-admin';
     NzModalModule,
     RenameChatModal,
     IsAdmin,
+    BottomSider,
   ],
   templateUrl: './sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -75,7 +75,6 @@ export class Sider {
   chatIdToRename = signal<string | null>(null);
   isRenameChatModalVisible = signal(false);
   chatTitleToRename = signal<string | null>(null);
-  readonly userEmail = select(AuthStore.email);
   readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
   readonly currentChatId = select(ChatStore.getCurrentChatId);
 
@@ -87,11 +86,6 @@ export class Sider {
 
   onToggleSidebar(): void {
     this.#toggleSidebar();
-  }
-
-  onNavigateToPrompts(): void {
-    this.#router.navigate(['/prompts']);
-    this.collapseIfMobileAndNotCollapsed();
   }
 
   onDeleteChatConfirmed(chatId: string): void {

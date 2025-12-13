@@ -52,6 +52,7 @@ import {
   FileOutline,
   SettingOutline,
   SettingFill,
+  LogoutOutline,
 } from '@ant-design/icons-angular/icons';
 import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor, errorHandlerInterceptor } from '@core/interceptors';
@@ -91,6 +92,7 @@ const icons: IconDefinition[] = [
   FileOutline,
   SettingOutline,
   SettingFill,
+  LogoutOutline,
 ];
 
 registerLocaleData(en);

@@ -13,4 +13,6 @@ export interface MessagesHistoryModel {
   maxTokens: number;
   temperature: number;
   hasMore: boolean;
+  isWebSearch: boolean;
+  isImageGeneration: boolean;
 }
