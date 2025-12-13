@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { ChatStreamApi } from './chat-stream-api';
 import { ChatActions } from '@st/chat/chat.actions';
 import { dispatch, select } from '@ngxs/store';
@@ -14,7 +14,7 @@ import { finalize } from 'rxjs';
 })
 export class MessagesHandler {
   #chatStreamApi = inject(ChatStreamApi);
-  #location = inject(Location);
+  #router = inject(Router);
   #fileStore = inject(FileStoreService);
   #removeFile = dispatch(ChatActions.RemoveFile);
   #messages = select(ChatStore.getMessages);
@@ -69,8 +69,8 @@ export class MessagesHandler {
   }
 
   #handleNewChat({ data }: StreamDoneEvent): void {
-    if (!this.#location.path().includes(data.chatId)) {
-      this.#location.replaceState(`/chat/${data.chatId}`);
+    if (!this.#router.url.includes(data.chatId)) {
+      this.#router.navigate(['/chat', data.chatId], { replaceUrl: true });
       this.#setCurrentChatId(data.chatId);
       this.#addUserChat({
         id: data.chatId,
