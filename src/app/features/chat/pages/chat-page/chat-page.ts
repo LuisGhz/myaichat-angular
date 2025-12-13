@@ -13,7 +13,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { InputMessage } from '@chat/components/input/input-message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -29,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AppStore } from '@st/app/app.store';
+import { AppActions } from '@st/app/app.actions';
 
 @Component({
   selector: 'app-chat-view',
@@ -38,7 +38,6 @@ import { AppStore } from '@st/app/app.store';
 })
 export class ChatPage implements OnInit, AfterViewInit {
   readonly #activatedRoute = inject(ActivatedRoute);
-  readonly #title = inject(Title);
   readonly #destroyRef = inject(DestroyRef);
   readonly #chatApi = inject(ChatApi);
   readonly #aiModelsApi = inject(AiModelsApi);
@@ -60,6 +59,7 @@ export class ChatPage implements OnInit, AfterViewInit {
   readonly #setCurrentChatId = dispatch(ChatActions.SetCurrentChatId);
   readonly #prependMessages = dispatch(ChatActions.PrependMessages);
   readonly #setIsLoadingOlderMessages = dispatch(ChatActions.SetIsLoadingOlderMessages);
+  readonly #setPageTitle = dispatch(AppActions.SetPageTitle);
   readonly groupedModels = computed(() => {
     const modelList = this.models.value();
     const grouped = new Map<string, AiModelModel[]>();
@@ -141,14 +141,14 @@ export class ChatPage implements OnInit, AfterViewInit {
 
   #setChatTitle(currentChatId: string | null): void {
     if (currentChatId === null) {
-      this.#title.setTitle('New Chat');
+      this.#setPageTitle('New Chat');
       return;
     }
 
     const currentChat = this.#userChats().find((chat) => chat.id === currentChatId);
     if (!currentChatId) return;
     const title = currentChat ? currentChat.title : 'New Chat';
-    this.#title.setTitle(title!);
+    this.#setPageTitle(title!);
   }
 
   ngAfterViewInit(): void {

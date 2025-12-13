@@ -12,6 +12,7 @@ import { UserChatsModel } from '@chat/models/chat.model';
     selectedChatId: null,
     userChats: [],
     isMobile: false,
+    pageTitle: 'New Chat',
   },
 })
 @Injectable()
@@ -86,6 +87,13 @@ export class AppStore {
     });
   }
 
+  @Action(AppActions.SetPageTitle)
+  setPageTitle(ctx: StateContext<AppStoreModel>, { payload }: AppActions.SetPageTitle) {
+    ctx.patchState({
+      pageTitle: payload,
+    });
+  }
+
   @Selector()
   static isMobile(state: AppStoreModel): boolean {
     return state.isMobile;
@@ -104,5 +112,10 @@ export class AppStore {
   @Selector()
   static selectedChatId(state: AppStoreModel): string | null {
     return state.selectedChatId;
+  }
+
+  @Selector()
+  static pageTitle(state: AppStoreModel): string {
+    return state.pageTitle;
   }
 }

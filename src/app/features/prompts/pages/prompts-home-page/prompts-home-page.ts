@@ -4,6 +4,8 @@ import { PromptsApi } from '@prompts/services';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AppActions } from '@st/app/app.actions';
+import { dispatch } from '@ngxs/store';
 
 @Component({
   selector: 'app-prompts-home-page',
@@ -13,11 +15,16 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 })
 export class PromptsHomePage {
   readonly #router = inject(Router);
+  readonly #setPageTitle = dispatch(AppActions.SetPageTitle);
   readonly #promptsApi = inject(PromptsApi);
   readonly prompts = resource({
     loader: () => this.#promptsApi.fetchAll(),
     defaultValue: [],
   });
+
+  ngOnInit(): void {
+    this.#setPageTitle('Prompts');
+  }
 
   onSelectPrompt(id: string): void {
     this.#router.navigate(['/prompts', id]);

@@ -5,4 +5,5 @@ export interface AppStoreModel {
   selectedChatId: string | null;
   userChats: UserChatsModel[];
   isMobile: boolean;
+  pageTitle: string;
 }

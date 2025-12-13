@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormArray,
@@ -16,6 +23,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { PromptsApi } from '../../services';
 import { PromptMessageModel } from '../../models';
+import { dispatch } from '@ngxs/store';
+import { AppActions } from '@st/app/app.actions';
 
 interface MessageFormGroup {
   id: FormControl<string | null>;
@@ -49,6 +58,7 @@ export class PromptFormPage {
   readonly #cdr = inject(ChangeDetectorRef);
   readonly #fb = inject(FormBuilder);
   readonly #promptsApi = inject(PromptsApi);
+  readonly #setPageTitle = dispatch(AppActions.SetPageTitle);
   readonly promptId = this.#route.snapshot.paramMap.get('id');
   readonly form = this.#fb.group<PromptFormGroup>({
     name: this.#fb.control('', { nonNullable: true, validators: [Validators.required] }),
@@ -63,9 +73,11 @@ export class PromptFormPage {
       if (id) {
         this.isEditMode.set(true);
         this.#loadPrompt(id);
+        this.#setPageTitle('Edit Prompt');
       } else {
         this.isEditMode.set(false);
         this.#resetForm();
+        this.#setPageTitle('New Prompt');
       }
     });
   }

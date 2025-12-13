@@ -44,4 +44,9 @@ export namespace AppActions {
     static readonly type = `${type} Rename Chat`;
     constructor(public payload: { chatId: string; newTitle: string }) {}
   }
+
+  export class SetPageTitle {
+    static readonly type = `${type} Set Page Title`;
+    constructor(public payload: string) {}
+  }
 }
