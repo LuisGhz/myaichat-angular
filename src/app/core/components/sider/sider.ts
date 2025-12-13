@@ -16,7 +16,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { dispatch, select } from '@ngxs/store';
-import { AuthStore } from '@st/auth/auth.store';
 import { AppStore } from '@st/app/app.store';
 import { AppActions } from '@st/app/app.actions';
 import { ChatStore } from '@st/chat/chat.store';
@@ -24,7 +23,6 @@ import { ChatApi } from '@chat/services/chat-api';
 import { More } from '../more/more';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { RenameChatModal } from '@chat/modals/rename-chat-modal/rename-chat-modal';
-import { IsAdmin } from '@sh/directives/is-admin';
 import { BottomSider } from '../bottom-sider/bottom-sider';
 
 @Component({
@@ -42,7 +40,6 @@ import { BottomSider } from '../bottom-sider/bottom-sider';
     More,
     NzModalModule,
     RenameChatModal,
-    IsAdmin,
     BottomSider,
   ],
   templateUrl: './sider.html',
