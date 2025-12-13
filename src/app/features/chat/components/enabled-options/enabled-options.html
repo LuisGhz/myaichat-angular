@@ -1,8 +1,15 @@
 <section class="flex items-end gap-2">
   @if (isImageGeneration()) {
-    <article class="app-bg-surface px-4 py-2.5 rounded-md flex items-center gap-2 mt-1" (mouseenter)="isImageGenerationHovered.set(true)" (mouseleave)="isImageGenerationHovered.set(false)">
+    <article
+      [class]="
+        `app-bg-surface px-4 py-2.5 rounded-md flex items-center gap-2 mt-1 ${isImageGenerationHovered() ? 'cursor-pointer' : ''}`
+      "
+      (mouseenter)="isImageGenerationHovered.set(true)"
+      (mouseleave)="isImageGenerationHovered.set(false)"
+      (click)="closeImageGeneration()"
+    >
       @if (isImageGenerationHovered()) {
-        <button class="cursor-pointer" (click)="closeImageGeneration()">
+        <button class="cursor-pointer">
           <nz-icon class="app-text text-lg" nzType="close-circle" nzTheme="outline" />
         </button>
       } @else {
@@ -12,10 +19,21 @@
     </article>
   }
   @if (isWebSearch()) {
-    <article class="app-bg-surface px-4 py-2.5 rounded-md flex items-center gap-2 mt-1" (mouseenter)="isWebSearchHovered.set(true)" (mouseleave)="isWebSearchHovered.set(false)">
+    <article
+      [class]="
+        `app-bg-surface px-4 py-2.5 rounded-md flex items-center gap-2 mt-1 ${isWebSearchHovered() ? 'cursor-pointer' : ''}`
+      "
+      (mouseenter)="isWebSearchHovered.set(true)"
+      (mouseleave)="isWebSearchHovered.set(false)"
+      (click)="closeWebSearch()"
+    >
       @if (isWebSearchHovered()) {
-        <button class="cursor-pointer" (click)="closeWebSearch()">
-          <nz-icon class="app-text text-lg" nzType="close-circle" nzTheme="outline" />
+        <button>
+          <nz-icon
+            class="app-text text-lg relative top-0.5"
+            nzType="close-circle"
+            nzTheme="outline"
+          />
         </button>
       } @else {
         <nz-icon class="app-text text-lg" nzType="compass" nzTheme="outline" />
