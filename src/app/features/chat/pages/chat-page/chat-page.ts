@@ -133,6 +133,7 @@ export class ChatPage implements OnInit, AfterViewInit {
         this.#setCurrentChatId(null);
         this.#resetChat();
         this.#setChatTitle(null);
+        this.#resetSelections();
       }
       this.#scrollToBottom();
     });
@@ -223,5 +224,12 @@ export class ChatPage implements OnInit, AfterViewInit {
     } finally {
       this.#setIsLoadingOlderMessages(false);
     }
+  }
+
+  #resetSelections(): void {
+    const models = this.models.value();
+    const defaultModel = models.length > 0 ? models[0].id : null;
+    this.selectedModel.set(defaultModel);
+    this.selectedPrompt.set(null);
   }
 }
