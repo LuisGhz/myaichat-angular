@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpBaseService } from '@core/services';
 import type { PromptItemSummaryResModel, TranscribeAudioResModel } from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
-import { dispatch } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { MessagesHistoryModel } from '@st/chat/models/message.model';
+import { AuthStore } from '@st/auth/auth.store';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,17 @@ import { MessagesHistoryModel } from '@st/chat/models/message.model';
 export class ChatApi extends HttpBaseService {
   #loadMessages = dispatch(ChatActions.LoadMessages);
   #setOps = dispatch(ChatActions.SetOps);
+  #isAuthenticated = select(AuthStore.isAuthenticated);
 
   async loadMessages(chatId: string) {
     const res = await this.getP<MessagesHistoryModel>('/chat/' + chatId + '/messages');
     this.#loadMessages(res);
-    this.#setOps({ maxTokens: res.maxTokens, temperature: res.temperature, isWebSearch: res.isWebSearch, isImageGeneration: res.isImageGeneration });
+    this.#setOps({
+      maxTokens: res.maxTokens,
+      temperature: res.temperature,
+      isWebSearch: res.isWebSearch,
+      isImageGeneration: res.isImageGeneration,
+    });
   }
 
   loadOlderMessages(chatId: string, beforeMessageId: string) {
@@ -30,6 +37,8 @@ export class ChatApi extends HttpBaseService {
   }
 
   getPrompts() {
+    // This endpoint is called on logout so validate authentication to avoid request
+    if (!this.#isAuthenticated()) return Promise.resolve([]);
     return this.getP<PromptItemSummaryResModel[]>('/prompts/summary');
   }
 
