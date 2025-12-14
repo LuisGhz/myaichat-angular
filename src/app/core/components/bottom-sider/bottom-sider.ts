@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthApi } from '@core/services/auth-api';
 import { dispatch, select } from '@ngxs/store';
 import { IsAdmin } from '@sh/directives/is-admin';
 import { AppStore } from '@st/app/app.store';
@@ -34,6 +35,7 @@ interface MenuOption {
 export class BottomSider {
   readonly #router = inject(Router);
   readonly #elementRef = inject(ElementRef);
+  readonly #authApi = inject(AuthApi);
   readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
   readonly userEmail = select(AuthStore.email);
   readonly userName = select(AuthStore.username);
@@ -49,6 +51,7 @@ export class BottomSider {
       icon: 'logout',
       label: 'Logout',
       onClick: () => {
+        this.#authApi.logout();
         this.#logout();
         this.#router.navigate(['/auth/login']);
       },
