@@ -1,28 +1,29 @@
 <div class="p-2 border-t border-dark-input">
   <div class="mb-2">
-    <div
-      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
-      (click)="onNavigateToPrompts()"
+    <a
+      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer app-bg-base hover:bg-gray-400! dark:hover:bg-dark-input! app-text trans-c-200"
+      routerLink="/prompts"
+      (click)="emitCollapseIfMobileAndNotCollapsed()"
     >
       <span nz-icon nzType="file-text" nzTheme="outline"></span>
       @if (!sidebarCollapsed()) {
         <span class="text-sm">Prompts</span>
       }
-    </div>
-    <div
-      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-dark-input text-gray-300"
+    </a>
+    <a
+      class="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer app-bg-base hover:bg-gray-400! dark:hover:bg-dark-input! app-text trans-c-200"
       *appIsAdmin
-      routerLink="/admin"
+      routerLink="/admin/models"
       (click)="emitCollapseIfMobileAndNotCollapsed()"
     >
       <span nz-icon nzType="setting" nzTheme="outline"></span>
       @if (!sidebarCollapsed()) {
         <span class="text-sm">Admin</span>
       }
-    </div>
+    </a>
   </div>
   <button
-    class="flex items-center gap-2 p-2 rounded-lg cursor-pointer relative w-full"
+    class="flex items-center gap-2 p-2 rounded-lg cursor-pointer relative w-full app-bg-base hover:bg-gray-400! dark:hover:bg-dark-input! app-text trans-c-200"
     aria-label="User button"
     (click)="toggleMenu()"
   >
@@ -36,7 +37,7 @@
     }
     @if (isMenuOpen()) {
       <nav
-        class="absolute bottom-full left-0 mb-2 bg-[#2d2d2d] rounded-2xl shadow-2xl py-2 min-w-xs z-50"
+        class="absolute bottom-full left-0 mb-2 app-bg-surface rounded-2xl shadow-2xl dark:shadow-dark-elevated py-2 min-w-xs z-50"
         role="menu"
         aria-label="Options menu"
       >
@@ -59,7 +60,7 @@
           @for (option of menuOptions(); track option.label) {
             <li>
               <button
-                class="w-full flex items-center gap-3 px-4 py-2.5 app-text hover:bg-[#3d3d3d] cursor-pointer bg-transparent border-none text-left"
+                class="w-full flex items-center gap-3 px-4 py-2.5 app-text hover:bg-gray-300! hover:dark:bg-dark-base! cursor-pointer bg-transparent border-none text-left trans-c-200"
                 type="button"
                 role="menuitem"
                 (click)="onOptionClick(option)"

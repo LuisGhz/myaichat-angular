@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthApi } from '@core/services/auth-api';
 import { dispatch, select } from '@ngxs/store';
 import { IsAdmin } from '@sh/directives/is-admin';
@@ -25,7 +25,7 @@ interface MenuOption {
 
 @Component({
   selector: 'app-bottom-sider',
-  imports: [NzAvatarModule, NzIconModule, IsAdmin],
+  imports: [RouterLink, NzAvatarModule, NzIconModule, IsAdmin],
   templateUrl: './bottom-sider.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -59,11 +59,6 @@ export class BottomSider {
   ]);
 
   collapseIfMobileAndNotCollapsed = output<void>();
-
-  onNavigateToPrompts(): void {
-    this.#router.navigate(['/prompts']);
-    this.emitCollapseIfMobileAndNotCollapsed();
-  }
 
   emitCollapseIfMobileAndNotCollapsed(): void {
     this.collapseIfMobileAndNotCollapsed.emit();
