@@ -3,11 +3,13 @@ import { AdminLayout } from './layout/admin-layout';
 import { ModelsHomePage } from './pages/models-home-page/models-home-page';
 import { ModelFormPage } from './pages/model-form-page/model-form-page';
 import { UsersHomePage } from './pages/users-home-page/users-home-page';
+import { adminGuard } from '@core/guards/admin-guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
     component: AdminLayout,
+    canActivateChild: [adminGuard],
     children: [
       {
         path: '',
