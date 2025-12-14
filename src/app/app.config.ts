@@ -2,6 +2,7 @@ import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -58,6 +59,7 @@ import { provideMarkdown } from 'ngx-markdown';
 import { authInterceptor, errorHandlerInterceptor } from '@core/interceptors';
 import { ChatStore } from '@st/chat/chat.store';
 import { AppStore } from '@st/app/app.store';
+import { provideServiceWorker } from '@angular/service-worker';
 
 const icons: IconDefinition[] = [
   GithubOutline,
@@ -117,5 +119,9 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideMarkdown(),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };
