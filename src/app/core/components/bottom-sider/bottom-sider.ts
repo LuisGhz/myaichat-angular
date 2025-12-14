@@ -8,9 +8,10 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { select } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { IsAdmin } from '@sh/directives/is-admin';
 import { AppStore } from '@st/app/app.store';
+import { AuthActions } from '@st/auth/auth.actions';
 import { AuthStore } from '@st/auth/auth.store';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -36,6 +37,7 @@ export class BottomSider {
   readonly sidebarCollapsed = select(AppStore.sidebarCollapsed);
   readonly userEmail = select(AuthStore.email);
   readonly userName = select(AuthStore.username);
+  readonly #logout = dispatch(AuthActions.Logout);
   readonly isMenuOpen = signal(false);
   readonly firstLetterOfUsername = computed(() => {
     const username = this.userName();
@@ -46,7 +48,10 @@ export class BottomSider {
     {
       icon: 'logout',
       label: 'Logout',
-      onClick: () => {},
+      onClick: () => {
+        this.#logout();
+        this.#router.navigate(['/auth/login']);
+      },
     },
   ]);
 
