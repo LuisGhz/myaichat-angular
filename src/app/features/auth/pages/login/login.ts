@@ -1,6 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { environment } from 'src/environments/environment';
@@ -8,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
-  imports: [NzButtonModule, NzAlertModule, NzIconModule],
+  imports: [NzAlertModule, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage implements OnInit {

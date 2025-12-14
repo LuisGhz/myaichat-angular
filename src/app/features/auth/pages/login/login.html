@@ -1,21 +1,16 @@
 <div
-  class="flex h-screen items-center justify-center bg-linear-to-br from-blue-300 to-blue-100 dark:from-dark-1 dark:to-dark-2"
+  class="flex h-screen items-center justify-center bg-linear-to-br from-blue-300 to-blue-100 dark:from-dark-base dark:to-dark-muted"
 >
   <div class="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
     <h1 class="mb-2 text-center text-3xl font-bold text-slate-800">Bienvenido</h1>
-    <p class="mb-8 text-center text-slate-600">Inicia sesión con GitHub para continuar</p>
 
     @if (errorMessage()) {
       <p class="text-red-600! font-semibold! text-center">{{ errorMessage() }}</p>
     }
 
     <button
-      nz-button
-      nzType="primary"
-      nzSize="large"
-      nzBlock
+      class="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 dark:bg-dark-surface dark:hover:bg-dark-muted text-white! w-full rounded-md px-4 py-2 font-semibold cursor-pointer trans-c-200"
       (click)="loginWithGithub()"
-      class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700"
     >
       <nz-icon nzType="github" nzTheme="outline" />
       Iniciar sesión con GitHub
