@@ -28,8 +28,8 @@ export class AuthStore {
     });
   }
 
-  @Action(AuthActions.LogoutFromRequest)
-  logoutFromRequest(ctx: StateContext<AuthStoreModel>) {
+  @Action(AuthActions.Logout)
+  logout(ctx: StateContext<AuthStoreModel>) {
     ctx.setState({
       isAuthenticated: false,
       token: null,

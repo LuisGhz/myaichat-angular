@@ -12,8 +12,8 @@ export namespace AuthActions {
     constructor(public payload: { token: string }) {}
   }
 
-  export class LogoutFromRequest {
-    static readonly type = `${type} Logout From Request`;
+  export class Logout {
+    static readonly type = `${type} Logout`;
   }
 
 }

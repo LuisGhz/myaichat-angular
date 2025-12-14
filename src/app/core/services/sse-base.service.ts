@@ -97,7 +97,7 @@ export class SseBaseService {
   #apiUrl = environment.apiUrl;
   #token = select(AuthStore.token);
   #uploadToken = dispatch(AuthActions.UploadToken);
-  #logoutFromRequest = dispatch(AuthActions.LogoutFromRequest);
+  #logout = dispatch(AuthActions.Logout);
 
   #emitBufferedLines<R>(buffer: string, observer: { next: (value: R) => void }): string {
     const lines = buffer.split('\n');
@@ -160,7 +160,7 @@ export class SseBaseService {
 
   #handleAuthSideEffects(response: Response): void {
     if (response.status === 401) {
-      this.#logoutFromRequest();
+      this.#logout();
       return;
     }
 

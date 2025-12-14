@@ -9,7 +9,7 @@ import { tap } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = select(AuthStore.token);
   const uploadToken = dispatch(AuthActions.UploadToken);
-  const logoutFromRequest = dispatch(AuthActions.LogoutFromRequest);
+  const logout = dispatch(AuthActions.Logout);
   const router = inject(Router);
 
   if (token) {
@@ -33,7 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       error: (error: HttpErrorResponse) => {
         console.log('Interceptor error:', error);
         if (error.status === 401) {
-          logoutFromRequest();
+          logout();
           router.navigate(['/auth/login']);
         }
       },
