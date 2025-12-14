@@ -1,8 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AppStoreModel } from './models';
 import { AppActions } from './app.actions';
-import { ChatApi } from '@chat/services/chat-api';
 import { UserChatsModel } from '@chat/models/chat.model';
 
 @State<AppStoreModel>({
@@ -17,7 +16,6 @@ import { UserChatsModel } from '@chat/models/chat.model';
 })
 @Injectable()
 export class AppStore {
-  #chatApi = inject(ChatApi);
   @Action(AppActions.ToggleSidebar)
   toggleSidebar(ctx: StateContext<AppStoreModel>) {
     const state = ctx.getState();
