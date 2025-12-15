@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpBaseService } from '@core/services';
-import type { PromptItemSummaryResModel, TranscribeAudioResModel } from '@chat/models';
+import type {
+  PromptItemSummaryResModel,
+  TranscribeAudioResModel,
+  UpdateAIFeaturesReqModel,
+} from '@chat/models';
 import { UserChatsModel } from '@chat/models/chat.model';
 import { dispatch, select } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
@@ -58,6 +62,13 @@ export class ChatApi extends HttpBaseService {
 
   updateTemperature(chatId: string, temperature: number) {
     return this.patchP(`/chat/${chatId}/update-temperature`, { temperature });
+  }
+
+  updateAIFeatures(chatId: string, { isImageGeneration, isWebSearch }: UpdateAIFeaturesReqModel) {
+    return this.patchP(`/chat/${chatId}/update-ai-features`, {
+      isWebSearch,
+      isImageGeneration,
+    });
   }
 
   transcribe(file: Blob) {

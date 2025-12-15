@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal, ElementRef, inject } from '@angular/core';
 import { AdvancedSettings } from '@chat/modals/advanced-settings/advanced-settings';
+import { ChatApi } from '@chat/services/chat-api';
 import { dispatch, select } from '@ngxs/store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { ChatStore } from '@st/chat/chat.store';
@@ -24,7 +25,9 @@ interface MenuOption {
 })
 export class MoreOptions {
   readonly #elementRef = inject(ElementRef);
+  readonly #chatApi = inject(ChatApi);
   readonly #fileStoreService = inject(FileStoreService);
+  readonly #currentChatId = select(ChatStore.getCurrentChatId);
   readonly #isImageGeneration = select(ChatStore.isImageGeneration);
   readonly #isWebSearch = select(ChatStore.isWebSearch);
   readonly #setOps = dispatch(ChatActions.SetOps);
@@ -58,8 +61,7 @@ export class MoreOptions {
     this.#fileInput = document.createElement('input');
     this.#fileInput.type = 'file';
     this.#fileInput.multiple = false;
-    this.#fileInput.accept =
-      'image/png,image/jpeg,image/jpg';
+    this.#fileInput.accept = 'image/png,image/jpeg,image/jpg';
     this.#fileInput.style.display = 'none';
     this.#fileInput.addEventListener('change', (e) => this.#onFileSelected(e));
     document.body.appendChild(this.#fileInput);
@@ -110,11 +112,21 @@ export class MoreOptions {
   #onToggleImageGeneration(): void {
     if (this.#isImageGeneration()) return;
     this.#enableImageGeneration();
+    if (this.#currentChatId())
+      this.#chatApi.updateAIFeatures(this.#currentChatId()!, {
+        isImageGeneration: true,
+        isWebSearch: false,
+      });
   }
 
   #onToggleWebSearch(): void {
     if (this.#isWebSearch()) return;
     this.#enableWebSearch();
+    if (this.#currentChatId())
+      this.#chatApi.updateAIFeatures(this.#currentChatId()!, {
+        isWebSearch: true,
+        isImageGeneration: false,
+      });
   }
 
   #showAdvancedSettings(): void {

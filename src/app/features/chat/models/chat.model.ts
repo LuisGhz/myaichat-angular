@@ -74,3 +74,8 @@ export interface PromptItemSummaryResModel {
   id: string;
   name: string;
 }
+
+export interface UpdateAIFeaturesReqModel {
+  isImageGeneration: boolean;
+  isWebSearch: boolean;
+}
