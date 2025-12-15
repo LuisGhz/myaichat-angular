@@ -27,6 +27,6 @@ export class ChatStreamApi extends SseBaseService {
       formData.append('file', req.file, req.file.name);
     }
 
-    return this.ssePost<ChatStreamEvent>('/chat/openai', formData);
+    return this.ssePost<ChatStreamEvent>('/chat/send-message', formData);
   }
 }
