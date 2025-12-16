@@ -1,59 +1,99 @@
-# Myaichat
+# MyAIChat
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.12.
+A modern AI chat application built with Angular that enables users to interact with multiple AI models in real-time through a clean and intuitive interface.
 
-## Development server
+## Key Features
 
-To start a local development server, run:
+- **Multi-Model AI Chat**: Interact with different AI models from various providers (OpenAI, Anthropic, Google, etc.)
+- **Real-Time Streaming**: Server-Sent Events (SSE) for streaming AI responses
+- **File Upload Support**: Attach and process files in conversations
+- **Web Search Integration**: Enable AI models to search the web for up-to-date information
+- **Image Generation**: Generate images directly within chat conversations
+- **Conversation Management**: Create, view, and manage multiple chat sessions
+- **Custom Prompts**: Save and reuse custom prompts for consistent interactions
+- **User Authentication**: Secure JWT-based authentication with protected routes
+- **Admin Panel**: Comprehensive dashboard for managing:
+  - AI models and their configurations
+  - User accounts and permissions
+  - Model pricing and availability
+- **Progressive Web App (PWA)**: Installable with offline support
+- **Responsive Design**: Optimized for desktop and mobile devices
 
+## Technologies Used
+
+### Core Framework
+- **Angular 20.3**: Modern web framework with standalone components and signals
+- **TypeScript 5.9**: Type-safe development
+- **RxJS 7.8**: Reactive programming for async operations
+
+### State Management
+- **NGXS 20.1**: State management with plugins for:
+  - Router integration
+  - Local storage persistence
+  - Form state handling
+  - Redux DevTools support
+
+### UI/UX
+- **Ng-Zorro-Antd 20.4**: Enterprise-class UI components
+- **TailwindCSS 4.1**: Utility-first CSS framework
+- **ngx-markdown 20.1**: Markdown rendering with syntax highlighting
+
+### Testing
+- **Vitest 3.2**: Fast unit testing framework
+- **Testing Library Angular 18.1**: Component testing utilities
+
+### Additional Features
+- **JWT Decode**: Token handling for authentication
+- **Angular Service Worker**: PWA capabilities
+- **Marked 16.4**: Markdown parsing
+
+## Installation
+
+1. Clone the repository:
 ```bash
-ng serve
+git clone <repository-url>
+cd myaichat
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. Install dependencies:
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. Configure the environment:
+   - Update `src/environments/environment.ts` with your API URL
+   - Set up your backend API server
 
+4. Start the development server:
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+The application will be available at `http://localhost:4200/`
 
-To build the project run:
+## Usage
 
+### Development
 ```bash
-ng build
+npm start          # Start development server
+npm run build      # Build for production
+npm run watch      # Build with watch mode
+npm test           # Run unit tests
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Authentication
+- Navigate to `/auth` to log in
+- Admin users can access the admin panel at `/admin`
 
-## Running unit tests
+### Chat Features
+- Create new conversations from the home page
+- Select different AI models and configure parameters (temperature, max tokens)
+- Upload files to include in your prompts
+- Enable web search or image generation as needed
+- Save frequently used prompts for quick access
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Admin Features
+- Manage AI models: Add, edit, or remove available models
+- Configure model parameters and pricing
+- Manage user accounts and roles
+- Monitor system usage and statistics
