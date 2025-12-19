@@ -170,7 +170,7 @@ export class SseBaseService {
     }
   }
 
-  #applyTimeout(timeout: number | undefined, controller: AbortController): number | undefined {
+  #applyTimeout(timeout: number | undefined, controller: AbortController): NodeJS.Timeout | undefined {
     if (!timeout) {
       return undefined;
     }
