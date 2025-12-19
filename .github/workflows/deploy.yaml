@@ -40,7 +40,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           envs: DOCKERHUB_USER,DOCKERHUB_TOKEN
           script_path: scripts/deploy.sh
 
