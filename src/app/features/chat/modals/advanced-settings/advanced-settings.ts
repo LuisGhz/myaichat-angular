@@ -54,8 +54,8 @@ export class AdvancedSettings implements OnInit {
   readonly #minTemperature = 0;
   readonly #maxTemperature = 1;
   debounceDelay = 500;
-  maxTokensTimeout: number | null = null;
-  temperatureTimeout: number | null = null;
+  maxTokensTimeout: ReturnType<typeof setTimeout> | null = null;
+  temperatureTimeout: ReturnType<typeof setTimeout> | null = null;
   form = this.#fb.group<AdvancedSettingsFormModel>({
     maxTokens: this.#fb.nonNullable.control<number>(0, [
       Validators.min(this.#minTokens),
