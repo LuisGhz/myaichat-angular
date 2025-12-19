@@ -53,5 +53,6 @@ fi
 
 echo "Running new container ${CONTAINER_NAME}..."
 docker run -d \
+    -p ${LOCALPORT}:${DOCKERPORT} \
     --name ${CONTAINER_NAME} \
     ${IMAGE_NAME}
