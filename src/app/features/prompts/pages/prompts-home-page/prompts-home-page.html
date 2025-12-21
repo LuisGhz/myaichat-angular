@@ -28,24 +28,22 @@
               {{ prompt.name }}
             </div>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div class="flex items-center gap-1 md:opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               nz-button
               nzType="text"
-              nzSize="small"
               class="text-gray-600! dark:text-gray-400! hover:text-gray-800! hover:dark:text-gray-200! hover:dark:bg-dark-border!"
               (click)="onEdit(prompt.id, $event)"
             >
-              <span class="text-lg!" nz-icon nzType="edit"></span>
+              <span class="text-xl!" nz-icon nzType="edit"></span>
             </button>
             <button
               nz-button
               nzType="text"
-              nzSize="small"
               class="text-red-400! hover:text-red-600! hover:dark:text-red-300! hover:dark:bg-dark-border!"
               (click)="onDelete(prompt.id, $event)"
             >
-              <span class="text-lg!" nz-icon nzType="delete"></span>
+              <span class="text-xl!" nz-icon nzType="delete"></span>
             </button>
           </div>
         </div>
