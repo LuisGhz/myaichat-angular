@@ -113,15 +113,15 @@
   <!-- Footer -->
   <div class="flex items-center justify-end gap-2 p-4 border-t border-dark-input">
     <button
+      class="bg-transborder-dark-border! hover:border-gray-400! app-text"
       nz-button
       nzType="default"
       type="button"
-      class="bg-transborder-dark-border! hover:border-gray-400!"
       (click)="onCancel()"
     >
       Cancel
     </button>
-    <button nz-button nzType="primary" (click)="onSave()">
+    <button class="text-white!" nz-button nzType="primary" (click)="onSave()">
       {{ isEditMode() ? 'Update' : 'Create' }}
     </button>
   </div>
