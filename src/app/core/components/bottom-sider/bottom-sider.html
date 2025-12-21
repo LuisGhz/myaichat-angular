@@ -6,7 +6,7 @@
       [class.justify-center]="sidebarCollapsed()"
       (click)="emitCollapseIfMobileAndNotCollapsed()"
     >
-      <span class="text-lg!" nz-icon nzType="file-text" nzTheme="outline"></span>
+      <span class="text-xl! md:text-lg!" nz-icon nzType="file-text" nzTheme="outline"></span>
       @if (!sidebarCollapsed()) {
         <span class="text-sm">Prompts</span>
       }
@@ -18,7 +18,7 @@
       routerLink="/admin/models"
       (click)="emitCollapseIfMobileAndNotCollapsed()"
     >
-      <span class="text-lg!" nz-icon nzType="setting" nzTheme="outline"></span>
+      <span class="text-xl! md:text-lg!" nz-icon nzType="setting" nzTheme="outline"></span>
       @if (!sidebarCollapsed()) {
         <span class="text-sm">Admin</span>
       }

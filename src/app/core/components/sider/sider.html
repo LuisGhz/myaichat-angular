@@ -12,7 +12,7 @@
         class="text-gray-200! hover:bg-dark-input!"
         (click)="onToggleSidebar()"
       >
-        <span class="text-lg!" nz-icon nzType="menu-fold" nzTheme="outline"></span>
+        <span class="text-lg! md:text-xl!" nz-icon nzType="menu-fold" nzTheme="outline"></span>
       </button>
     }
     @if (sidebarCollapsed()) {
@@ -22,7 +22,7 @@
         class="text-gray-200! hover:bg-dark-input!"
         (click)="onToggleSidebar()"
       >
-        <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
+        <span class="text-xl! md:text-lg!"  nz-icon nzType="menu-unfold" nzTheme="outline"></span>
       </button>
     }
     <button
@@ -34,7 +34,7 @@
       nzTooltipTitle="New chat"
       (click)="collapseIfMobileAndNotCollapsed()"
     >
-      <span nz-icon nzType="edit" nzTheme="outline"></span>
+      <span class="text-xl! md:text-lg!" nz-icon nzType="edit" nzTheme="outline"></span>
     </button>
   </div>
 
