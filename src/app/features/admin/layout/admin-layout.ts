@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { select } from '@ngxs/store';
+import { dispatch, select } from '@ngxs/store';
 import { AppStore } from '@st/app/app.store';
+import { AppActions } from '@st/app/app.actions';
 
 @Component({
   selector: 'app-admin-layout',
@@ -13,10 +14,15 @@ import { AppStore } from '@st/app/app.store';
 export class AdminLayout {
   readonly #router = inject(Router);
   readonly isMobile = select(AppStore.isMobile);
+  readonly #setPageTitle = dispatch(AppActions.SetPageTitle);
 
   get selectedIndex(): number {
     const url = this.#router.url;
-    if (url.includes('/admin/users')) return 1;
+    if (url.includes('/admin/users')) {
+      this.#setPageTitle('Users');
+      return 1;
+    }
+    this.#setPageTitle('Models');
     return 0;
   }
 
