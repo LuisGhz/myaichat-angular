@@ -19,6 +19,7 @@ export type ModelFormModel = {
   guestAccess: FormControl<boolean>;
   link: FormControl<string>;
   price: FormGroup<PriceFormModel>;
+  supportsTemperature: FormControl<boolean>;
   metadata: FormGroup<MetadataFormModel>;
   developerId: FormControl<string | null>;
 };
@@ -28,7 +29,7 @@ export class ModelFormService {
   readonly #fb = inject(FormBuilder);
 
   createForm(): FormGroup<ModelFormModel> {
-    return this.#fb.group<ModelFormModel>({
+    return this.#fb.group({
       name: this.#fb.control('', {
         nonNullable: true,
         validators: [Validators.required, Validators.maxLength(MODEL_NAME_MAX_LENGTH)],
@@ -58,6 +59,9 @@ export class ModelFormService {
           validators: [Validators.required, Validators.min(PRICE_MIN_VALUE)],
         }),
       }),
+      supportsTemperature: this.#fb.control(false, {
+        nonNullable: true,
+      }),
       metadata: this.#fb.group<MetadataFormModel>({
         contextWindow: this.#fb.control(0, {
           nonNullable: true,
@@ -75,7 +79,7 @@ export class ModelFormService {
       developerId: this.#fb.control<string | null>(null, {
         validators: [Validators.required],
       }),
-    });
+    }) as FormGroup<ModelFormModel>;
   }
 }
 

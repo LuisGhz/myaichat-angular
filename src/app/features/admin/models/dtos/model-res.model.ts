@@ -10,6 +10,7 @@ export interface ModelResModel {
   link: string;
   guestAccess: boolean;
   price: PriceModel;
+  supportsTemperature: boolean;
   metadata: MetadataModel;
   developer: DeveloperModel;
   createdAt: Date;

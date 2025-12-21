@@ -69,6 +69,8 @@ export class ModelFormPage {
           input: model.price.input,
           output: model.price.output,
         },
+        guestAccess: model.guestAccess,
+        supportsTemperature: model.supportsTemperature,
         metadata: {
           contextWindow: model.metadata.contextWindow,
           maxOutputTokens: model.metadata.maxOutputTokens,
@@ -102,6 +104,7 @@ export class ModelFormPage {
         value: formValue.value,
         link: formValue.link,
         price: formValue.price,
+        supportsTemperature: formValue.supportsTemperature,
         guestAccess: formValue.guestAccess,
         metadata: formValue.metadata,
         developerId: formValue.developerId!,

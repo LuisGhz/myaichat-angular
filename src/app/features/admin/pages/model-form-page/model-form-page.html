@@ -188,6 +188,23 @@
         </nz-form-item>
       </div>
 
+      <!-- Supported features -->
+      <div class="app-bg-base rounded-lg p-4 sm:p-6 mb-4 border app-border-input">
+        <h2 class="text-lg font-semibold app-text mb-4">Supported Features</h2>
+        <nz-form-item>
+          <nz-form-label nzRequired>Supports Temperature</nz-form-label>
+          <nz-form-control nzErrorTip="Please specify if temperature is supported">
+            <nz-select
+              formControlName="supportsTemperature"
+              class="app-bg-input! app-border-input! app-text!"
+            >
+              <nz-option [nzValue]="true" nzLabel="Yes"></nz-option>
+              <nz-option [nzValue]="false" nzLabel="No"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-2 sm:gap-4 mt-6">
         <button
