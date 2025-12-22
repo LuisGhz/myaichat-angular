@@ -11,6 +11,8 @@ export interface ModelResModel {
   guestAccess: boolean;
   price: PriceModel;
   supportsTemperature: boolean;
+  isReasoning: boolean;
+  reasoningLevel: string | null;
   metadata: MetadataModel;
   developer: DeveloperModel;
   createdAt: Date;
