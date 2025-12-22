@@ -1,5 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { DestroyRef, Injectable, Signal, WritableSignal, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DeveloperModel } from '../models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type PriceFormModel = {
   input: FormControl<number>;
@@ -20,6 +22,8 @@ export type ModelFormModel = {
   link: FormControl<string>;
   price: FormGroup<PriceFormModel>;
   supportsTemperature: FormControl<boolean>;
+  isReasoning: FormControl<boolean>;
+  reasoningLevel: FormControl<string | null>;
   metadata: FormGroup<MetadataFormModel>;
   developerId: FormControl<string | null>;
 };
@@ -62,6 +66,12 @@ export class ModelFormService {
       supportsTemperature: this.#fb.control(false, {
         nonNullable: true,
       }),
+      isReasoning: this.#fb.control(false, {
+        nonNullable: true,
+      }),
+      reasoningLevel: this.#fb.control<string | null>(null, {
+        validators: [],
+      }),
       metadata: this.#fb.group<MetadataFormModel>({
         contextWindow: this.#fb.control(0, {
           nonNullable: true,
@@ -80,6 +90,37 @@ export class ModelFormService {
         validators: [Validators.required],
       }),
     }) as FormGroup<ModelFormModel>;
+  }
+
+  handleDeveloperChange(
+    form: FormGroup<ModelFormModel>,
+    developers: Signal<DeveloperModel[]>,
+    developerName: WritableSignal<string>,
+    destroyRef: DestroyRef,
+  ): void {
+    form.controls.developerId.valueChanges
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe((devId) => {
+        const selectedDev = developers().find((dev) => dev.id === devId);
+        developerName.set(selectedDev ? selectedDev.name : '');
+      });
+  }
+
+  handleReasoningLevelControl(form: FormGroup<ModelFormModel>, destroyRef: DestroyRef): void {
+    form.controls.isReasoning.valueChanges
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe((isReasoning) => {
+        const reasoningLevelControl = form.controls.reasoningLevel;
+        if (isReasoning) {
+          reasoningLevelControl.enable();
+          reasoningLevelControl.setValidators([Validators.required]);
+        } else {
+          reasoningLevelControl.clearValidators();
+          reasoningLevelControl.setValue(null);
+          reasoningLevelControl.disable();
+        }
+        reasoningLevelControl.updateValueAndValidity();
+      });
   }
 }
 
