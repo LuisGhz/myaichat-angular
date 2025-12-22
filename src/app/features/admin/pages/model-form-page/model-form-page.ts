@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   effect,
   inject,
   resource,
@@ -17,19 +18,14 @@ import { DevelopersApi, ModelFormService, ModelsApi } from '../../services';
 
 @Component({
   selector: 'app-model-form-page',
-  imports: [
-    ReactiveFormsModule,
-    NzFormModule,
-    NzInputModule,
-    NzButtonModule,
-    NzSelectModule,
-  ],
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule, NzSelectModule],
   templateUrl: './model-form-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelFormPage {
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
+  readonly #destroyRef = inject(DestroyRef);
   readonly #modelsApi = inject(ModelsApi);
   readonly #developersApi = inject(DevelopersApi);
   readonly #message = inject(NzMessageService);
@@ -38,6 +34,7 @@ export class ModelFormPage {
   readonly modelId = signal<string | null>(null);
   readonly isEditMode = signal(false);
   readonly isSubmitting = signal(false);
+  readonly developerName = signal<string>('');
 
   readonly developers = resource({
     loader: () => this.#developersApi.fetchAll(),
@@ -57,6 +54,16 @@ export class ModelFormPage {
     });
   }
 
+  ngOnInit(): void {
+    this.#modelForm.handleDeveloperChange(
+      this.form,
+      this.developers.value,
+      this.developerName,
+      this.#destroyRef,
+    );
+    this.#modelForm.handleReasoningLevelControl(this.form, this.#destroyRef);
+  }
+
   async #loadModel(id: string): Promise<void> {
     try {
       const model = await this.#modelsApi.getById(id);
@@ -71,6 +78,8 @@ export class ModelFormPage {
         },
         guestAccess: model.guestAccess,
         supportsTemperature: model.supportsTemperature,
+        isReasoning: model.isReasoning,
+        reasoningLevel: model.reasoningLevel,
         metadata: {
           contextWindow: model.metadata.contextWindow,
           maxOutputTokens: model.metadata.maxOutputTokens,
@@ -78,6 +87,8 @@ export class ModelFormPage {
         },
         developerId: model.developer.id,
       });
+
+      this.developerName.set(model.developer.name);
     } catch (error) {
       // Error handled by interceptor
     }
@@ -105,6 +116,8 @@ export class ModelFormPage {
         link: formValue.link,
         price: formValue.price,
         supportsTemperature: formValue.supportsTemperature,
+        isReasoning: formValue.isReasoning,
+        reasoningLevel: formValue.reasoningLevel,
         guestAccess: formValue.guestAccess,
         metadata: formValue.metadata,
         developerId: formValue.developerId!,
