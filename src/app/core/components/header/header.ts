@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Title } from '@angular/platform-browser';
 import { dispatch, select } from '@ngxs/store';
 import { AppStore } from '@st/app/app.store';
@@ -8,7 +8,7 @@ import { AppActions } from '@st/app/app.actions';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, NzIconModule],
+  imports: [NzIconModule],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

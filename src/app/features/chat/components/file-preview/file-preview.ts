@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { dispatch, select } from '@ngxs/store';
 import { ChatStore } from '@st/chat/chat.store';
@@ -9,7 +9,7 @@ import { ChatActions } from '@st/chat/chat.actions';
 
 @Component({
   selector: 'app-file-preview',
-  imports: [CommonModule, NzIconModule],
+  imports: [NzIconModule],
   templateUrl: './file-preview.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

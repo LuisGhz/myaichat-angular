@@ -8,11 +8,11 @@ import { dispatch, select } from '@ngxs/store';
 import { AuthStore } from '@st/auth/auth.store';
 import { AppStore } from '@st/app/app.store';
 import { AppActions } from '@st/app/app.actions';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, NzLayoutModule, Sider, Header],
+  imports: [RouterOutlet, NzLayoutModule, Sider, Header],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
