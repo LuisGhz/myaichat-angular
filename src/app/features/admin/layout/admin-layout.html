@@ -1,5 +1,5 @@
 <div class="h-full flex flex-col w-full md:w-11/12 max-w-5xl mx-auto">
-  <nz-tabset
+  <nz-tabs
     [nzSelectedIndex]="selectedIndex"
     (nzSelectedIndexChange)="onTabChange($event)"
     [nzSize]="isMobile() ? 'small' : 'default'"
@@ -7,7 +7,7 @@
   >
     <nz-tab nzTitle="Models"></nz-tab>
     <nz-tab nzTitle="Users"></nz-tab>
-  </nz-tabset>
+  </nz-tabs>
   <div class="flex-1 overflow-hidden">
     <router-outlet />
   </div>
