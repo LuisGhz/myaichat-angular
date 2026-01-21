@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
+import { render, screen, waitFor } from '@testing-library/angular';
+import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 
-import { render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import {
   MockNzLayoutComponent,
@@ -13,15 +14,11 @@ import {
   MockNzSiderComponent,
 } from '@sh/testing/ng-zorro-antd';
 import { RouterOutlet } from '@angular/router';
-
-vi.mock('@ngxs/store', async (importActual) => {
-  const actual = await importActual<typeof import('@ngxs/store')>();
-  console.log('Actual NGXS Store imported for testing.');
-  return {
-    ...actual,
-    select: (selector: any) => actual.select(selector),
-  };
-});
+import { App } from './app';
+import { AuthStore } from '@st/auth/auth.store';
+import { AppStore } from '@st/app/app.store';
+import { AuthActions } from '@st/auth/auth.actions';
+import { AppActions } from '@st/app/app.actions';
 
 @Component({
   selector: 'app-sider',
@@ -39,11 +36,6 @@ const mockBreakpointObserver = {
   observe: vi.fn().mockReturnValue(of({ matches: false })),
 };
 
-import { App } from './app';
-import { AuthStore } from '@st/auth/auth.store';
-import { AppStore } from '@st/app/app.store';
-import { AuthActions } from '@st/auth/auth.actions';
-
 describe('App', () => {
   beforeEach(() => {
     mockBreakpointObserver.observe.mockReset();
@@ -51,7 +43,6 @@ describe('App', () => {
   });
 
   const renderComponent = async () => {
-
     const result = await render(App, {
       providers: [
         provideZonelessChangeDetection(),
@@ -69,18 +60,69 @@ describe('App', () => {
         MockNzSiderComponent,
       ],
     });
-    const store = result.fixture.debugElement.injector.get(Store);
-    // store.dispatch(new AuthActions.Login({ token: 'test' }));
 
+    const store = result.fixture.debugElement.injector.get(Store);
+    store.dispatch(new AuthActions.Login({ token: 'test-token' }));
     result.fixture.detectChanges();
 
-    return result;
+    return { ...result, store };
   };
 
-  it('should display main layout when user is authenticated', async () => {
+  it('should display layout with sidebar and header when user is authenticated', async () => {
     await renderComponent();
 
     expect(screen.getByText('Mock Sider')).toBeInTheDocument();
     expect(screen.getByText('Mock Header')).toBeInTheDocument();
+  });
+
+  it('should display only router outlet when user is not authenticated', async () => {
+    await render(App, {
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideStore([AuthStore, AppStore]),
+        { provide: BreakpointObserver, useValue: mockBreakpointObserver },
+      ],
+      componentImports: [
+        RouterOutlet,
+        MockSider,
+        MockHeader,
+        MockNzLayoutComponent,
+        MockNzHeaderComponent,
+        MockNzContentComponent,
+        MockNzSiderComponent,
+      ],
+    });
+
+    expect(screen.queryByText('Mock Sider')).not.toBeInTheDocument();
+    expect(screen.queryByText('Mock Header')).not.toBeInTheDocument();
+  });
+
+  it('should collapse sidebar and set mobile mode when screen is small', async () => {
+    mockBreakpointObserver.observe.mockReturnValue(of({ matches: true }));
+
+    const { store } = await renderComponent();
+
+    expect(store.selectSnapshot(AppStore.sidebarCollapsed)).toBe(true);
+    expect(store.selectSnapshot(AppStore.isMobile)).toBe(true);
+  });
+
+  it('should show backdrop and collapse sidebar when clicking backdrop in mobile mode', async () => {
+    mockBreakpointObserver.observe.mockReturnValue(of({ matches: true }));
+
+    const { store, fixture } = await renderComponent();
+
+    store.dispatch(new AppActions.UnCollapseSidebar());
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const backdrop = screen.getByTestId('app-backdrop');
+    expect(backdrop).toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.click(backdrop!);
+
+    await waitFor(() => {
+      expect(store.selectSnapshot(AppStore.sidebarCollapsed)).toBe(true);
+    });
   });
 });

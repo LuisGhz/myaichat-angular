@@ -10,7 +10,11 @@
       <app-sider />
     </nz-sider>
     @if (isMobile() && !isSidebarCollapsed()) {
-      <div class="absolute w-dvw h-dvh bg-black/35 z-10" (click)="closeFromBackdrop()"></div>
+      <div
+        class="absolute w-dvw h-dvh bg-black/35 z-10"
+        data-testid="app-backdrop"
+        (click)="closeFromBackdrop()"
+      ></div>
     }
     <nz-layout>
       <nz-header class="h-12! p-0! app-bg-surface">
