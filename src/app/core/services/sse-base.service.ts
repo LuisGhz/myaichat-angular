@@ -174,6 +174,6 @@ export class SseBaseService {
     if (!timeout) {
       return undefined;
     }
-    return setTimeout(() => controller.abort(), timeout);
+    return window.setTimeout(() => controller.abort(), timeout);
   }
 }
