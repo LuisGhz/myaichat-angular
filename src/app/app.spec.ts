@@ -42,7 +42,7 @@ describe('App', () => {
     mockBreakpointObserver.observe.mockReturnValue(of({ matches: false }));
   });
 
-  const renderComponent = async () => {
+  const renderComponent = async (hasToken = true) => {
     const result = await render(App, {
       providers: [
         provideZonelessChangeDetection(),
@@ -62,7 +62,7 @@ describe('App', () => {
     });
 
     const store = result.fixture.debugElement.injector.get(Store);
-    store.dispatch(new AuthActions.Login({ token: 'test-token' }));
+    if (hasToken) store.dispatch(new AuthActions.Login({ token: 'test-token' }));
     result.fixture.detectChanges();
 
     return { ...result, store };
@@ -76,23 +76,7 @@ describe('App', () => {
   });
 
   it('should display only router outlet when user is not authenticated', async () => {
-    await render(App, {
-      providers: [
-        provideZonelessChangeDetection(),
-        provideHttpClient(),
-        provideStore([AuthStore, AppStore]),
-        { provide: BreakpointObserver, useValue: mockBreakpointObserver },
-      ],
-      componentImports: [
-        RouterOutlet,
-        MockSider,
-        MockHeader,
-        MockNzLayoutComponent,
-        MockNzHeaderComponent,
-        MockNzContentComponent,
-        MockNzSiderComponent,
-      ],
-    });
+    await renderComponent(false);
 
     expect(screen.queryByText('Mock Sider')).not.toBeInTheDocument();
     expect(screen.queryByText('Mock Header')).not.toBeInTheDocument();
@@ -117,6 +101,7 @@ describe('App', () => {
     await fixture.whenStable();
     const backdrop = screen.getByTestId('app-backdrop');
     expect(backdrop).toBeInTheDocument();
+    expect(store.selectSnapshot(AppStore.sidebarCollapsed)).toBe(false);
 
     const user = userEvent.setup();
     await user.click(backdrop!);
