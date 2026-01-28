@@ -548,6 +548,7 @@ export const MockNzLayoutModule = {
  * Usage: imports: [MockNzTabsModule]
  */
 @Component({
+  standalone: true,
   selector: 'nz-tabset',
   template: '<ng-content></ng-content>',
 })
@@ -562,6 +563,7 @@ export class MockNzTabSetComponent {
 }
 
 @Component({
+  standalone: true,
   selector: 'nz-tab',
   template: '<ng-content></ng-content>',
 })
@@ -571,10 +573,7 @@ export class MockNzTabComponent {
   @Input() nzForceRender?: boolean;
 }
 
-export const MockNzTabsModule = {
-  declarations: [MockNzTabSetComponent, MockNzTabComponent],
-  exports: [MockNzTabSetComponent, MockNzTabComponent],
-};
+export const MockNzTabsModule = [MockNzTabSetComponent, MockNzTabComponent] as const;
 
 /**
  * Mock for NzPopconfirmModule

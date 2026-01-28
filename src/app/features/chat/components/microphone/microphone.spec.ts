@@ -1,0 +1,219 @@
+import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+import { provideStore, Store } from '@ngxs/store';
+import { provideHttpClient } from '@angular/common/http';
+
+import { Microphone } from './microphone';
+import { ChatStore } from '@st/chat/chat.store';
+import { ChatApi } from '../../services/chat-api';
+import { MockNzIconComponent } from '@sh/testing';
+
+const mockChatApi = {
+  transcribe: vi.fn().mockResolvedValue({ text: 'Transcribed text' }),
+};
+
+let mockMediaRecorderInstance: {
+  start: Mock<() => void>;
+  stop: Mock<() => void>;
+  ondataavailable: ((e: { data: Blob }) => void) | null;
+  onstop: (() => void) | null;
+  state: string;
+};
+
+const mockMediaStream = {
+  getTracks: vi.fn().mockReturnValue([{ stop: vi.fn() }]),
+};
+
+class MockMediaRecorder {
+  ondataavailable: ((e: { data: Blob }) => void) | null = null;
+  onstop: (() => void) | null = null;
+  state = 'inactive';
+  startMock = vi.fn();
+  stopMock = vi.fn();
+
+  constructor() {
+    mockMediaRecorderInstance = {
+      start: this.startMock,
+      stop: this.stopMock,
+      ondataavailable: null,
+      onstop: null,
+      state: 'inactive',
+    };
+  }
+
+  start() {
+    this.state = 'recording';
+    mockMediaRecorderInstance.state = 'recording';
+    this.startMock();
+  }
+
+  stop() {
+    this.state = 'inactive';
+    mockMediaRecorderInstance.state = 'inactive';
+    this.stopMock();
+    if (this.ondataavailable) {
+      this.ondataavailable({ data: new Blob(['test'], { type: 'audio/webm' }) });
+    }
+    if (this.onstop) {
+      this.onstop();
+    }
+  }
+}
+
+describe('Microphone', () => {
+  const renderComponent = async () => {
+    const result = await render(Microphone, {
+      providers: [
+        provideHttpClient(),
+        provideStore([ChatStore]),
+        { provide: ChatApi, useValue: mockChatApi },
+      ],
+      componentImports: [MockNzIconComponent],
+    });
+
+    const store = result.fixture.debugElement.injector.get(Store);
+
+    return { ...result, store };
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+
+    Object.defineProperty(navigator, 'mediaDevices', {
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue(mockMediaStream),
+      },
+      writable: true,
+      configurable: true,
+    });
+
+    vi.stubGlobal('MediaRecorder', MockMediaRecorder);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('should create', async () => {
+    const { fixture } = await renderComponent();
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should display record audio button by default', async () => {
+    await renderComponent();
+
+    expect(screen.getByRole('button', { name: 'Record audio' })).toBeInTheDocument();
+  });
+
+  it('should start recording when button is clicked', async () => {
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+
+    expect(fixture.componentInstance.isRecording()).toBe(true);
+    expect(screen.getByRole('button', { name: 'Stop recording' })).toBeInTheDocument();
+  });
+
+  it('should display recording time while recording', async () => {
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    vi.advanceTimersByTime(2000);
+    fixture.detectChanges();
+
+    expect(screen.getByText('00:02')).toBeInTheDocument();
+  });
+
+  it('should stop recording and transcribe audio when stop button is clicked', async () => {
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    expect(fixture.componentInstance.isRecording()).toBe(true);
+
+    await user.click(screen.getByRole('button', { name: 'Stop recording' }));
+    await vi.waitFor(() => {
+      expect(fixture.componentInstance.isRecording()).toBe(false);
+    });
+
+    expect(mockChatApi.transcribe).toHaveBeenCalled();
+  });
+
+  it('should disable button while transcribing', async () => {
+    const { fixture } = await renderComponent();
+
+    fixture.componentInstance.isTranscribing.set(true);
+    fixture.detectChanges();
+
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+  });
+
+  it('should handle transcription API failure gracefully', async () => {
+    mockChatApi.transcribe.mockRejectedValue(new Error('Transcription failed'));
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    await user.click(screen.getByRole('button', { name: 'Stop recording' }));
+
+    await waitFor(() => {
+      expect(fixture.componentInstance.isTranscribing()).toBe(false);
+    });
+
+    expect(mockChatApi.transcribe).toHaveBeenCalled();
+  });
+
+  it('should handle microphone access denied', async () => {
+    const getUserMediaMock = navigator.mediaDevices.getUserMedia as Mock;
+    getUserMediaMock.mockRejectedValue(new Error('Permission denied'));
+
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    await vi.waitFor(() => {
+      expect(fixture.componentInstance.isRecording()).toBe(false);
+    });
+
+    expect(mockMediaRecorderInstance.start).not.toHaveBeenCalled();
+  });
+
+  it('should auto-stop recording after 60 seconds', async () => {
+    mockChatApi.transcribe.mockResolvedValue({ text: 'Transcribed text' });
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    expect(fixture.componentInstance.isRecording()).toBe(true);
+
+    vi.advanceTimersByTime(60000);
+    fixture.detectChanges();
+
+    await waitFor(() => {
+      expect(fixture.componentInstance.isRecording()).toBe(false);
+    });
+
+    expect(mockChatApi.transcribe).toHaveBeenCalled();
+  });
+
+  it('should not fail when stopping inactive recorder', async () => {
+    mockChatApi.transcribe.mockResolvedValue({ text: 'Transcribed text' });
+    const { fixture } = await renderComponent();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    await user.click(screen.getByRole('button', { name: 'Record audio' }));
+    await user.click(screen.getByRole('button', { name: 'Stop recording' }));
+
+    await waitFor(() => {
+      expect(fixture.componentInstance.isRecording()).toBe(false);
+    });
+
+    expect(() => fixture.componentInstance.stopRecording()).not.toThrow();
+  });
+});

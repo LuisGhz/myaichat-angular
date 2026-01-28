@@ -2,6 +2,7 @@
   <div class="flex justify-end pe-2">
     <button
       class="app-text px-5 py-2.5 app-bg-base app-hover-bg-base trans-c-200 rounded-lg cursor-pointer"
+      type="button"
       (click)="onAdd()"
     >
       <span nz-icon nzType="plus"></span>
@@ -49,20 +50,24 @@
                   class="flex items-center justify-center gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <button
+                    class="text-dark-base! dark:text-gray-300! hover:text-blue-500!"
+                    type="button"
+                    aria-label="Edit model"
                     nz-button
                     nzType="text"
                     nzSize="large"
                     (click)="onEdit(model)"
-                    class="text-dark-base! dark:text-gray-300! hover:text-blue-500!"
                   >
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
                   </button>
                   <button
+                    class="text-dark-base! dark:text-gray-300! hover:text-red-500!"
+                    type="button"
+                    aria-label="Delete model"
                     nz-button
                     nzType="text"
                     nzSize="large"
                     (click)="onDelete(model)"
-                    class="text-dark-base! dark:text-gray-300! hover:text-red-500!"
                   >
                     <span nz-icon nzType="delete" nzTheme="outline"></span>
                   </button>

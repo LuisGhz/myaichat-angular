@@ -40,11 +40,12 @@
               <td>{{ user.email || 'N/A' }}</td>
               <td>
                 <nz-select
+                  class="w-32"
+                  [attr.data-testid]="'user-role-' + user.id"
                   [ngModel]="user.role.id"
                   (ngModelChange)="onRoleChange(user, $event)"
                   [nzLoading]="updatingUserId() === user.id"
                   [nzDisabled]="updatingUserId() === user.id"
-                  class="w-32"
                 >
                   @for (role of roles.value(); track role.id) {
                     <nz-option [nzValue]="role.id" [nzLabel]="role.name"></nz-option>
