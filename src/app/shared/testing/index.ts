@@ -21,3 +21,6 @@ export * from './angular-router';
 
 // Angular HttpClient Mocks
 export * from './angular-http';
+
+// JWT Test Utilities
+export * from './jwt';
