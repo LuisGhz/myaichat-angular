@@ -15,10 +15,3 @@ export {
   createMockNzNotificationService,
   provideTestNzIcons,
 } from './services.mock';
-
-// Provider mocks
-export {
-  mockProvideNzI18n,
-  mockProvideNzIcons,
-  mockProvideNzIconDefaultTwotoneColor,
-} from './providers.mock';
