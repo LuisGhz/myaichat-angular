@@ -2,8 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { ActivatedRoute, Params } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { LoginPage } from './login';
-import { createMockActivatedRoute, MockNzAlertComponent, MockNzIconComponent } from '@sh/testing';
+import { createMockActivatedRoute, provideTestNzIcons } from '@sh/testing';
 import { environment } from 'src/environments/environment';
 
 interface RenderOptions {
@@ -17,8 +18,11 @@ describe('LoginPage', () => {
 		});
 
 		return render(LoginPage, {
-			providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
-			componentImports: [MockNzAlertComponent, MockNzIconComponent],
+			providers: [
+				{ provide: ActivatedRoute, useValue: mockActivatedRoute },
+				provideNoopAnimations(),
+				provideTestNzIcons(),
+			],
 		});
 	};
 

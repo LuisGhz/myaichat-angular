@@ -1,8 +1,6 @@
 /**
  * ngx-markdown Testing Mocks
  *
- * This module provides mocks for ngx-markdown components.
- * Compatible with Vitest and Testing Library.
+ * Note: UI component mocks have been removed. Let real markdown components
+ * render in tests to get proper template coverage.
  */
-
-export { MockMarkdownModule, MockMarkdownComponent, MockMarkdownPipe } from './markdown.mock';

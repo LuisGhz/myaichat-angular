@@ -3,16 +3,13 @@ import { render, screen, waitFor } from '@testing-library/angular';
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 import { of } from 'rxjs';
 
 import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
-import {
-  MockNzLayoutComponent,
-  MockNzHeaderComponent,
-  MockNzContentComponent,
-  MockNzSiderComponent,
-} from '@sh/testing/ng-zorro-antd';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { RouterOutlet } from '@angular/router';
 import { App } from './app';
 import { AuthStore } from '@st/auth/auth.store';
@@ -47,6 +44,8 @@ describe('App', () => {
       providers: [
         provideZonelessChangeDetection(),
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([AuthStore, AppStore]),
         { provide: BreakpointObserver, useValue: mockBreakpointObserver },
       ],
@@ -54,10 +53,7 @@ describe('App', () => {
         RouterOutlet,
         MockSider,
         MockHeader,
-        MockNzLayoutComponent,
-        MockNzHeaderComponent,
-        MockNzContentComponent,
-        MockNzSiderComponent,
+        NzLayoutModule,
       ],
     });
 

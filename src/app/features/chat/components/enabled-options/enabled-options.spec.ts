@@ -4,12 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideEnvironmentInitializer, inject } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 
 import { EnabledOptions } from './enabled-options';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { ChatApi } from '@chat/services/chat-api';
-import { MockNzIconComponent } from '@sh/testing';
 
 interface RenderOptions {
   isImageGeneration?: boolean;
@@ -32,6 +33,8 @@ describe('EnabledOptions', () => {
     const result = await render(EnabledOptions, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([ChatStore]),
         { provide: ChatApi, useValue: mockChatApi },
         provideEnvironmentInitializer(() => {
@@ -40,7 +43,6 @@ describe('EnabledOptions', () => {
           store.dispatch(new ChatActions.SetCurrentChatId(currentChatId));
         }),
       ],
-      componentImports: [MockNzIconComponent],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);

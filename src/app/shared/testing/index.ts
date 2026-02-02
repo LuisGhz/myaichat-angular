@@ -7,14 +7,11 @@
  * @module shared/testing
  */
 
-// Ng-Zorro-Antd Mocks
+// Ng-Zorro-Antd Mocks (services and providers only)
 export * from './ng-zorro-antd';
 
 // NGXS Store Mocks
 export * from './ngxs-store';
-
-// Ngx-Markdown Mocks
-export * from './ngx-markdown';
 
 // Angular Router Mocks
 export * from './angular-router';

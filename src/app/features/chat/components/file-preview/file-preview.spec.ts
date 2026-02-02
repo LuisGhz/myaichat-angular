@@ -4,13 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideEnvironmentInitializer, inject } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 
 import { FilePreview } from './file-preview';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { FileStoreService } from '@st/chat/services';
 import { FileInfo } from '@st/chat/models';
-import { MockNzIconComponent } from '@sh/testing';
 
 interface RenderOptions {
   fileInfo?: FileInfo | undefined;
@@ -41,6 +42,8 @@ describe('FilePreview', () => {
     const result = await render(FilePreview, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([ChatStore]),
         { provide: FileStoreService, useValue: mockFileStoreService },
         provideEnvironmentInitializer(() => {
@@ -50,7 +53,6 @@ describe('FilePreview', () => {
           }
         }),
       ],
-      componentImports: [MockNzIconComponent],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);

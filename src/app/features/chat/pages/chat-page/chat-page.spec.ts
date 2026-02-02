@@ -1,10 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
-import { Component, forwardRef, inject, Input, provideEnvironmentInitializer } from '@angular/core';
+import { Component, inject, Input, provideEnvironmentInitializer } from '@angular/core';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Store, provideStore } from '@ngxs/store';
 import { Subject } from 'rxjs';
 
@@ -16,7 +18,7 @@ import { AuthStore } from '@st/auth/auth.store';
 import { AuthActions } from '@st/auth/auth.actions';
 import { AiModelsApi } from '@chat/services/ai-models-api';
 import { ChatApi } from '@chat/services/chat-api';
-import { createTestJwt } from '@sh/testing';
+import { createTestJwt, provideTestNzIcons } from '@sh/testing';
 import type { AiModelModel, PromptItemSummaryResModel } from '@chat/models';
 
 // Mock InputMessage component
@@ -33,44 +35,6 @@ class MockInputMessage {}
 })
 class MockMessages {
   @Input('animate.enter') animateEnter?: string;
-}
-
-// Mock nz-select with ControlValueAccessor
-@Component({
-  selector: 'nz-select',
-  template: '<ng-content></ng-content>',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MockNzSelectComponent),
-      multi: true,
-    },
-  ],
-})
-class MockNzSelectComponent implements ControlValueAccessor {
-  value: unknown;
-  writeValue(value: unknown): void {
-    this.value = value;
-  }
-  registerOnChange(): void {}
-  registerOnTouched(): void {}
-}
-
-@Component({
-  selector: 'nz-option',
-  template: '<ng-content></ng-content>',
-})
-class MockNzOptionComponent {
-  @Input() nzValue?: unknown;
-  @Input() nzLabel?: string;
-}
-
-@Component({
-  selector: 'nz-option-group',
-  template: '<ng-content></ng-content>',
-})
-class MockNzOptionGroupComponent {
-  @Input() nzLabel?: string;
 }
 
 // Mock data
@@ -145,6 +109,8 @@ describe('ChatPage', () => {
     const result = await render(ChatPage, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideRouter([]),
         provideStore([ChatStore, AppStore, AuthStore]),
         provideEnvironmentInitializer(() => {
@@ -157,11 +123,9 @@ describe('ChatPage', () => {
       ],
       componentImports: [
         FormsModule,
+        NzSelectModule,
         MockInputMessage,
         MockMessages,
-        MockNzSelectComponent,
-        MockNzOptionComponent,
-        MockNzOptionGroupComponent,
       ],
     });
 

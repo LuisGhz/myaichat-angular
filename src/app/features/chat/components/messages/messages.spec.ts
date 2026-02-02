@@ -4,12 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideEnvironmentInitializer, inject } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
+import { provideMarkdown } from 'ngx-markdown';
 
 import { Messages } from './messages';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { Message } from '@st/chat/models';
-import { MockNzIconComponent, MockMarkdownComponent } from '@sh/testing';
 
 interface RenderOptions {
   messages?: Message[];
@@ -28,6 +30,9 @@ describe('Messages', () => {
     const result = await render(Messages, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
+        provideMarkdown(),
         provideStore([ChatStore]),
         provideEnvironmentInitializer(() => {
           const store = inject(Store);
@@ -43,7 +48,6 @@ describe('Messages', () => {
           }
         }),
       ],
-      componentImports: [MockNzIconComponent, MockMarkdownComponent],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);

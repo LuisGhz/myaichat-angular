@@ -4,13 +4,15 @@ import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideEnvironmentInitializer, inject, Component, input, output } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { MoreOptions } from './more-options';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { ChatApi } from '@chat/services/chat-api';
 import { FileStoreService } from '@st/chat/services';
-import { MockNzIconComponent } from '@sh/testing';
 
 // Mock AdvancedSettings child component
 @Component({
@@ -50,6 +52,8 @@ describe('MoreOptions', () => {
     const result = await render(MoreOptions, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([ChatStore]),
         { provide: ChatApi, useValue: mockChatApi },
         { provide: FileStoreService, useValue: mockFileStoreService },
@@ -59,7 +63,7 @@ describe('MoreOptions', () => {
           store.dispatch(new ChatActions.SetOps({ isImageGeneration, isWebSearch }));
         }),
       ],
-      componentImports: [MockNzIconComponent, MockAdvancedSettings],
+      componentImports: [NzIconModule, MockAdvancedSettings],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);

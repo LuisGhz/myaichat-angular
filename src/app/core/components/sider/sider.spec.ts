@@ -4,9 +4,15 @@ import userEvent from '@testing-library/user-event';
 import { Component, inject, Input, provideEnvironmentInitializer } from '@angular/core';
 import { provideRouter, Router, RouterLink } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { Store, provideStore } from '@ngxs/store';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { Sider } from './sider';
 import { AppStore } from '@st/app/app.store';
 import { ChatStore } from '@st/chat/chat.store';
@@ -16,10 +22,7 @@ import { ChatApi } from '@chat/services/chat-api';
 import {
   createMockNzModalService,
   createTestJwt,
-  MockNzSkeletonComponent,
-  MockNzButtonDirective,
-  MockNzTooltipDirective,
-  MockNzInputDirective,
+  provideTestNzIcons,
 } from '@sh/testing';
 import type { UserChatsModel } from '@chat/models/chat.model';
 
@@ -45,36 +48,6 @@ class MockBottomSider {}
 class MockRenameChatModal {
   @Input() isVisible = false;
   @Input() chatTitle = '';
-}
-
-// Mock nz-input-wrapper component
-@Component({
-  selector: 'nz-input-wrapper',
-  template: '<ng-content></ng-content>',
-})
-class MockNzInputWrapper {}
-
-// Mock nz-icon for nzInputPrefix
-@Component({
-  selector: 'nz-icon',
-  template: '',
-})
-class MockNzIcon {
-  @Input() nzType?: string;
-  @Input() nzInputPrefix?: boolean;
-  @Input() nzTheme?: string;
-}
-
-// Mock nz-skeleton-element
-@Component({
-  selector: 'nz-skeleton-element',
-  template: '<div>Loading skeleton</div>',
-})
-class MockNzSkeletonElement {
-  @Input() nzType?: string;
-  @Input() nzActive?: boolean;
-  @Input() nzSize?: string;
-  @Input() nzShape?: string;
 }
 
 const mockChats: UserChatsModel[] = [
@@ -112,6 +85,8 @@ describe('Sider', () => {
       providers: [
         provideStore([AppStore, ChatStore, AuthStore]),
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideRouter([
           { path: '', component: {} as any },
           { path: 'chat/:id', component: {} as any },
@@ -160,16 +135,14 @@ describe('Sider', () => {
       componentImports: [
         FormsModule,
         RouterLink,
+        NzInputModule,
+        NzIconModule,
+        NzButtonModule,
+        NzSkeletonModule,
+        NzMenuModule,
         MockMore,
         MockBottomSider,
         MockRenameChatModal,
-        MockNzInputWrapper,
-        MockNzIcon,
-        MockNzSkeletonComponent,
-        MockNzSkeletonElement,
-        MockNzButtonDirective,
-        MockNzTooltipDirective,
-        MockNzInputDirective,
       ],
     });
 

@@ -1,4 +1,95 @@
 import { vi } from 'vitest';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+import {
+  GithubOutline,
+  PlusOutline,
+  EditOutline,
+  DeleteOutline,
+  AudioOutline,
+  SendOutline,
+  CloseOutline,
+  MenuUnfoldOutline,
+  MenuFoldOutline,
+  ShareAltOutline,
+  UserAddOutline,
+  MoreOutline,
+  SearchOutline,
+  InboxOutline,
+  MessageOutline,
+  FileTextOutline,
+  PaperClipOutline,
+  CloudUploadOutline,
+  PictureOutline,
+  ExperimentOutline,
+  RadarChartOutline,
+  ShoppingCartOutline,
+  ReadOutline,
+  CompassOutline,
+  RightOutline,
+  FilePdfOutline,
+  FileWordOutline,
+  FileExcelOutline,
+  FilePptOutline,
+  FileOutline,
+  SettingOutline,
+  SettingFill,
+  LogoutOutline,
+  CopyOutline,
+  StopOutline,
+  LoadingOutline,
+} from '@ant-design/icons-angular/icons';
+
+/**
+ * Provides ng-zorro icons for testing
+ * Use this in your test providers to register all commonly used icons
+ *
+ * @example
+ * ```typescript
+ * await render(MyComponent, {
+ *   providers: [provideTestNzIcons()],
+ * });
+ * ```
+ */
+export function provideTestNzIcons() {
+  return provideNzIcons([
+    GithubOutline,
+    PlusOutline,
+    EditOutline,
+    DeleteOutline,
+    AudioOutline,
+    SendOutline,
+    CloseOutline,
+    MenuUnfoldOutline,
+    MenuFoldOutline,
+    ShareAltOutline,
+    UserAddOutline,
+    MoreOutline,
+    SearchOutline,
+    InboxOutline,
+    MessageOutline,
+    FileTextOutline,
+    PaperClipOutline,
+    CloudUploadOutline,
+    PictureOutline,
+    ExperimentOutline,
+    RadarChartOutline,
+    ShoppingCartOutline,
+    ReadOutline,
+    CompassOutline,
+    RightOutline,
+    FilePdfOutline,
+    FileWordOutline,
+    FileExcelOutline,
+    FilePptOutline,
+    FileOutline,
+    SettingOutline,
+    SettingFill,
+    LogoutOutline,
+    CopyOutline,
+    StopOutline,
+    LoadingOutline,
+  ]);
+}
 
 /**
  * Creates a mock NzMessageService

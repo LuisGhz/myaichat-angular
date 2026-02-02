@@ -3,11 +3,12 @@ import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 
 import { Microphone } from './microphone';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatApi } from '../../services/chat-api';
-import { MockNzIconComponent } from '@sh/testing';
 
 const mockChatApi = {
   transcribe: vi.fn().mockResolvedValue({ text: 'Transcribed text' }),
@@ -68,10 +69,11 @@ describe('Microphone', () => {
     const result = await render(Microphone, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([ChatStore]),
         { provide: ChatApi, useValue: mockChatApi },
       ],
-      componentImports: [MockNzIconComponent],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);

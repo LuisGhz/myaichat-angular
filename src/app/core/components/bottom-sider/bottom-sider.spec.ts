@@ -7,8 +7,9 @@ import { Store, provideStore } from '@ngxs/store';
 import { AuthApi } from '@core/services/auth-api';
 import { AppStore } from '@st/app/app.store';
 import { AuthStore } from '@st/auth/auth.store';
-import { createMockRouter, MockNzIconComponent, MockNzAvatarComponent, createTestJwt } from '@sh/testing';
-import { Component, inject, provideEnvironmentInitializer } from '@angular/core';
+import { createMockRouter, createTestJwt, provideTestNzIcons } from '@sh/testing';
+import { inject, provideEnvironmentInitializer } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { AuthActions } from '@st/auth/auth.actions';
 import { JwtPayloadModel } from '@st/auth/models';
@@ -19,12 +20,6 @@ const mockAuthApi = {
 
 const mockRouter = createMockRouter();
 
-@Component({
-  selector: 'app-is-admin',
-  template: '<ng-content></ng-content>',
-})
-class MockIsAdminDirective {}
-
 interface RenderOptions {
   jwtPayload?: Partial<JwtPayloadModel>;
 }
@@ -34,6 +29,8 @@ describe('BottomSider', () => {
     const result = await render(BottomSider, {
       providers: [
         provideStore([AppStore, AuthStore]),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         { provide: Router, useValue: mockRouter },
         { provide: AuthApi, useValue: mockAuthApi },
         provideEnvironmentInitializer(() => {
@@ -42,7 +39,6 @@ describe('BottomSider', () => {
           store.dispatch(new AuthActions.Login({ token }));
         }),
       ],
-      componentImports: [MockNzIconComponent, MockNzAvatarComponent, MockIsAdminDirective],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);
@@ -129,7 +125,7 @@ describe('BottomSider', () => {
     const component = fixture.componentInstance;
     const user = userEvent.setup();
 
-    const mockOption = { icon: 'test', label: 'Test', onClick: vi.fn() };
+    const mockOption = { icon: 'setting', label: 'Test', onClick: vi.fn() };
     component.menuOptions.set([mockOption]);
     fixture.detectChanges();
 

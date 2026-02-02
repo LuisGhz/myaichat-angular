@@ -2,9 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, waitFor } from '@testing-library/angular';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store, provideStore } from '@ngxs/store';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { SuccessPage } from './success';
 import { AuthStore } from '@st/auth/auth.store';
-import { createMockActivatedRoute, createMockRouter, MockNzSpinComponent } from '@sh/testing';
+import { createMockActivatedRoute, createMockRouter, provideTestNzIcons } from '@sh/testing';
 import { AuthActions } from '@st/auth/auth.actions';
 import { of } from 'rxjs';
 
@@ -23,10 +24,11 @@ describe('SuccessPage', () => {
 		const result = await render(SuccessPage, {
 			providers: [
 				provideStore([AuthStore]),
+				provideNoopAnimations(),
+				provideTestNzIcons(),
 				{ provide: ActivatedRoute, useValue: mockActivatedRoute },
 				{ provide: Router, useValue: mockRouter },
 			],
-			componentImports: [MockNzSpinComponent],
 		});
 
 		const store = result.fixture.debugElement.injector.get(Store);

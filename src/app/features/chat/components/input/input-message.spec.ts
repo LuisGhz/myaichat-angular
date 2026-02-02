@@ -4,13 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { provideStore, Store } from '@ngxs/store';
 import { provideEnvironmentInitializer, inject, Component, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { InputMessage } from './input-message';
 import { ChatStore } from '@st/chat/chat.store';
 import { ChatActions } from '@st/chat/chat.actions';
 import { MessagesHandler } from '@chat/services/message-handler';
-import { MockNzIconComponent, MockNzInputDirective, MockNzTextareaComponent } from '@sh/testing';
 
 // Mock child components
 @Component({
@@ -62,6 +65,8 @@ describe('InputMessage', () => {
     const result = await render(InputMessage, {
       providers: [
         provideHttpClient(),
+        provideNoopAnimations(),
+        provideTestNzIcons(),
         provideStore([ChatStore]),
         { provide: MessagesHandler, useValue: mockMessagesHandler },
         provideEnvironmentInitializer(() => {
@@ -74,9 +79,8 @@ describe('InputMessage', () => {
       ],
       componentImports: [
         FormsModule,
-        MockNzIconComponent,
-        MockNzInputDirective,
-        MockNzTextareaComponent,
+        NzInputModule,
+        NzIconModule,
         MockMoreOptions,
         MockFilePreview,
         MockEnabledOptions,

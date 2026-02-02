@@ -5,12 +5,11 @@ import { provideStore } from '@ngxs/store';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { AppStore } from '@st/app/app.store';
-import { createMockNzMessageService, createMockNzModalService, createMockRouter } from '@sh/testing';
+import { createMockNzMessageService, createMockNzModalService, createMockRouter, provideTestNzIcons } from '@sh/testing';
 
 import { ModelsHomePage } from './models-home-page';
 import { ModelsApi } from '../../services';
@@ -18,15 +17,6 @@ import { ModelListItemResModel } from '../../models';
 
 type NzMessageServiceMock = ReturnType<typeof createMockNzMessageService>;
 type NzModalServiceMock = ReturnType<typeof createMockNzModalService>;
-
-@Component({
-	selector: 'nz-icon',
-	template: '',
-})
-class MockNzIcon {
-	@Input() nzType?: string;
-	@Input() nzTheme?: string;
-}
 
 const defaultModels: ModelListItemResModel[] = [
 	{
@@ -70,12 +60,13 @@ describe('ModelsHomePage', () => {
 		const renderResult = await render(ModelsHomePage, {
 			providers: [
 				provideStore([AppStore]),
+				provideNoopAnimations(),
+				provideTestNzIcons(),
 				{ provide: ModelsApi, useValue: modelsApi },
 				{ provide: Router, useValue: router },
 				{ provide: NzMessageService, useValue: messageService },
 			],
 			componentProviders: [{ provide: NzModalService, useValue: modalService }],
-			componentImports: [NzTableModule, NzButtonModule, NzModalModule, MockNzIcon],
 		});
 
 		return {

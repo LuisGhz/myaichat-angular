@@ -1,15 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/angular';
+import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 import { More } from './more';
-import {
-  MockNzDropdownDirective,
-  MockNzDropdownMenuComponent,
-  MockNzIconComponent,
-  MockNzMenuComponent,
-  MockNzMenuItemComponent,
-  MockNzButtonDirective,
-} from '@sh/testing';
 
 interface RenderOptions {
   deleteChat?: () => void;
@@ -30,14 +24,7 @@ describe('More', () => {
         deleteChat,
         renameChat,
       },
-      componentImports: [
-        MockNzDropdownDirective,
-        MockNzDropdownMenuComponent,
-        MockNzIconComponent,
-        MockNzMenuComponent,
-        MockNzMenuItemComponent,
-        MockNzButtonDirective,
-      ],
+      providers: [provideNoopAnimations(), provideTestNzIcons()],
     });
 
     return { ...result, deleteChat, renameChat };
@@ -47,6 +34,14 @@ describe('More', () => {
     const { renameChat } = await renderComponent();
     const user = userEvent.setup();
 
+    // Open the dropdown menu first
+    const triggerBtn = screen.getByRole('button');
+    await user.click(triggerBtn);
+
+    // Wait for dropdown menu to appear and click rename
+    await waitFor(() => {
+      expect(screen.getByText('Rename')).toBeInTheDocument();
+    });
     const renameOption = screen.getByText('Rename');
     await user.click(renameOption);
 
@@ -57,6 +52,14 @@ describe('More', () => {
     const { deleteChat } = await renderComponent();
     const user = userEvent.setup();
 
+    // Open the dropdown menu first
+    const triggerBtn = screen.getByRole('button');
+    await user.click(triggerBtn);
+
+    // Wait for dropdown menu to appear and click delete
+    await waitFor(() => {
+      expect(screen.getByText('Delete')).toBeInTheDocument();
+    });
     const deleteOption = screen.getByText('Delete');
     await user.click(deleteOption);
 
@@ -65,8 +68,16 @@ describe('More', () => {
 
   it('should display rename and delete options in menu', async () => {
     await renderComponent();
+    const user = userEvent.setup();
 
-    expect(screen.getByText('Rename')).toBeInTheDocument();
+    // Open the dropdown menu first
+    const triggerBtn = screen.getByRole('button');
+    await user.click(triggerBtn);
+
+    // Wait for dropdown menu to appear
+    await waitFor(() => {
+      expect(screen.getByText('Rename')).toBeInTheDocument();
+    });
     expect(screen.getByText('Delete')).toBeInTheDocument();
   });
 

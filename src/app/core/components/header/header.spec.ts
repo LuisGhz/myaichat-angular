@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { Header } from './header';
 import { Store, provideStore } from '@ngxs/store';
 import { AppStore } from '@st/app/app.store';
-import { MockNzIconComponent } from '@sh/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideTestNzIcons } from '@sh/testing';
 import { AppActions } from '@st/app/app.actions';
 
 interface RenderOptions {
@@ -16,8 +17,7 @@ interface RenderOptions {
 describe('Header', () => {
   const renderComponent = async (options?: RenderOptions) => {
     const result = await render(Header, {
-      providers: [provideStore([AppStore])],
-      componentImports: [MockNzIconComponent],
+      providers: [provideStore([AppStore]), provideNoopAnimations(), provideTestNzIcons()],
     });
 
     const store = result.fixture.debugElement.injector.get(Store);
