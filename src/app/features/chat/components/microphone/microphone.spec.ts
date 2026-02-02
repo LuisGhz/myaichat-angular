@@ -62,6 +62,8 @@ class MockMediaRecorder {
 }
 
 describe('Microphone', () => {
+  let mediaStreamTracks: Array<{ stop: Mock }> = [];
+
   const renderComponent = async () => {
     const result = await render(Microphone, {
       providers: [
@@ -81,9 +83,14 @@ describe('Microphone', () => {
     vi.clearAllMocks();
     vi.useFakeTimers({ shouldAdvanceTime: true });
 
+    mediaStreamTracks = [{ stop: vi.fn() }];
+    const mockMediaStreamLocal = {
+      getTracks: vi.fn().mockReturnValue(mediaStreamTracks),
+    };
+
     Object.defineProperty(navigator, 'mediaDevices', {
       value: {
-        getUserMedia: vi.fn().mockResolvedValue(mockMediaStream),
+        getUserMedia: vi.fn().mockResolvedValue(mockMediaStreamLocal),
       },
       writable: true,
       configurable: true,
@@ -92,7 +99,17 @@ describe('Microphone', () => {
     vi.stubGlobal('MediaRecorder', MockMediaRecorder);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // Stop any active media recorder
+    if (mockMediaRecorderInstance && mockMediaRecorderInstance.state === 'recording') {
+      mockMediaRecorderInstance.stop();
+    }
+
+    // Stop all media stream tracks
+    mediaStreamTracks.forEach((track) => track.stop());
+
+    // Flush all pending timers before switching back to real timers
+    await vi.runAllTimersAsync();
     vi.useRealTimers();
     vi.unstubAllGlobals();
   });
@@ -137,11 +154,19 @@ describe('Microphone', () => {
     expect(fixture.componentInstance.isRecording()).toBe(true);
 
     await user.click(screen.getByRole('button', { name: 'Stop recording' }));
-    await vi.waitFor(() => {
+
+    await waitFor(() => {
       expect(fixture.componentInstance.isRecording()).toBe(false);
     });
 
-    expect(mockChatApi.transcribe).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockChatApi.transcribe).toHaveBeenCalled();
+    });
+
+    // Wait for transcription to complete
+    await waitFor(() => {
+      expect(fixture.componentInstance.isTranscribing()).toBe(false);
+    });
   });
 
   it('should disable button while transcribing', async () => {
@@ -199,7 +224,14 @@ describe('Microphone', () => {
       expect(fixture.componentInstance.isRecording()).toBe(false);
     });
 
-    expect(mockChatApi.transcribe).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockChatApi.transcribe).toHaveBeenCalled();
+    });
+
+    // Wait for transcription to complete
+    await waitFor(() => {
+      expect(fixture.componentInstance.isTranscribing()).toBe(false);
+    });
   });
 
   it('should not fail when stopping inactive recorder', async () => {
@@ -212,6 +244,11 @@ describe('Microphone', () => {
 
     await waitFor(() => {
       expect(fixture.componentInstance.isRecording()).toBe(false);
+    });
+
+    // Wait for transcription to complete
+    await waitFor(() => {
+      expect(fixture.componentInstance.isTranscribing()).toBe(false);
     });
 
     expect(() => fixture.componentInstance.stopRecording()).not.toThrow();
