@@ -9,7 +9,7 @@ import { FileStoreService } from './services';
   name: 'chat',
   defaults: {
     messages: [],
-    model: '',
+    modelId: '',
     modelDeveloper: '',
     maxTokens: 2000,
     temperature: 0.5,
@@ -32,7 +32,7 @@ export class ChatStore {
   resetChat(ctx: StateContext<ChatStoreModel>) {
     ctx.setState({
       messages: [],
-      model: '',
+      modelId: '',
       modelDeveloper: '',
       maxTokens: 2000,
       temperature: 0.5,
@@ -240,7 +240,7 @@ export class ChatStore {
   @Selector()
   static getOps(state: ChatStoreModel) {
     return {
-      model: state.model,
+      modelId: state.modelId,
       modelDeveloper: state.modelDeveloper,
       maxTokens: state.maxTokens,
       temperature: state.temperature,

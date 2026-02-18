@@ -11,7 +11,7 @@ export interface FileInfo {
 export interface ChatStoreModel {
   messages: Message[];
   promptId?: string;
-  model: string;
+  modelId: string;
   modelDeveloper: string;
   maxTokens: number;
   temperature: number;

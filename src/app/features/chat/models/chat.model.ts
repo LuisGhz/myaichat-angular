@@ -60,7 +60,7 @@ export type ChatStreamEvent = StreamDeltaEvent | StreamErrorEvent | StreamDoneEv
 export interface SendMessageReqModel {
   chatId?: string;
   message: string;
-  model: string;
+  modelId: string;
   modelDeveloper: string;
   maxTokens: number;
   temperature: number;

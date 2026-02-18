@@ -93,7 +93,7 @@ export class ChatPage implements OnInit, AfterViewInit {
       if (model)
         this.#setOps({
           modelDeveloper: model.developer.name,
-          model: model.value,
+          modelId: model.id,
         });
     });
 

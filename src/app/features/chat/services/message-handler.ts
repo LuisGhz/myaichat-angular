@@ -37,7 +37,7 @@ export class MessagesHandler {
       .sendMessage({
         message,
         chatId,
-        model: ops.model,
+        modelId: ops.modelId,
         modelDeveloper: ops.modelDeveloper.toLocaleLowerCase(),
         maxTokens: ops.maxTokens,
         temperature: ops.temperature,

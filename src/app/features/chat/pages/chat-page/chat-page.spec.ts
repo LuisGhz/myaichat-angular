@@ -187,7 +187,7 @@ describe('ChatPage', () => {
     await waitFor(() => {
       const chatOps = store.selectSnapshot(ChatStore.getOps);
       expect(chatOps.modelDeveloper).toBe('OpenAI');
-      expect(chatOps.model).toBe('gpt-4');
+      expect(chatOps.modelId).toBe('1');
     });
   });
 
