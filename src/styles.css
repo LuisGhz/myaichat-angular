@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'ng-zorro-antd/ng-zorro-antd.dark.min.css' (prefers-color-scheme: dark);
 @import './styles/antd';
 @import './styles/utilities';
 @import './styles/scrollbar';
