@@ -11,11 +11,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const uploadToken = dispatch(AuthActions.UploadToken);
   const logout = dispatch(AuthActions.Logout);
   const router = inject(Router);
+  const currentToken = token();
 
-  if (token) {
+  if (currentToken) {
     const clonedReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token()}`,
+        Authorization: `Bearer ${currentToken}`,
       },
       withCredentials: true,
     });
@@ -27,7 +28,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       next: (response) => {
         if (response instanceof HttpResponse) {
           const newToken = response.headers.get('x-new-access-token');
-          if (newToken) uploadToken({ token: newToken });
+          if (newToken) {
+            uploadToken({ token: newToken });
+          }
         }
       },
       error: (error: HttpErrorResponse) => {
