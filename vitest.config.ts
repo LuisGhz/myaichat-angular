@@ -8,7 +8,19 @@ export default defineConfig({
     include: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['html', 'text-summary', "lcov", "clover"],
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/cypress/**',
+        '**/.{idea,git,cache,output,temp}/**',
+        '**/*.config.ts',
+        'src/main.ts',
+        'src/test-setup.ts',
+        'src/environments/**',
+        '**/*.model.ts',
+        '**/index.ts',
+      ],
     },
     // Disable teardown timeout to allow async operations to complete
     teardownTimeout: 5000,
