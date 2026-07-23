@@ -43,7 +43,10 @@
     <div class="px-2 pb-2">
       <nz-input-wrapper class="app-bg-surface rounded-lg!">
         <nz-icon nzInputPrefix nzType="search" class="app-text" />
+        <label for="chat-search" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Search chats</label>
         <input
+          id="chat-search"
+          aria-label="Search chats"
           type="text"
           nz-input
           placeholder="Buscar chats"
@@ -78,7 +81,7 @@
       }
     } @else {
       @for (chat of filteredChats(); track chat.id) {
-        <div
+        <a
           class="group relative flex items-center px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-400 dark:hover:bg-dark-input app-text trans-c-200"
           [routerLink]="['/chat', chat.id]"
           [class.hidden]="sidebarCollapsed()"
@@ -108,7 +111,7 @@
           } @else {
             <span nz-icon nzType="message" nzTheme="outline" class="text-gray-400"></span>
           }
-        </div>
+        </a>
       }
     }
   </div>

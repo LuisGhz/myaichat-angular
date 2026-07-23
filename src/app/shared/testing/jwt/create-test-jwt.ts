@@ -37,8 +37,12 @@ export function createTestJwt(payload?: Partial<JwtPayloadModel>): string {
   const base64UrlEncode = (obj: object): string => {
     const json = JSON.stringify(obj);
     const base64 = btoa(json);
-    // Convert to base64url format
-    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    // Convert to base64url format without regex backtracking
+    let base64Url = base64.replaceAll('+', '-').replaceAll('/', '_');
+    while (base64Url.endsWith('=')) {
+      base64Url = base64Url.slice(0, -1);
+    }
+    return base64Url;
   };
 
   const encodedHeader = base64UrlEncode(header);

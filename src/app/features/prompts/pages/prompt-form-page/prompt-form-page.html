@@ -16,9 +16,11 @@
   <form [formGroup]="form" (ngSubmit)="onSave()" class="flex-1 overflow-y-auto p-4">
     <!-- Name field -->
     <nz-form-item>
-      <nz-form-label>Name</nz-form-label>
+      <nz-form-label nzFor="prompt-name">Name</nz-form-label>
       <nz-form-control nzErrorTip="Name is required">
+        <label for="prompt-name" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Name</label>
         <input
+          id="prompt-name"
           nz-input
           formControlName="name"
           placeholder="Enter prompt name"
@@ -29,9 +31,11 @@
 
     <!-- Content field -->
     <nz-form-item>
-      <nz-form-label>Content</nz-form-label>
+      <nz-form-label nzFor="prompt-content">Content</nz-form-label>
       <nz-form-control nzErrorTip="Content is required">
+        <label for="prompt-content" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Content</label>
         <textarea
+          id="prompt-content"
           nz-input
           formControlName="content"
           placeholder="Enter prompt content"
@@ -73,7 +77,9 @@
             >
               <div class="flex items-center justify-between mb-2">
                 <nz-select
+                  [attr.id]="'message-role-' + i"
                   formControlName="role"
+                  aria-label="Message role"
                   class="w-32! [&_.ant-select-selector]:bg-dark-input! [&_.ant-select-selector]:border-dark-border-light! [&_.ant-select-selection-item]:text-gray-200!"
                   nzSize="small"
                 >
@@ -96,9 +102,12 @@
                   <span nz-icon nzType="delete"></span>
                 </button>
               </div>
+              <label [attr.for]="'message-content-' + i" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Message content</label>
               <textarea
+                [attr.id]="'message-content-' + i"
                 nz-input
                 formControlName="content"
+                aria-label="Message content"
                 placeholder="Enter message content"
                 [nzAutosize]="{ minRows: 2, maxRows: 4 }"
                 class="bg-dark-muted! border-dark-border-light! text-gray-200! placeholder:text-gray-500!"

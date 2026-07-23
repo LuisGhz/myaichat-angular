@@ -5,12 +5,12 @@
       title="Remove file"
       aria-label="Remove file"
       class="absolute -top-1 left-0"
+      (click)="removeFile()"
     >
       <nz-icon
         [nzType]="'close'"
         nzTheme="outline"
-        (click)="removeFile()"
-        class="cursor-pointer app-text text-xs"
+        class="app-text text-xs"
       ></nz-icon>
     </button>
     @if (isImage()) {

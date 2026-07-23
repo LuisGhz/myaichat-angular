@@ -123,8 +123,8 @@ describe('EnabledOptions', () => {
     const option = screen.getByText('Generate Image').parentElement;
     await user.hover(option!);
 
-    const closeIcon = screen.getByRole('button');
-    expect(closeIcon).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.some(b => b.querySelector('[nzType="close-circle"]'))).toBeTruthy();
   });
 
   it('should show close icon when hovering over web search option', async () => {
@@ -134,8 +134,8 @@ describe('EnabledOptions', () => {
     const option = screen.getByText('Search on the web').parentElement;
     await user.hover(option!);
 
-    const closeIcon = screen.getByRole('button');
-    expect(closeIcon).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.some(b => b.querySelector('[nzType="close-circle"]'))).toBeTruthy();
   });
 
   it('should display both options when both are enabled', async () => {

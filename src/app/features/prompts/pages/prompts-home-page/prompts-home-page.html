@@ -19,12 +19,12 @@
       </div>
     } @else {
       @for (prompt of prompts.value(); track prompt.id) {
-        <div
-          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-300 hover:dark:bg-dark-input mb-1 transition-colors max-w-xl mx-auto"
+        <button
+          class="group relative flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-300 hover:dark:bg-dark-input mb-1 transition-colors max-w-xl mx-auto w-full text-left"
           (click)="onSelectPrompt(prompt.id)"
         >
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium app-text truncate">
+            <div class="text-sm font-medium app-text truncate text-left">
               {{ prompt.name }}
             </div>
           </div>
@@ -46,7 +46,7 @@
               <span class="text-xl!" nz-icon nzType="delete"></span>
             </button>
           </div>
-        </div>
+        </button>
       }
     }
   </div>

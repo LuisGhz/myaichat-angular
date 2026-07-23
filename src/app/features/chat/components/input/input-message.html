@@ -8,7 +8,10 @@
       }
       <section class="flex items-end gap-2">
         <app-more-options />
+        <label for="chat-message" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Message input</label>
         <textarea
+          id="chat-message"
+          aria-label="Message input"
           class="flex-1 bg-transparent! border-none! app-text resize-none focus:shadow-none! hidden-scrollbar"
           nz-input
           [ngModel]="messageText()"

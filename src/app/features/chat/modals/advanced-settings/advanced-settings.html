@@ -4,8 +4,9 @@
       <h2 class="text-lg font-semibold mb-4">Configuración avanzada</h2>
       <p class="mb-2">Aquí puedes ajustar las configuraciones avanzadas de tu chat.</p>
       <div class="mb-4">
-        <label class="block mb-2 text-sm">Max Tokens</label>
+        <label for="adv-maxTokens" class="block mb-2 text-sm">Max Tokens</label>
         <nz-input-number
+          id="adv-maxTokens"
           class="w-full"
           formControlName="maxTokens"
           [nzMin]="100"
@@ -23,8 +24,9 @@
         }
       </div>
       <div class="mb-4">
-        <label class="block mb-2 text-sm">Temperature</label>
+        <label for="adv-temperature" class="block mb-2 text-sm">Temperature</label>
         <nz-input-number
+          id="adv-temperature"
           class="w-full"
           formControlName="temperature"
           [nzMin]="0"

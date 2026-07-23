@@ -210,7 +210,7 @@ describe('Sider', () => {
       expect(screen.getByText('Chat 1')).toBeInTheDocument();
     });
 
-    const chatItem = screen.getByText('Chat 1').closest('div[class*="group"]');
+    const chatItem = screen.getByText('Chat 1').closest('a[class*="group"]');
     expect(chatItem).toBeInTheDocument();
 
     const moreComponent = chatItem!.querySelector('app-more');

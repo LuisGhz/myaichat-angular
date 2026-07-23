@@ -1,7 +1,8 @@
 <nz-modal [nzVisible]="isVisible()" [nzClosable]="false">
   <ng-content *nzModalContent>
-    <p>Rename your chat</p>
+    <label for="rename-chat-title" class="block mb-2 text-sm">Rename your chat</label>
     <input
+      id="rename-chat-title"
       type="text"
       nz-input
       placeholder="Enter new chat name"

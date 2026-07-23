@@ -9,9 +9,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Name -->
           <nz-form-item>
-            <nz-form-label nzRequired>Name</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-name">Name</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid name (max 100 characters)">
+              <label for="model-name" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Name</label>
               <input
+                id="model-name"
                 nz-input
                 formControlName="name"
                 placeholder="GPT-4 Turbo"
@@ -22,9 +24,11 @@
 
           <!-- Short Name -->
           <nz-form-item>
-            <nz-form-label nzRequired>Short Name</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-shortName">Short Name</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid short name (max 20 characters)">
+              <label for="model-shortName" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Short Name</label>
               <input
+                id="model-shortName"
                 nz-input
                 formControlName="shortName"
                 placeholder="GPT-4T"
@@ -35,9 +39,11 @@
 
           <!-- Value -->
           <nz-form-item>
-            <nz-form-label nzRequired>Value</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-value">Value</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid value (max 100 characters)">
+              <label for="model-value" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Value</label>
               <input
+                id="model-value"
                 nz-input
                 formControlName="value"
                 placeholder="gpt-4-turbo"
@@ -48,9 +54,11 @@
 
           <!-- Link -->
           <nz-form-item>
-            <nz-form-label nzRequired>Documentation Link</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-link">Documentation Link</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid URL">
+              <label for="model-link" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Documentation Link</label>
               <input
+                id="model-link"
                 nz-input
                 formControlName="link"
                 placeholder="https://platform.openai.com/docs"
@@ -61,9 +69,11 @@
 
           <!-- Guest Access -->
           <nz-form-item>
-            <nz-form-label nzRequired>Guest Access</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-guestAccess">Guest Access</nz-form-label>
             <nz-form-control nzErrorTip="Please specify if guest access is allowed">
+              <label for="model-guestAccess" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Guest Access</label>
               <nz-select
+                id="model-guestAccess"
                 formControlName="guestAccess"
                 class="app-bg-input! app-border-input! app-text!"
               >
@@ -85,9 +95,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Input Price -->
           <nz-form-item>
-            <nz-form-label nzRequired>Input Token Price</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-price-input">Input Token Price</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid positive number">
+              <label for="model-price-input" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Input Token Price</label>
               <input
+                id="model-price-input"
                 nz-input
                 type="number"
                 formControlName="input"
@@ -100,9 +112,11 @@
 
           <!-- Output Price -->
           <nz-form-item>
-            <nz-form-label nzRequired>Output Token Price</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-price-output">Output Token Price</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid positive number">
+              <label for="model-price-output" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Output Token Price</label>
               <input
+                id="model-price-output"
                 nz-input
                 type="number"
                 formControlName="output"
@@ -125,9 +139,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Context Window -->
           <nz-form-item>
-            <nz-form-label nzRequired>Context Window</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-contextWindow">Context Window</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid number (min 1)">
+              <label for="model-contextWindow" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Context Window</label>
               <input
+                id="model-contextWindow"
                 nz-input
                 type="number"
                 formControlName="contextWindow"
@@ -139,9 +155,11 @@
 
           <!-- Max Output Tokens -->
           <nz-form-item>
-            <nz-form-label nzRequired>Max Output Tokens</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-maxOutputTokens">Max Output Tokens</nz-form-label>
             <nz-form-control nzErrorTip="Please enter a valid number (min 1)">
+              <label for="model-maxOutputTokens" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Max Output Tokens</label>
               <input
+                id="model-maxOutputTokens"
                 nz-input
                 type="number"
                 formControlName="maxOutputTokens"
@@ -153,9 +171,11 @@
 
           <!-- Knowledge Cutoff -->
           <nz-form-item class="sm:col-span-2">
-            <nz-form-label nzRequired>Knowledge Cutoff</nz-form-label>
+            <nz-form-label nzRequired nzFor="model-knowledgeCutoff">Knowledge Cutoff</nz-form-label>
             <nz-form-control nzErrorTip="Please enter the knowledge cutoff date">
+              <label for="model-knowledgeCutoff" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Knowledge Cutoff</label>
               <input
+                id="model-knowledgeCutoff"
                 nz-input
                 formControlName="knowledgeCutoff"
                 placeholder="April 2023"
@@ -170,10 +190,12 @@
       <div class="app-bg-base rounded-lg p-4 sm:p-6 mb-4 border app-border-input">
         <h2 class="text-lg font-semibold app-text mb-4">Developer</h2>
 
-        <nz-form-item>
-          <nz-form-label nzRequired>Select Developer {{ developerName() }}</nz-form-label>
+          <nz-form-item>
+          <nz-form-label nzRequired nzFor="model-developerId">Select Developer {{ developerName() }}</nz-form-label>
           <nz-form-control nzErrorTip="Please select a developer">
+            <label for="model-developerId" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Select Developer</label>
             <nz-select
+              id="model-developerId"
               formControlName="developerId"
               nzPlaceHolder="Select a developer"
               nzShowSearch
