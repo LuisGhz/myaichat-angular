@@ -14,7 +14,6 @@ import { AppActions } from '@st/app/app.actions';
   selector: 'app-root',
   imports: [RouterOutlet, NzLayoutModule, Sider, Header],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   readonly #breakpointObserver = inject(BreakpointObserver);
