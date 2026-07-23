@@ -14,7 +14,7 @@
         class="absolute w-dvw h-dvh bg-black/35 z-10"
         data-testid="app-backdrop"
         (click)="closeFromBackdrop()"
-        (keypress)="closeFromBackdrop()"
+        (keydown.escape)="closeFromBackdrop()"
       ></div>
     }
     <nz-layout>
